@@ -1,0 +1,4955 @@
+{
+  "isMobile": false,
+  "showMobileBanner": true,
+  "memberLocale": "en-US",
+  "localeMessages": {
+    "organizerUpgradeModal2.upgradeToTier": "Upgrade to {tier}",
+    "sendEmailModal.subject": "Subject",
+    "sendEmailModal.message": "Message",
+    "sendEmailModal.send": "Send",
+    "sendEmailModal.cancel": "Cancel",
+    "comparisonLikePaywall.continue": "Continue",
+    "a11y.skipToContent": "Skip to content",
+    "desktopSearch.searchAnything": "Search for anything",
+    "desktopHeader.homepage": "Homepage",
+    "desktopSearch.searchEvents": "Search events...",
+    "searchLocationTypeahead.placeholder": "Neighborhood, city or zip",
+    "searchLocationTypeahead.searchLocationByCityOrZip": "Search for location by city or zip code",
+    "desktopHeader.logIn": "Log in",
+    "desktopHeader.signUp": "Sign up",
+    "findPage.seo.metaTitle": "Find Events & Groups | Meetup",
+    "findPage.seo.metaDescription": "Find Meetup events and groups so you can do more of what matters to you and meet people near you who share your interests.",
+    "a11y.loadingComplete": "Content has been loaded",
+    "findPage.filter.category.anyCategory": "All events",
+    "findPage.filter.category.newGroups": "New Groups",
+    "findPage.filter.category.yourGroups": "From your Groups",
+    "findPage.filter.category.socialActivities": "Social Activities",
+    "findPage.filter.category.hobbiesAndPassion": "Hobbies & Passions",
+    "findPage.filter.category.sportsAndFitness": "Sports & Fitness",
+    "findPage.filter.category.travelAndOutdoor": "Travel & Outdoor",
+    "findPage.filter.category.careerAndBusiness": "Career & Business",
+    "findPage.filter.category.technology": "Technology",
+    "findPage.filter.category.communityAndEnvironment": "Community & Environment",
+    "findPage.filter.category.identityAndLanguage": "Identity & Language",
+    "findPage.filter.category.games": "Games",
+    "findPage.filter.category.dancing": "Dancing",
+    "findPage.filter.category.supportAndCoaching": "Support & Coaching",
+    "findPage.filter.category.music": "Music",
+    "findPage.filter.category.healthAndWellbeing": "Health & Wellbeing",
+    "findPage.filter.category.artAndCulture": "Art & Culture",
+    "findPage.filter.category.scienceAndEducation": "Science & Education",
+    "findPage.filter.category.petsAndAnimals": "Pets & Animals",
+    "findPage.filter.category.religionAndSpirituality": "Religion & Spirituality",
+    "findPage.filter.category.writing": "Writing",
+    "findPage.filter.category.parentsAndFamily": "Parents & Family",
+    "findPage.filter.category.movementsAndPolitics": "Movements & Politics",
+    "findPage.eventsNearLocation": "Events near {LOCATION}",
+    "findPage.events": "Events",
+    "findPage.areaLabelForEvents": "Search for events",
+    "findPage.groups": "Groups",
+    "findPage.areaLabelForGroups": "Search for groups",
+    "findPage.dateRange.filterOptions.all": "Any day",
+    "findPage.dateRange.filterOptions.startingSoon": "Starting soon",
+    "findPage.dateRange.filterOptions.today": "Today",
+    "findPage.dateRange.filterOptions.tomorrow": "Tomorrow",
+    "findPage.dateRange.filterOptions.thisWeek": "This week",
+    "findPage.dateRange.filterOptions.nextWeek": "Next week",
+    "findPage.dateRange.filterOptions.nextWeekend": "Next weekend",
+    "findPage.dateRange.filterOptions.custom": "Custom",
+    "findPage.dateRange.ariaLabel": "Filter by Day",
+    "findPage.eventType.filterOptions.all": "Any type",
+    "findPage.eventType.filterOptions.online": "Online",
+    "findPage.eventType.filterOptions.inPerson": "In person",
+    "findPage.eventType.ariaLabel": "Filter by Venue",
+    "findPage.filter.distance.withinXMiles": "Within {DISTANCE} miles",
+    "findPage.distance.filterOptions.miles": "{value} miles",
+    "findPage.distance.ariaLabel": "Filter by Distance",
+    "eventCard.locationOnline": "Online",
+    "eventCard.byGroup": "by {groupName}",
+    "eventCard.attendeeCount.plural": "{count} attendees",
+    "shareButton.eventShareTitle": "Share this event",
+    "shareButton.label": "Share event",
+    "shareButton.eventShareTitle_v2": "Share",
+    "redesign.components.avatar.ariaLabel": "Photo of the user {memberName}",
+    "eventTimeDisplay.monthly": "Monthly",
+    "eventCard.attendanceStatus.joinWaitlist": "Waitlist"
+  },
+  "country": "US",
+  "user": null,
+  "isIndexed": false,
+  "filters": {
+    "source": "EVENTS"
+  },
+  "location": "New York, NY",
+  "ssrQueryParams": {
+    "startDateRange": "2026-01-31T17:09:42-05:00[US/Eastern]"
+  },
+  "userLocation": {
+    "__typename": "LocationSearch",
+    "city": "New York",
+    "country": "us",
+    "lat": 40.67681884765625,
+    "lon": -73.96485900878906,
+    "name": "Prospect Heights, Brooklyn, New York, NY, USA",
+    "state": "NY",
+    "timeZone": "US/Eastern",
+    "borough": "Brooklyn",
+    "localizedCountryName": "us",
+    "neighborhood": "Prospect Heights",
+    "zip": "11238"
+  },
+  "isLoggedInSsr": false,
+  "__APOLLO_STATE__": {
+    "ROOT_QUERY": {
+      "__typename": "Query",
+      "self": null,
+      "locationSearch({})": [
+        {
+          "__typename": "LocationSearch",
+          "city": "New York",
+          "country": "us",
+          "lat": 40.67681884765625,
+          "lon": -73.96485900878906,
+          "name": "Prospect Heights, Brooklyn, New York, NY, USA",
+          "state": "NY",
+          "timeZone": "US/Eastern",
+          "borough": "Brooklyn",
+          "localizedCountryName": "us",
+          "neighborhood": "Prospect Heights",
+          "zip": "11238"
+        },
+        {
+          "__typename": "LocationSearch",
+          "city": "New York",
+          "country": "us",
+          "lat": 40.69586181640625,
+          "lon": -73.99378204345703,
+          "name": "Brooklyn Heights, Brooklyn, New York, NY, USA",
+          "state": "NY",
+          "timeZone": "US/Eastern",
+          "borough": "Brooklyn",
+          "localizedCountryName": "us",
+          "neighborhood": "Brooklyn Heights",
+          "zip": "11201"
+        },
+        {
+          "__typename": "LocationSearch",
+          "city": "New York",
+          "country": "us",
+          "lat": 40.60633850097656,
+          "lon": -73.90818786621094,
+          "name": "Mill Island, Brooklyn, New York, NY, USA",
+          "state": "NY",
+          "timeZone": "US/Eastern",
+          "borough": "Brooklyn",
+          "localizedCountryName": "us",
+          "neighborhood": "Mill Island",
+          "zip": "11234"
+        },
+        {
+          "__typename": "LocationSearch",
+          "city": "New York",
+          "country": "us",
+          "lat": 40.577911376953125,
+          "lon": -73.94354248046875,
+          "name": "Manhattan Beach, Brooklyn, New York, NY, USA",
+          "state": "NY",
+          "timeZone": "US/Eastern",
+          "borough": "Brooklyn",
+          "localizedCountryName": "us",
+          "neighborhood": "Manhattan Beach",
+          "zip": "11235"
+        },
+        {
+          "__typename": "LocationSearch",
+          "city": "New York",
+          "country": "us",
+          "lat": 40.60974884033203,
+          "lon": -73.93134307861328,
+          "name": "Marine Park, Brooklyn, New York, NY, USA",
+          "state": "NY",
+          "timeZone": "US/Eastern",
+          "borough": "Brooklyn",
+          "localizedCountryName": "us",
+          "neighborhood": "Marine Park",
+          "zip": "11234"
+        }
+      ],
+      "recommendedEvents:{\"filter\":{\"doConsolidateEvents\":true,\"doPromotePaypalEvents\":false,\"indexAlias\":\"\\\"{\\\"filterOutWrongLanguage\\\": \\\"true\\\",\\\"modelVersion\\\": \\\"split_offline_online\\\"}\\\"\",\"lat\":40.67681884765625,\"lon\":-73.96485900878906,\"startDateRange\":\"2026-01-31T17:09:42-05:00[US/Eastern]\"},\"sort\":{\"sortField\":\"RELEVANCE\"}}": {
+        "__typename": "RecommendedEventsConnection",
+        "totalCount": 9,
+        "pageInfo": {
+          "__typename": "PageInfo",
+          "hasNextPage": true,
+          "endCursor": "MTI="
+        },
+        "edges": [
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312508553\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312505161\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312600970\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312758500\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312642458\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312871242\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"313120145\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312906252\"}}"
+          },
+          {
+            "__ref": "RecommendedEventsEdge:{\"node\":{\"id\":\"312256022\"}}"
+          }
+        ]
+      }
+    },
+    "PhotoInfo:531871187": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/7/9/d/3/highres_531871187.jpeg",
+      "id": "531871187"
+    },
+    "PhotoInfo:531837447": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/e/0/6/7/highres_531837447.jpeg",
+      "id": "531837447"
+    },
+    "Group:38300333": {
+      "__typename": "Group",
+      "id": "38300333",
+      "name": "Global Business and Technology",
+      "urlname": "global-business-and-technology",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:531837447"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 5,
+          "totalRatings": 2
+        }
+      }
+    },
+    "PhotoInfo:320841688": {
+      "__typename": "PhotoInfo",
+      "id": "320841688",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/4/b/8/highres_320841688.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:284928935": {
+      "__typename": "PhotoInfo",
+      "id": "284928935",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/f/2/7/highres_284928935.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:324815628": {
+      "__typename": "PhotoInfo",
+      "id": "324815628",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/b/2/c/highres_324815628.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:324734558": {
+      "__typename": "PhotoInfo",
+      "id": "324734558",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/8/d/e/highres_324734558.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:317071427": {
+      "__typename": "PhotoInfo",
+      "id": "317071427",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/a/c/3/highres_317071427.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:304746231": {
+      "__typename": "PhotoInfo",
+      "id": "304746231",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/8/5/7/highres_304746231.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:312946266": {
+      "__typename": "PhotoInfo",
+      "id": "312946266",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/4/b/a/highres_312946266.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "PhotoInfo:251090656": {
+      "__typename": "PhotoInfo",
+      "id": "251090656",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/5/e/0/highres_251090656.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:8475670": {
+      "__typename": "Member",
+      "id": "8475670",
+      "name": "Catherine Tibaaga",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:251090656"
+      }
+    },
+    "Member:403009447": {
+      "__typename": "Member",
+      "id": "403009447",
+      "name": "Shari ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320841688"
+      }
+    },
+    "Member:274075075": {
+      "__typename": "Member",
+      "id": "274075075",
+      "name": "Tasha Walker",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:284928935"
+      }
+    },
+    "Member:219251154": {
+      "__typename": "Member",
+      "id": "219251154",
+      "name": "Charles",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324815628"
+      }
+    },
+    "Member:478547878": {
+      "__typename": "Member",
+      "id": "478547878",
+      "name": "abuhaniharoun",
+      "memberPhoto": null
+    },
+    "Member:183522979": {
+      "__typename": "Member",
+      "id": "183522979",
+      "name": "Stefon\u267e\ufe0f",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324734558"
+      }
+    },
+    "Member:94938902": {
+      "__typename": "Member",
+      "id": "94938902",
+      "name": "Miles Lilly",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:317071427"
+      }
+    },
+    "Event:312508553": {
+      "__typename": "Event",
+      "id": "312508553",
+      "title": "Online Aperitivo Hour: Meet and Greet ",
+      "dateTime": "2026-02-08T17:00:00-05:00",
+      "description": "Join us for an evening where global perspectives meet relaxed conversation. Our Online Aperitivo brings together professionals, innovators, and curious minds from around the world to unwind, exchange ideas, and explore the trends shaping the future of business and technology.\n\nThis session is designed as an open, interactive discussion rather than a formal presentation. Bring your favorite drink, settle into a comfortable spot, and enjoy a dynamic mix of networking and thought-provoking dialogue.",
+      "aeoDescription": "Online informal meet-and-greet for professionals and innovators to network and discuss future business and tech trends, yielding new connections.",
+      "eventType": "ONLINE",
+      "eventUrl": "https://www.meetup.com/global-business-and-technology/events/312508553/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:531871187"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:38300333"
+      },
+      "socialProofInsights": {
+        "__typename": "SocialProofInsights",
+        "isTrendingEvent": false,
+        "totalInterestedUsers": 22,
+        "interestedUsersSample": [
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:320841688"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:284928935"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:324815628"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:324734558"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:317071427"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:304746231"
+            }
+          },
+          {
+            "__typename": "Member",
+            "memberPhoto": {
+              "__ref": "PhotoInfo:312946266"
+            }
+          }
+        ]
+      },
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 7,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:8475670"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:403009447"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:274075075"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:219251154"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478547878"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:183522979"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:94938902"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Online event",
+        "address": "",
+        "city": "",
+        "state": "",
+        "country": ""
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312508553\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312508553",
+        "id": "312508553"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-new-chapter-injected"
+      }
+    },
+    "PhotoInfo:531878139": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/9/4/f/b/highres_531878139.jpeg",
+      "id": "531878139"
+    },
+    "PhotoInfo:531878121": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/9/4/e/9/highres_531878121.jpeg",
+      "id": "531878121"
+    },
+    "Group:38303324": {
+      "__typename": "Group",
+      "id": "38303324",
+      "name": "Reboot Your Love Life After 50",
+      "urlname": "reboot-your-love-life-after-50",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:531878121"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.33,
+          "totalRatings": 3
+        }
+      }
+    },
+    "PhotoInfo:323976920": {
+      "__typename": "PhotoInfo",
+      "id": "323976920",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/0/3/8/highres_323976920.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:6770254": {
+      "__typename": "Member",
+      "id": "6770254",
+      "name": "Dessi S",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323976920"
+      }
+    },
+    "PhotoInfo:294144550": {
+      "__typename": "PhotoInfo",
+      "id": "294144550",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/f/e/6/highres_294144550.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:295378791": {
+      "__typename": "Member",
+      "id": "295378791",
+      "name": "Marina Davydov",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:294144550"
+      }
+    },
+    "PhotoInfo:324737143": {
+      "__typename": "PhotoInfo",
+      "id": "324737143",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/2/f/7/highres_324737143.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478159615": {
+      "__typename": "Member",
+      "id": "478159615",
+      "name": "Steven",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324737143"
+      }
+    },
+    "PhotoInfo:317452704": {
+      "__typename": "PhotoInfo",
+      "id": "317452704",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/d/e/0/highres_317452704.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:405640327": {
+      "__typename": "Member",
+      "id": "405640327",
+      "name": "Palav Fadia",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:317452704"
+      }
+    },
+    "PhotoInfo:315051841": {
+      "__typename": "PhotoInfo",
+      "id": "315051841",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/a/8/1/highres_315051841.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:390748430": {
+      "__typename": "Member",
+      "id": "390748430",
+      "name": "Angette D.",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:315051841"
+      }
+    },
+    "PhotoInfo:324695818": {
+      "__typename": "PhotoInfo",
+      "id": "324695818",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/b/e/a/highres_324695818.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:467129630": {
+      "__typename": "Member",
+      "id": "467129630",
+      "name": "Sammy",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324695818"
+      }
+    },
+    "PhotoInfo:324690964": {
+      "__typename": "PhotoInfo",
+      "id": "324690964",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/8/f/4/highres_324690964.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:477957273": {
+      "__typename": "Member",
+      "id": "477957273",
+      "name": "Denise A. Goodman",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324690964"
+      }
+    },
+    "Member:478073134": {
+      "__typename": "Member",
+      "id": "478073134",
+      "name": "jimmy372844",
+      "memberPhoto": null
+    },
+    "PhotoInfo:324744369": {
+      "__typename": "PhotoInfo",
+      "id": "324744369",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/f/3/1/highres_324744369.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478177525": {
+      "__typename": "Member",
+      "id": "478177525",
+      "name": "shantelblake07",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324744369"
+      }
+    },
+    "PhotoInfo:299960368": {
+      "__typename": "PhotoInfo",
+      "id": "299960368",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/f/9/0/highres_299960368.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:8838530": {
+      "__typename": "Member",
+      "id": "8838530",
+      "name": "Sharon FJ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:299960368"
+      }
+    },
+    "PhotoInfo:324785394": {
+      "__typename": "PhotoInfo",
+      "id": "324785394",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/5/1/2/highres_324785394.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478201902": {
+      "__typename": "Member",
+      "id": "478201902",
+      "name": "Holly McCabe",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324785394"
+      }
+    },
+    "PhotoInfo:190589812": {
+      "__typename": "PhotoInfo",
+      "id": "190589812",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/4/7/4/highres_190589812.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:141869952": {
+      "__typename": "Member",
+      "id": "141869952",
+      "name": "Tara",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:190589812"
+      }
+    },
+    "PhotoInfo:320083979": {
+      "__typename": "PhotoInfo",
+      "id": "320083979",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/b/c/b/highres_320083979.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:372996651": {
+      "__typename": "Member",
+      "id": "372996651",
+      "name": "Frank T",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320083979"
+      }
+    },
+    "PhotoInfo:324832708": {
+      "__typename": "PhotoInfo",
+      "id": "324832708",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/d/e/4/highres_324832708.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:418469615": {
+      "__typename": "Member",
+      "id": "418469615",
+      "name": "Margaret M Keighley",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324832708"
+      }
+    },
+    "PhotoInfo:301919621": {
+      "__typename": "PhotoInfo",
+      "id": "301919621",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/8/e/5/highres_301919621.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:243487803": {
+      "__typename": "Member",
+      "id": "243487803",
+      "name": "Joanne DiCesare",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:301919621"
+      }
+    },
+    "PhotoInfo:324492856": {
+      "__typename": "PhotoInfo",
+      "id": "324492856",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/2/3/8/highres_324492856.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:339295704": {
+      "__typename": "Member",
+      "id": "339295704",
+      "name": "Julie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324492856"
+      }
+    },
+    "PhotoInfo:323742181": {
+      "__typename": "PhotoInfo",
+      "id": "323742181",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/4/c/5/highres_323742181.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:192465351": {
+      "__typename": "Member",
+      "id": "192465351",
+      "name": "Cyndi",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323742181"
+      }
+    },
+    "PhotoInfo:317355048": {
+      "__typename": "PhotoInfo",
+      "id": "317355048",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/a/c/8/highres_317355048.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:183104129": {
+      "__typename": "Member",
+      "id": "183104129",
+      "name": "Michelle",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:317355048"
+      }
+    },
+    "PhotoInfo:324805600": {
+      "__typename": "PhotoInfo",
+      "id": "324805600",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/4/0/0/highres_324805600.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478328170": {
+      "__typename": "Member",
+      "id": "478328170",
+      "name": "Maria D",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324805600"
+      }
+    },
+    "PhotoInfo:324810069": {
+      "__typename": "PhotoInfo",
+      "id": "324810069",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/5/7/5/highres_324810069.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478360257": {
+      "__typename": "Member",
+      "id": "478360257",
+      "name": "dr.sean.ohagen",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324810069"
+      }
+    },
+    "Event:312505161": {
+      "__typename": "Event",
+      "id": "312505161",
+      "dateTime": "2026-02-03T18:00:00-05:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "reboot-your-love-life-after-50",
+        "__ref": "Group:38303324"
+      },
+      "title": "Reboot Your Love Life - Intro Call",
+      "description": "**Reboot Your Love Life After 50**\nIf you\u2019re single, over 50, and ready for a smarter, more intentional approach to dating\u2014this is for you.\n**Here's what we\u2019ll cover:**\n\\- Why dating feels so frustrating in today's world\n\\- The mindset shifts needed to infuse more fun and ease in our dating life\n\\- What actually matters now when it comes to finding \"the one\"\n\nIn this session, we'll explore the thought patterns that keep us stuck and overwhelmed. And learn how to move towards more **clarity, emotional awareness, and aligned action**\u2014so dating can feel lighter, more human, and even fun again.\n\n**Where:** Online - on Zoom\n**Who:** Singles 50+ who want real connection\n**Format:** Teaching, conversation, and live Q&A\n\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\\-\nLet\u2019s reboot together.\n**\u2014Dessi**\n\n\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\\*\nPlease note that all sessions are recorded. By participating in this community and attending live sessions, you acknowledge and agree that audio, video, and chat content may be recorded and used for educational, marketing, and promotional purposes, including on platforms such as YouTube and social media. If you prefer not to appear on camera, you are welcome to keep your camera off and participate via chat - your comfort always comes first.",
+      "aeoDescription": "Online intro session for singles 50+ rebooting your love life; gain clarity and practical steps for dating with more ease and connection.",
+      "eventType": "ONLINE",
+      "eventUrl": "https://www.meetup.com/reboot-your-love-life-after-50/events/312505161/",
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:531878139"
+      },
+      "feeSettings": null,
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 716,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:6770254"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:295378791"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478159615"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:405640327"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:390748430"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:467129630"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477957273"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478073134"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478177525"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:8838530"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478201902"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:141869952"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:372996651"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:418469615"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:243487803"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:339295704"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:192465351"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:183104129"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478328170"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478360257"
+              }
+            }
+          }
+        ]
+      },
+      "series": {
+        "__typename": "Series",
+        "description": "Every last Tuesday of the month until March 3, 2026",
+        "weeklyRecurrence": null,
+        "monthlyRecurrence": {
+          "__typename": "MonthlyRecurrenceInfo",
+          "monthlyDayOfWeek": "TUESDAY",
+          "monthlyWeekOfMonth": 5
+        },
+        "events({\"numberOfEvents\":5,\"startDate\":\"2026-01-31\"})": {
+          "__typename": "SeriesEventConnection",
+          "edges": [
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312505161"
+              }
+            }
+          ]
+        }
+      },
+      "venue": {
+        "__typename": "Venue",
+        "name": "Online event",
+        "address": "",
+        "city": "",
+        "state": "",
+        "country": ""
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312505161\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312505161",
+        "id": "312505161"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-online"
+      }
+    },
+    "PhotoInfo:532413768": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/8/3/e/8/highres_532413768.jpeg",
+      "id": "532413768"
+    },
+    "PhotoInfo:532413995": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/8/4/c/b/highres_532413995.jpeg",
+      "id": "532413995"
+    },
+    "Group:38311772": {
+      "__typename": "Group",
+      "id": "38311772",
+      "name": "Love Yourself Revolution: Guided Journaling for Women",
+      "urlname": "meetup-group-lyr",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:532413995"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.73,
+          "totalRatings": 48
+        }
+      }
+    },
+    "PhotoInfo:324678343": {
+      "__typename": "PhotoInfo",
+      "id": "324678343",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/7/a/7/highres_324678343.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478004601": {
+      "__typename": "Member",
+      "id": "478004601",
+      "name": "Dee",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324678343"
+      }
+    },
+    "PhotoInfo:324683175": {
+      "__typename": "PhotoInfo",
+      "id": "324683175",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/a/8/7/highres_324683175.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:371419094": {
+      "__typename": "Member",
+      "id": "371419094",
+      "name": "Kassie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324683175"
+      }
+    },
+    "PhotoInfo:324683361": {
+      "__typename": "PhotoInfo",
+      "id": "324683361",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/b/4/1/highres_324683361.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:369633065": {
+      "__typename": "Member",
+      "id": "369633065",
+      "name": "Savy",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324683361"
+      }
+    },
+    "PhotoInfo:323585101": {
+      "__typename": "PhotoInfo",
+      "id": "323585101",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/3/e/d/highres_323585101.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:474814576": {
+      "__typename": "Member",
+      "id": "474814576",
+      "name": "Maria S.",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323585101"
+      }
+    },
+    "PhotoInfo:324604995": {
+      "__typename": "PhotoInfo",
+      "id": "324604995",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/3/8/3/highres_324604995.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:265709639": {
+      "__typename": "Member",
+      "id": "265709639",
+      "name": "Sharah Stevens",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324604995"
+      }
+    },
+    "PhotoInfo:320048737": {
+      "__typename": "PhotoInfo",
+      "id": "320048737",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/2/2/1/highres_320048737.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:412974089": {
+      "__typename": "Member",
+      "id": "412974089",
+      "name": "Avery Taylor",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320048737"
+      }
+    },
+    "PhotoInfo:318550283": {
+      "__typename": "PhotoInfo",
+      "id": "318550283",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/8/2/b/highres_318550283.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:227231741": {
+      "__typename": "Member",
+      "id": "227231741",
+      "name": "Joyce Dowdell",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:318550283"
+      }
+    },
+    "PhotoInfo:324769978": {
+      "__typename": "PhotoInfo",
+      "id": "324769978",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/3/3/a/highres_324769978.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:193393224": {
+      "__typename": "Member",
+      "id": "193393224",
+      "name": "Ke'isha",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324769978"
+      }
+    },
+    "PhotoInfo:301716699": {
+      "__typename": "PhotoInfo",
+      "id": "301716699",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/f/5/b/highres_301716699.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:217900372": {
+      "__typename": "Member",
+      "id": "217900372",
+      "name": "Evonne Rodriguez",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:301716699"
+      }
+    },
+    "PhotoInfo:324466984": {
+      "__typename": "PhotoInfo",
+      "id": "324466984",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/7/8/8/highres_324466984.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:477357781": {
+      "__typename": "Member",
+      "id": "477357781",
+      "name": "Raveena",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324466984"
+      }
+    },
+    "PhotoInfo:311703771": {
+      "__typename": "PhotoInfo",
+      "id": "311703771",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/b/b/highres_311703771.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:220408501": {
+      "__typename": "Member",
+      "id": "220408501",
+      "name": "Luz Augustin",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:311703771"
+      }
+    },
+    "PhotoInfo:324695556": {
+      "__typename": "PhotoInfo",
+      "id": "324695556",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/a/e/4/highres_324695556.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:415459083": {
+      "__typename": "Member",
+      "id": "415459083",
+      "name": "Denise",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324695556"
+      }
+    },
+    "PhotoInfo:324330717": {
+      "__typename": "PhotoInfo",
+      "id": "324330717",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/7/f/d/highres_324330717.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:476962643": {
+      "__typename": "Member",
+      "id": "476962643",
+      "name": "Tesa Hawkins",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324330717"
+      }
+    },
+    "PhotoInfo:289749737": {
+      "__typename": "PhotoInfo",
+      "id": "289749737",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/6/0/9/highres_289749737.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:7661311": {
+      "__typename": "Member",
+      "id": "7661311",
+      "name": "Jackie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:289749737"
+      }
+    },
+    "PhotoInfo:324657919": {
+      "__typename": "PhotoInfo",
+      "id": "324657919",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/2/3/f/highres_324657919.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:183041062": {
+      "__typename": "Member",
+      "id": "183041062",
+      "name": "Dee",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324657919"
+      }
+    },
+    "PhotoInfo:324882580": {
+      "__typename": "PhotoInfo",
+      "id": "324882580",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/6/5/4/highres_324882580.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:468683055": {
+      "__typename": "Member",
+      "id": "468683055",
+      "name": "Nicole J",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324882580"
+      }
+    },
+    "PhotoInfo:316444740": {
+      "__typename": "PhotoInfo",
+      "id": "316444740",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/2/8/4/highres_316444740.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:271190044": {
+      "__typename": "Member",
+      "id": "271190044",
+      "name": "Brenda",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:316444740"
+      }
+    },
+    "PhotoInfo:320739921": {
+      "__typename": "PhotoInfo",
+      "id": "320739921",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/b/f/1/highres_320739921.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:100848522": {
+      "__typename": "Member",
+      "id": "100848522",
+      "name": "Safia",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320739921"
+      }
+    },
+    "PhotoInfo:5277076": {
+      "__typename": "PhotoInfo",
+      "id": "5277076",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/e/f/4/highres_5277076.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:3269204": {
+      "__typename": "Member",
+      "id": "3269204",
+      "name": "Allie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:5277076"
+      }
+    },
+    "PhotoInfo:307364010": {
+      "__typename": "PhotoInfo",
+      "id": "307364010",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/b/e/a/highres_307364010.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:341615328": {
+      "__typename": "Member",
+      "id": "341615328",
+      "name": "Melissa ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:307364010"
+      }
+    },
+    "Event:312600970": {
+      "__typename": "Event",
+      "id": "312600970",
+      "title": "\ud83c\udf3f Listening to Your Inner Voice: Rebuilding trust with yourself.",
+      "dateTime": "2026-02-14T10:00:00-05:00",
+      "description": "\u2b50 **Registration & Access Details**\nThis is a live, guided session hosted via Zoom.\n\n\u2022 The Zoom link will be shared inside the LYR Skool community only\n\u2022 All participants must join Skool to access the live session\n\u2022 Registration on Meetup reserves your spot, but Skool is required to attend\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n\ud83d\udc49 **Join the Skool community here: It's Free to Join.**\nhttps://www.skool.com/love-yourself-revolution\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014-\n\n**About the Session**\nThis guided session invites women to slow down and reconnect with their inner guidance. Together, we will explore the difference between intuition and the noise of fear, obligation, or external expectations. The emphasis of this session is on listening, not acting. Through gentle grounding, quiet reflection, and guided journaling, you\u2019ll have space to notice how your inner voice shows up and what it may be asking for now.\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n**How This Session Is Held**\nThis is a facilitator led, intentionally quiet experience. You will be guided step by step, with time to journal privately and reflect at your own pace.\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n\\*\\*What to expect \\*\\*\n\u2022 Gentle grounding to settle the body and mind\n\u2022 A short guided visualization\n\u2022 Journaling prompts focused on inner signals and patterns\n\u2022 Silent listening practice\n\u2022 A calm closing to support integration\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n**We will journal together**\nJournaling is a core part of this session. Prompts are designed to help you explore how your inner voice communicates, when you may have stopped trusting it, and what feels ready to be acknowledged. There is no sharing required.\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n**What to Expect**\n**This session is for women who**\n\u2022 Feel disconnected from their intuition\n\u2022 Want to rebuild trust with themselves\n\u2022 Feel overwhelmed by external opinions or expectations\n\u2022 Value quiet reflection and journaling\n\n\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\n\n**What to Bring**\nPlease bring a journal and a pen.\nYou are welcome exactly as you are.\n.\n.\n.\n.",
+      "aeoDescription": "Guided, quiet session for women to reconnect with their inner voice and rebuild trust in their intuition through journaling.",
+      "eventType": "ONLINE",
+      "eventUrl": "https://www.meetup.com/meetup-group-lyr/events/312600970/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:532413768"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:38311772"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 254,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:478004601"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:371419094"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:369633065"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:474814576"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:265709639"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:412974089"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:227231741"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:193393224"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:217900372"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477357781"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:220408501"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:415459083"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:476962643"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:7661311"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:183041062"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:468683055"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:271190044"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:100848522"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:3269204"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:341615328"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Online event",
+        "address": "",
+        "city": "",
+        "state": "",
+        "country": ""
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312600970\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312600970",
+        "id": "312600970"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-online"
+      }
+    },
+    "PhotoInfo:532133341": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/d/0/5/d/highres_532133341.jpeg",
+      "id": "532133341"
+    },
+    "PhotoInfo:505573508": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/3/4/c/4/highres_505573508.jpeg",
+      "id": "505573508"
+    },
+    "Group:36463099": {
+      "__typename": "Group",
+      "id": "36463099",
+      "name": "Neverwinter Free Hiking and Cycling",
+      "urlname": "neverwinter-free-hiking-and-cycling",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:505573508"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.73,
+          "totalRatings": 1926
+        }
+      }
+    },
+    "PhotoInfo:324753590": {
+      "__typename": "PhotoInfo",
+      "id": "324753590",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/3/3/6/highres_324753590.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:286948809": {
+      "__typename": "Member",
+      "id": "286948809",
+      "name": "Wishmaster",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324753590"
+      }
+    },
+    "PhotoInfo:319209732": {
+      "__typename": "PhotoInfo",
+      "id": "319209732",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/6/0/4/highres_319209732.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:398970600": {
+      "__typename": "Member",
+      "id": "398970600",
+      "name": "Neverwinter",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:319209732"
+      }
+    },
+    "PhotoInfo:324389708": {
+      "__typename": "PhotoInfo",
+      "id": "324389708",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/4/0/c/highres_324389708.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:54203372": {
+      "__typename": "Member",
+      "id": "54203372",
+      "name": "Jessica",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324389708"
+      }
+    },
+    "Member:476366010": {
+      "__typename": "Member",
+      "id": "476366010",
+      "name": "Ali",
+      "memberPhoto": null
+    },
+    "PhotoInfo:323794233": {
+      "__typename": "PhotoInfo",
+      "id": "323794233",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/5/b/9/highres_323794233.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:336189300": {
+      "__typename": "Member",
+      "id": "336189300",
+      "name": "Mike",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323794233"
+      }
+    },
+    "PhotoInfo:324180328": {
+      "__typename": "PhotoInfo",
+      "id": "324180328",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/4/8/highres_324180328.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:474312141": {
+      "__typename": "Member",
+      "id": "474312141",
+      "name": "yokekeowchin",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324180328"
+      }
+    },
+    "PhotoInfo:198999772": {
+      "__typename": "PhotoInfo",
+      "id": "198999772",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/b/5/c/highres_198999772.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:34442612": {
+      "__typename": "Member",
+      "id": "34442612",
+      "name": "Luka",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:198999772"
+      }
+    },
+    "PhotoInfo:323106264": {
+      "__typename": "PhotoInfo",
+      "id": "323106264",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/8/7/8/highres_323106264.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:212903586": {
+      "__typename": "Member",
+      "id": "212903586",
+      "name": "V.",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323106264"
+      }
+    },
+    "PhotoInfo:316750118": {
+      "__typename": "PhotoInfo",
+      "id": "316750118",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/7/8/6/highres_316750118.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:402106466": {
+      "__typename": "Member",
+      "id": "402106466",
+      "name": "Zora",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:316750118"
+      }
+    },
+    "PhotoInfo:306321724": {
+      "__typename": "PhotoInfo",
+      "id": "306321724",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/4/d/c/highres_306321724.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:3738497": {
+      "__typename": "Member",
+      "id": "3738497",
+      "name": "Ron ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:306321724"
+      }
+    },
+    "PhotoInfo:323337737": {
+      "__typename": "PhotoInfo",
+      "id": "323337737",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/1/8/9/highres_323337737.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:473122182": {
+      "__typename": "Member",
+      "id": "473122182",
+      "name": " Paula",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323337737"
+      }
+    },
+    "PhotoInfo:324688040": {
+      "__typename": "PhotoInfo",
+      "id": "324688040",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/d/8/8/highres_324688040.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:473314897": {
+      "__typename": "Member",
+      "id": "473314897",
+      "name": "Permster",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324688040"
+      }
+    },
+    "PhotoInfo:310398612": {
+      "__typename": "PhotoInfo",
+      "id": "310398612",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/8/b/4/highres_310398612.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:360715829": {
+      "__typename": "Member",
+      "id": "360715829",
+      "name": "Adam Kaufman",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:310398612"
+      }
+    },
+    "PhotoInfo:319000559": {
+      "__typename": "PhotoInfo",
+      "id": "319000559",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/e/6/f/highres_319000559.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:6036": {
+      "__typename": "Member",
+      "id": "6036",
+      "name": "Allison G",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:319000559"
+      }
+    },
+    "PhotoInfo:324952948": {
+      "__typename": "PhotoInfo",
+      "id": "324952948",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/e/d/4/highres_324952948.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:267430570": {
+      "__typename": "Member",
+      "id": "267430570",
+      "name": "Amy",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324952948"
+      }
+    },
+    "PhotoInfo:297226077": {
+      "__typename": "PhotoInfo",
+      "id": "297226077",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/3/f/d/highres_297226077.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:11427412": {
+      "__typename": "Member",
+      "id": "11427412",
+      "name": "Mark",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:297226077"
+      }
+    },
+    "PhotoInfo:311135725": {
+      "__typename": "PhotoInfo",
+      "id": "311135725",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/b/8/d/highres_311135725.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:193478639": {
+      "__typename": "Member",
+      "id": "193478639",
+      "name": "MariaT",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:311135725"
+      }
+    },
+    "PhotoInfo:221573332": {
+      "__typename": "PhotoInfo",
+      "id": "221573332",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/0/5/4/highres_221573332.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:25607972": {
+      "__typename": "Member",
+      "id": "25607972",
+      "name": "Deirdre",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:221573332"
+      }
+    },
+    "PhotoInfo:323424926": {
+      "__typename": "PhotoInfo",
+      "id": "323424926",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/1/5/e/highres_323424926.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:468014154": {
+      "__typename": "Member",
+      "id": "468014154",
+      "name": "Gregorio Almeida",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323424926"
+      }
+    },
+    "PhotoInfo:4214200": {
+      "__typename": "PhotoInfo",
+      "id": "4214200",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/7/7/8/highres_4214200.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:7564838": {
+      "__typename": "Member",
+      "id": "7564838",
+      "name": "Shana",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:4214200"
+      }
+    },
+    "Event:312758500": {
+      "__typename": "Event",
+      "id": "312758500",
+      "title": "Walk & Talk - Arabian Nights (Brooklyn)",
+      "dateTime": "2026-02-07T14:00:00-05:00",
+      "description": "This is a free event! Only rain can stop us!\n\nAre you ready for another gorgeous walk boots?\nThis time under the Neverwinter cultural event series we will visit Prospect park.\nIn the middle of the Winter and walk through its beautiful lawns, creeks, lake and pond.\nIt will be another nonchalant stroll where we will meet new people, exchange ideas and learn new languages.\n\nFebruary 7 (Saturday)\nWe will start at 2:00 PM\n\nStart/End point: Soldiers and Sailors Memorial Arch (Inside Grand Army Plaza), Brooklyn\n[https://maps.app.goo.gl/BjC1tKTGoKpazcYw5](https://maps.app.goo.gl/BjC1tKTGoKpazcYw5)\n\nMap: [)\nP.S.: That's not the best route and we will optimize it\n\nOnly photostops. NO foodstops.\nTotal distance 5 miles. (about 100 min walk)\n\nOur FB group: [https://www.facebook.com/groups/567293385132145](https://www.facebook.com/groups/567293385132145)\nOur meetup group: [https://meetu.ps/c/4ZjSr/LdM6k/d](https://meetu.ps/c/4ZjSr/LdM6k/d)\nWhatsapp group: [https://chat.whatsapp.com/GVXEFcR4PMjH70KLNlbpRV](https://chat.whatsapp.com/GVXEFcR4PMjH70KLNlbpRV)\n**Telegram: [https://t.me/neverwinterfree](https://t.me/neverwinterfree)**\n\nPlease apply via:\nIG: neverwinter_free_parties\nLINE: cozmo31\nWechat: cozmo31\n[www.meetup.com/messages/?new_convo=true&member_id=28694880](http://www.meetup.com/messages/?new_convo=true&member_id=28694880)\n\nDisclaimer of liability:\nBy participating in this activity you agree that organizers are not to be held responsible for any damages, injuries, or losses that may occur before, during or after the event.",
+      "aeoDescription": "Free outdoor walk-and-talk for people seeking to meet new people and practice languages.",
+      "eventType": "PHYSICAL",
+      "eventUrl": "https://www.meetup.com/neverwinter-free-hiking-and-cycling/events/312758500/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:532133341"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:36463099"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 86,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:286948809"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:398970600"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:54203372"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:476366010"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:336189300"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:474312141"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:34442612"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:212903586"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:402106466"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:3738497"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:473122182"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:473314897"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:360715829"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:6036"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:267430570"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:11427412"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:193478639"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:25607972"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:468014154"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:7564838"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Soldiers and Sailors Memorial Arch",
+        "address": "Soldiers and Sailors Memorial Arch 20 Grand Army Plaza",
+        "city": "Brooklyn",
+        "state": "NY",
+        "country": "US"
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312758500\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312758500",
+        "id": "312758500"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-offline"
+      }
+    },
+    "PhotoInfo:531915112": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/3/b/0/8/highres_531915112.jpeg",
+      "id": "531915112"
+    },
+    "PhotoInfo:531915084": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/3/a/e/c/highres_531915084.jpeg",
+      "id": "531915084"
+    },
+    "Group:38298108": {
+      "__typename": "Group",
+      "id": "38298108",
+      "name": "Wealth Health and Leisure Meetup Group",
+      "urlname": "wealth-health-and-leisure-meetup-group",
+      "timezone": "America/Toronto",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:531915084"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.15,
+          "totalRatings": 26
+        }
+      }
+    },
+    "PhotoInfo:10020793": {
+      "__typename": "PhotoInfo",
+      "id": "10020793",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/1/9/highres_10020793.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:12364682": {
+      "__typename": "Member",
+      "id": "12364682",
+      "name": "Patrick Bailey",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:10020793"
+      }
+    },
+    "PhotoInfo:276186091": {
+      "__typename": "PhotoInfo",
+      "id": "276186091",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/7/c/b/highres_276186091.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:251829985": {
+      "__typename": "Member",
+      "id": "251829985",
+      "name": "Franck Kapend",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:276186091"
+      }
+    },
+    "PhotoInfo:324513653": {
+      "__typename": "PhotoInfo",
+      "id": "324513653",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/3/7/5/highres_324513653.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:476775413": {
+      "__typename": "Member",
+      "id": "476775413",
+      "name": "Rhema",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324513653"
+      }
+    },
+    "Member:455242943": {
+      "__typename": "Member",
+      "id": "455242943",
+      "name": "freudiger4bonjour",
+      "memberPhoto": null
+    },
+    "PhotoInfo:17215071": {
+      "__typename": "PhotoInfo",
+      "id": "17215071",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/7/1/f/highres_17215071.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:15495191": {
+      "__typename": "Member",
+      "id": "15495191",
+      "name": "Sebrina Robinson",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:17215071"
+      }
+    },
+    "PhotoInfo:315922477": {
+      "__typename": "PhotoInfo",
+      "id": "315922477",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/7/c/d/highres_315922477.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:200750169": {
+      "__typename": "Member",
+      "id": "200750169",
+      "name": "Julie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:315922477"
+      }
+    },
+    "PhotoInfo:324916537": {
+      "__typename": "PhotoInfo",
+      "id": "324916537",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/0/9/9/highres_324916537.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:404300174": {
+      "__typename": "Member",
+      "id": "404300174",
+      "name": "Marissa Kyte",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324916537"
+      }
+    },
+    "PhotoInfo:11095865": {
+      "__typename": "PhotoInfo",
+      "id": "11095865",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/a/3/9/highres_11095865.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:9934324": {
+      "__typename": "Member",
+      "id": "9934324",
+      "name": "Bobby Mathew",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:11095865"
+      }
+    },
+    "PhotoInfo:318591043": {
+      "__typename": "PhotoInfo",
+      "id": "318591043",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/7/6/3/highres_318591043.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:411820956": {
+      "__typename": "Member",
+      "id": "411820956",
+      "name": "Anna",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:318591043"
+      }
+    },
+    "PhotoInfo:323670433": {
+      "__typename": "PhotoInfo",
+      "id": "323670433",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/6/e/1/highres_323670433.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:474456101": {
+      "__typename": "Member",
+      "id": "474456101",
+      "name": "Aravinda",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323670433"
+      }
+    },
+    "PhotoInfo:312559258": {
+      "__typename": "PhotoInfo",
+      "id": "312559258",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/b/3/a/highres_312559258.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:370234097": {
+      "__typename": "Member",
+      "id": "370234097",
+      "name": "Sofia (she/her)",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:312559258"
+      }
+    },
+    "PhotoInfo:319096012": {
+      "__typename": "PhotoInfo",
+      "id": "319096012",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/e/8/c/highres_319096012.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:415921532": {
+      "__typename": "Member",
+      "id": "415921532",
+      "name": "Amy ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:319096012"
+      }
+    },
+    "PhotoInfo:322249612": {
+      "__typename": "PhotoInfo",
+      "id": "322249612",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/1/c/c/highres_322249612.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:370124690": {
+      "__typename": "Member",
+      "id": "370124690",
+      "name": "Honore Dimaria",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322249612"
+      }
+    },
+    "PhotoInfo:261642032": {
+      "__typename": "PhotoInfo",
+      "id": "261642032",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/4/3/0/highres_261642032.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:216225710": {
+      "__typename": "Member",
+      "id": "216225710",
+      "name": "Limei Hou",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:261642032"
+      }
+    },
+    "PhotoInfo:266259460": {
+      "__typename": "PhotoInfo",
+      "id": "266259460",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/a/2/4/highres_266259460.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:183486036": {
+      "__typename": "Member",
+      "id": "183486036",
+      "name": "Paula",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:266259460"
+      }
+    },
+    "PhotoInfo:324525755": {
+      "__typename": "PhotoInfo",
+      "id": "324525755",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/2/b/b/highres_324525755.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:55351282": {
+      "__typename": "Member",
+      "id": "55351282",
+      "name": "Kaylee",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324525755"
+      }
+    },
+    "Member:477217799": {
+      "__typename": "Member",
+      "id": "477217799",
+      "name": "patoutou199",
+      "memberPhoto": null
+    },
+    "PhotoInfo:324173940": {
+      "__typename": "PhotoInfo",
+      "id": "324173940",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/2/b/4/highres_324173940.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:476158494": {
+      "__typename": "Member",
+      "id": "476158494",
+      "name": "jeffslayton86",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324173940"
+      }
+    },
+    "PhotoInfo:324450797": {
+      "__typename": "PhotoInfo",
+      "id": "324450797",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/8/4/d/highres_324450797.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:477055454": {
+      "__typename": "Member",
+      "id": "477055454",
+      "name": "Mila",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324450797"
+      }
+    },
+    "PhotoInfo:324641496": {
+      "__typename": "PhotoInfo",
+      "id": "324641496",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/2/1/8/highres_324641496.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:190554737": {
+      "__typename": "Member",
+      "id": "190554737",
+      "name": "Susan K",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324641496"
+      }
+    },
+    "Event:312642458": {
+      "__typename": "Event",
+      "id": "312642458",
+      "dateTime": "2026-02-18T19:00:00-05:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "wealth-health-and-leisure-meetup-group",
+        "__ref": "Group:38298108"
+      },
+      "title": "Learn to Earn: Free Tax & Financial Literacy Webinar",
+      "description": "\ud83c\udf93 GET SMARTER ABOUT YOUR MONEY. GET REWARDED FOR SHOWING UP.\nWelcome to Learn to Earn\u2014Bailey's Tax Services' FREE monthly webinar where small business owners learn real tax strategies and earn actual rewards just for attending.\nBecause who says learning can't pay off... literally?\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udca1 WHAT YOU'LL LEARN:\nThis isn't boring tax talk. Every session covers actionable strategies you can implement immediately:\n\n\\- Tax deductions most small business owners miss\n\\- Quarterly planning to avoid surprises\n\\- Entity structure decisions that save thousands\n\\- Financial literacy that actually compounds\n\\- Record\\-keeping systems that work\n\\- Plus: LIVE Q&A with real answers to YOUR questions\n\nNo fluff. No generic advice. Just practical guidance from a tax professional who works with businesses like yours every day.\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcb0 WHAT YOU'LL EARN:\nHere's where it gets interesting:\n\u2705 Earn 1 Bailey's Loyalty Point just for attending (worth $5 in service credits)\n\u2705 Earn 1 additional point for EACH friend/colleague you bring who attends\n\u2705 Stack points toward tax prep, bookkeeping, consultations\u2014any Bailey's service\n\u2705 At 20 points ($100), you get an automatic payout\n\nExample: Attend the session + bring 2 colleagues = 3 points = $15 in credits\nYou literally get paid to get smarter. No catch. No strings.\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcc5 EVENT DETAILS:\nWHEN: Third Wednesday of Every Month\nTIME: 7:00 PM - 8:00 PM EST\nFORMAT: Live Zoom meeting\nCOST: FREE (+ you earn rewards)\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83c\udfaf WHO SHOULD ATTEND:\n\\- Small business owners\n\\- Entrepreneurs and founders\n\\- Freelancers and consultants\n\\- Side\\-hustlers building something\n\\- Anyone tired of overpaying on taxes\n\\- Anyone confused about deductions\n\\- Anyone who wants practical financial knowledge\n\nIf you pay taxes and want to pay less (legally), this is for you.\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcdd HOW TO JOIN:\n\nSTEP 1: Click \"Attend\" on this Meetup event\nSTEP 2: Complete your registration here: https://us02web.zoom.us/meeting/register/cCyr7Yo5RbCp5BvoDB21oQ\nSTEP 3: You'll receive your Zoom link + reminder emails\nWhy the two-step? So we can track your rewards properly and ensure you get credited for any referrals!\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83e\udd1d BRING YOUR NETWORK:\nKnow someone who'd benefit? Bring them along!\n\nWhen you refer someone:\n\n\\- They earn points for attending\n\\- YOU earn points for referring them\n\\- Everybody wins\n\nJust make sure they mention your name when registering.\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\n\ud83d\udcac WHAT PAST ATTENDEES SAY:\n\n\"I showed up expecting a sales pitch. Instead, I learned how to save $3,000 on my taxes AND earned points toward next year's filing. Bailey's doesn't mess around.\" \u2014 Sarah K.\n\n\"Brought three colleagues to the session. We all learned something valuable. I earned 4 points, and two of them ended up becoming Bailey's clients. Win-win-win.\" \u2014 Marcus T.\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\u2753 FAQ:\n\nQ: Is this really free?\nA: Yes. No credit card. No purchase required. No catch.\n\nQ: Will you try to sell me something?\nA: We'll mention our services, but there's no hard sell. The focus is on education and value.\n\nQ: What if I can't make it live?\nA: You need to attend live to earn points and participate in Q&A. No recording for points (but you're welcome at next month's session!).\n\nQ: How do I get my Zoom link?\nA: After you complete the registration questions at the link above, you'll get an email with the Zoom link and links to put it in your calendar.\n\nQ: Can I really bring people and earn more points?\nA: Absolutely! Just make sure they mention your name when registering.\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83c\udf81 BONUS PERKS:\n\nAll participants in our Loyalty Rewards Program are automatically entered to win a FREE tax-haven vacation trip each year.\nYour loyalty deserves more than a \"thank you\"\u2014it deserves rewards.\n\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83d\udcf2 QUESTIONS?\nComment below or message the organizer directly.\n\nSee you on the 3rd Wednesday each month!\n\nBailey's Tax Services\nMaking taxes less taxing. \ud83d\udcbc\n\n#TaxTips #SmallBusiness #FinancialLiteracy #Entrepreneurship #FreeSeminar #BusinessEducation",
+      "aeoDescription": null,
+      "eventType": "ONLINE",
+      "eventUrl": "https://www.meetup.com/wealth-health-and-leisure-meetup-group/events/312642458/",
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:531915112"
+      },
+      "feeSettings": null,
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 162,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:12364682"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:251829985"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:476775413"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:455242943"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:15495191"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:200750169"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:404300174"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:9934324"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:411820956"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:474456101"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:370234097"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:415921532"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:370124690"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:216225710"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:183486036"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:55351282"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477217799"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:476158494"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477055454"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:190554737"
+              }
+            }
+          }
+        ]
+      },
+      "series": {
+        "__typename": "Series",
+        "description": "Every 2nd Wednesday of the month until June 17, 2026",
+        "weeklyRecurrence": null,
+        "monthlyRecurrence": {
+          "__typename": "MonthlyRecurrenceInfo",
+          "monthlyDayOfWeek": "WEDNESDAY",
+          "monthlyWeekOfMonth": 2
+        },
+        "events({\"numberOfEvents\":5,\"startDate\":\"2026-01-31\"})": {
+          "__typename": "SeriesEventConnection",
+          "edges": [
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312642458"
+              }
+            },
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312642467"
+              }
+            },
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312642493"
+              }
+            },
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312798311"
+              }
+            },
+            {
+              "__typename": "EventEdge",
+              "node": {
+                "__ref": "Event:312798312"
+              }
+            }
+          ]
+        }
+      },
+      "venue": {
+        "__typename": "Venue",
+        "name": "Online event",
+        "address": "",
+        "city": "",
+        "state": "",
+        "country": ""
+      }
+    },
+    "Event:312642467": {
+      "__typename": "Event",
+      "id": "312642467",
+      "dateTime": "2026-03-18T19:00:00-04:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "wealth-health-and-leisure-meetup-group"
+      }
+    },
+    "Event:312642493": {
+      "__typename": "Event",
+      "id": "312642493",
+      "dateTime": "2026-04-15T19:00:00-04:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "wealth-health-and-leisure-meetup-group"
+      }
+    },
+    "Event:312798311": {
+      "__typename": "Event",
+      "id": "312798311",
+      "dateTime": "2026-05-13T19:00:00-04:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "wealth-health-and-leisure-meetup-group"
+      }
+    },
+    "Event:312798312": {
+      "__typename": "Event",
+      "id": "312798312",
+      "dateTime": "2026-06-10T19:00:00-04:00",
+      "isAttending": false,
+      "group": {
+        "__typename": "Group",
+        "urlname": "wealth-health-and-leisure-meetup-group"
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312642458\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312642458",
+        "id": "312642458"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-online"
+      }
+    },
+    "PhotoInfo:528763511": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/a/9/f/7/highres_528763511.jpeg",
+      "id": "528763511"
+    },
+    "PhotoInfo:434806978": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/b/7/8/2/highres_434806978.jpeg",
+      "id": "434806978"
+    },
+    "Group:18350214": {
+      "__typename": "Group",
+      "id": "18350214",
+      "name": "Rust NYC",
+      "urlname": "rust-nyc",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:434806978"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.81,
+          "totalRatings": 664
+        }
+      }
+    },
+    "PhotoInfo:321679834": {
+      "__typename": "PhotoInfo",
+      "id": "321679834",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/d/7/a/highres_321679834.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:392004860": {
+      "__typename": "Member",
+      "id": "392004860",
+      "name": "Ross Townsend",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:321679834"
+      }
+    },
+    "PhotoInfo:312588153": {
+      "__typename": "PhotoInfo",
+      "id": "312588153",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/c/1/9/highres_312588153.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:371407590": {
+      "__typename": "Member",
+      "id": "371407590",
+      "name": "Sudhanshu Pandey",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:312588153"
+      }
+    },
+    "PhotoInfo:30916022": {
+      "__typename": "PhotoInfo",
+      "id": "30916022",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/e/9/6/highres_30916022.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:30794562": {
+      "__typename": "Member",
+      "id": "30794562",
+      "name": "Robert Balicki",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:30916022"
+      }
+    },
+    "PhotoInfo:322374266": {
+      "__typename": "PhotoInfo",
+      "id": "322374266",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/3/f/a/highres_322374266.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:287702507": {
+      "__typename": "Member",
+      "id": "287702507",
+      "name": "Cole Lawrence",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322374266"
+      }
+    },
+    "PhotoInfo:323786970": {
+      "__typename": "PhotoInfo",
+      "id": "323786970",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/9/5/a/highres_323786970.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:475383365": {
+      "__typename": "Member",
+      "id": "475383365",
+      "name": "Justin C",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323786970"
+      }
+    },
+    "PhotoInfo:314648404": {
+      "__typename": "PhotoInfo",
+      "id": "314648404",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/0/d/4/highres_314648404.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:72155072": {
+      "__typename": "Member",
+      "id": "72155072",
+      "name": "Evan Schwartz",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:314648404"
+      }
+    },
+    "PhotoInfo:324105978": {
+      "__typename": "PhotoInfo",
+      "id": "324105978",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/3/9/a/highres_324105978.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:155013422": {
+      "__typename": "Member",
+      "id": "155013422",
+      "name": "Mike Cluck",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324105978"
+      }
+    },
+    "PhotoInfo:322498059": {
+      "__typename": "PhotoInfo",
+      "id": "322498059",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/2/c/b/highres_322498059.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:409679863": {
+      "__typename": "Member",
+      "id": "409679863",
+      "name": "Julian",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322498059"
+      }
+    },
+    "PhotoInfo:322685710": {
+      "__typename": "PhotoInfo",
+      "id": "322685710",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/6/4/e/highres_322685710.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:470995482": {
+      "__typename": "Member",
+      "id": "470995482",
+      "name": "loim",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322685710"
+      }
+    },
+    "PhotoInfo:299998773": {
+      "__typename": "PhotoInfo",
+      "id": "299998773",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/5/9/5/highres_299998773.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:312230416": {
+      "__typename": "Member",
+      "id": "312230416",
+      "name": "Loic Diridollou",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:299998773"
+      }
+    },
+    "PhotoInfo:10702782": {
+      "__typename": "PhotoInfo",
+      "id": "10702782",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/8/f/e/highres_10702782.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:8420667": {
+      "__typename": "Member",
+      "id": "8420667",
+      "name": "Morrison Chang",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:10702782"
+      }
+    },
+    "Member:407858005": {
+      "__typename": "Member",
+      "id": "407858005",
+      "name": "Shri Sakrikar",
+      "memberPhoto": null
+    },
+    "PhotoInfo:322942190": {
+      "__typename": "PhotoInfo",
+      "id": "322942190",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/6/a/e/highres_322942190.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:429405262": {
+      "__typename": "Member",
+      "id": "429405262",
+      "name": "Walter",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322942190"
+      }
+    },
+    "PhotoInfo:31614952": {
+      "__typename": "PhotoInfo",
+      "id": "31614952",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/6/a/8/highres_31614952.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:6362054": {
+      "__typename": "Member",
+      "id": "6362054",
+      "name": "Michael Selender",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:31614952"
+      }
+    },
+    "PhotoInfo:249663920": {
+      "__typename": "PhotoInfo",
+      "id": "249663920",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/f/5/0/highres_249663920.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:192662793": {
+      "__typename": "Member",
+      "id": "192662793",
+      "name": "Matti \u00c5strand",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:249663920"
+      }
+    },
+    "PhotoInfo:318411082": {
+      "__typename": "PhotoInfo",
+      "id": "318411082",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/7/8/a/highres_318411082.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:187636913": {
+      "__typename": "Member",
+      "id": "187636913",
+      "name": "Neil Herriford",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:318411082"
+      }
+    },
+    "PhotoInfo:321721587": {
+      "__typename": "PhotoInfo",
+      "id": "321721587",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/3/3/highres_321721587.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:364864665": {
+      "__typename": "Member",
+      "id": "364864665",
+      "name": "Vladimir",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:321721587"
+      }
+    },
+    "PhotoInfo:314624178": {
+      "__typename": "PhotoInfo",
+      "id": "314624178",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/c/9/2/highres_314624178.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:38467742": {
+      "__typename": "Member",
+      "id": "38467742",
+      "name": "Bob McNaughton",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:314624178"
+      }
+    },
+    "PhotoInfo:320293924": {
+      "__typename": "PhotoInfo",
+      "id": "320293924",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/6/6/4/highres_320293924.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:395510131": {
+      "__typename": "Member",
+      "id": "395510131",
+      "name": "Elizabeth McNaughton",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320293924"
+      }
+    },
+    "PhotoInfo:313345247": {
+      "__typename": "PhotoInfo",
+      "id": "313345247",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/2/9/f/highres_313345247.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:38618022": {
+      "__typename": "Member",
+      "id": "38618022",
+      "name": "James",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:313345247"
+      }
+    },
+    "Event:312871242": {
+      "__typename": "Event",
+      "id": "312871242",
+      "title": "Rust NYC: Bevy Rendering & Build Times at Amazon",
+      "dateTime": "2026-02-03T18:30:00-05:00",
+      "description": "Join us on **Tuesday, February 3rd** at **Materialize**. Doors open at 6:30 p.m. to give attendees plenty of time to grab pizza and socialize, and the talk begin at 7:15 p.m. Following the success of the UnConf we've absorbed all of your feedback and have two awesome speakers!\n\n**Charles Giguere** is a **Bevy SME** at Foresight Spatial Labs. Modularity in Practice: How Bevy Powers Foresight Spatial Labs\u2019 renderer\n\nForesight Spatial Labs builds real\u2011time spatial visualization tools for large, spatial datasets. We chose Bevy for its modern ECS architecture and highly modular renderer, which lets us iterate quickly, share improvements upstream, and maintain production\u2011grade customizations without forking the entire engine. This talk shares concrete engineering experiences: upstreaming order\u2011independent transparency (OIT) and picking improvements after starting with private implementations; developing GPU\u2011accelerated picking that is planned for upstream contribution; and selectively replacing Bevy subsystems while keeping the rest of the engine intact. This project was actually upstreamed into Bevy itself.\n\nAttendees will see how Bevy\u2019s modularity reduced time\u2011to\u2011prototype, improved code quality through community review, and enabled a high-quality production renderer that meets domain\u2011specific constraints.\n\nKey takeaways\n\\* A concrete pattern for using Bevy modularity: prototype locally, upstream what generalizes, and maintain small, well\u2011documented custom extensions.\n\\* Case studies: OIT and CPU/GPU picking \u2014 from private feature to community contribution.\n\\* How selective replacement (custom transforms, culling, render passes) interoperates with Bevy\u2019s renderer and ECS.\n\\* How contributing back benefits both product robustness and the wider open\u2011source ecosystem.\n\n**Chris Dryden works on Developer Productivity at Amazon.**\n\n**How Amazon was able to reduce the average build time for all developers by 40% with the help of Rust.**\n\nAre you interested in leveraging Rust to improve your existing services and build processes? This presentation is about the journey that Amazon took to rebuild large parts of Amazon's build system in Rust and the lessons it learned along the way. Amazon was able to reduce the average build times for all developers by 40% in 2025. The presentation will go in depth into the tools used and what are the exact steps that you can take to identify what are the best candidates for rewriting and how to safely migrate critical systems relied on by a multi-trillion dollar company. This presentation will go in depth on how to leverage profiling tools such as Samply, and strategies on how to incrementally move components to Rust with monitoring and fallback mechanisms to make the migration process seamless. The presentation will also go through the lessons learned about what were the benefits and drawbacks of the large scale migrations and how you can set yourself up for success for your next migration at your own company.\n\nThis talk will:\n\n* Go through the background of the build system used by Amazon, and some background about how Rust is being adopted across the company in critical areas\n* Go through how we set up a telemetry and monitoring system before starting to make sure we know what we're doing doesn't impact existing workflows and measure how successful we can be\n* How to setup samply with your existing code and services to get a sense of where the best areas are to tackle and do migrations first\n* Leveraging AI to help with Fuzzing and setting up integration tests to make sure when doing the rewrite you don't have any regressiong\n* Lessons learned about where the best ROI comes from when doing these migrations and heuristics on where to focus your effort for the best return on time\n\n**[Lawrence Harvey](https://www.lawrenceharvey.com/)** is Rust NYC's official recruitment partner, with Ross providing support as a co-organizer and financial support.\n\nThe space is generously sponsored by our partner **Materialize.**",
+      "aeoDescription": "Rust NYC talks for Rust developers on Bevy-based rendering and Amazon's Rust-driven build migrations, with a concrete outcome: 40% reduction in build times.",
+      "eventType": "PHYSICAL",
+      "eventUrl": "https://www.meetup.com/rust-nyc/events/312871242/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 120,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:528763511"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:18350214"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 120,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:392004860"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:371407590"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:30794562"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:287702507"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:475383365"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:72155072"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:155013422"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:409679863"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:470995482"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:312230416"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:8420667"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:407858005"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:429405262"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:6362054"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:192662793"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:187636913"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:364864665"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:38467742"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:395510131"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:38618022"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Materialize HQ",
+        "address": "436 Lafayette, Floor 6",
+        "city": "New York City",
+        "state": "NY",
+        "country": "us"
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312871242\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312871242",
+        "id": "312871242"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-offline"
+      }
+    },
+    "PhotoInfo:532339581": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/4/c/7/d/highres_532339581.jpeg",
+      "id": "532339581"
+    },
+    "PhotoInfo:528338697": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/9/7/2/9/highres_528338697.jpeg",
+      "id": "528338697"
+    },
+    "Group:34766392": {
+      "__typename": "Group",
+      "id": "34766392",
+      "name": "\ud83d\uddfdNYC CONNECTS\ud83d\uddfd",
+      "urlname": "nycconnects-social",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:528338697"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.56,
+          "totalRatings": 1001
+        }
+      }
+    },
+    "PhotoInfo:323768257": {
+      "__typename": "PhotoInfo",
+      "id": "323768257",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/0/4/1/highres_323768257.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:216689213": {
+      "__typename": "Member",
+      "id": "216689213",
+      "name": "IG\ud83d\udcfaNYCconnects.Social",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323768257"
+      }
+    },
+    "PhotoInfo:323768284": {
+      "__typename": "PhotoInfo",
+      "id": "323768284",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/0/5/c/highres_323768284.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:9866012": {
+      "__typename": "Member",
+      "id": "9866012",
+      "name": "Frank",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323768284"
+      }
+    },
+    "PhotoInfo:322957153": {
+      "__typename": "PhotoInfo",
+      "id": "322957153",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/1/2/1/highres_322957153.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:192591905": {
+      "__typename": "Member",
+      "id": "192591905",
+      "name": "Teneil",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322957153"
+      }
+    },
+    "PhotoInfo:145843892": {
+      "__typename": "PhotoInfo",
+      "id": "145843892",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/b/7/4/highres_145843892.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:110847592": {
+      "__typename": "Member",
+      "id": "110847592",
+      "name": "BettyNicole",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:145843892"
+      }
+    },
+    "PhotoInfo:321382048": {
+      "__typename": "PhotoInfo",
+      "id": "321382048",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/6/2/0/highres_321382048.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:449584007": {
+      "__typename": "Member",
+      "id": "449584007",
+      "name": "a.p",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:321382048"
+      }
+    },
+    "PhotoInfo:255693231": {
+      "__typename": "PhotoInfo",
+      "id": "255693231",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/1/c/f/highres_255693231.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:810271": {
+      "__typename": "Member",
+      "id": "810271",
+      "name": "Hildy",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:255693231"
+      }
+    },
+    "PhotoInfo:244503352": {
+      "__typename": "PhotoInfo",
+      "id": "244503352",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/1/8/highres_244503352.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:380932": {
+      "__typename": "Member",
+      "id": "380932",
+      "name": "samsari",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:244503352"
+      }
+    },
+    "PhotoInfo:324933626": {
+      "__typename": "PhotoInfo",
+      "id": "324933626",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/3/5/a/highres_324933626.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:472228766": {
+      "__typename": "Member",
+      "id": "472228766",
+      "name": "drew",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324933626"
+      }
+    },
+    "PhotoInfo:320482793": {
+      "__typename": "PhotoInfo",
+      "id": "320482793",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/9/0/9/highres_320482793.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:138801372": {
+      "__typename": "Member",
+      "id": "138801372",
+      "name": "Oliver Estreich",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:320482793"
+      }
+    },
+    "PhotoInfo:188472572": {
+      "__typename": "PhotoInfo",
+      "id": "188472572",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/1/1/c/highres_188472572.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:140479352": {
+      "__typename": "Member",
+      "id": "140479352",
+      "name": "Yuying Yu",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:188472572"
+      }
+    },
+    "PhotoInfo:319152520": {
+      "__typename": "PhotoInfo",
+      "id": "319152520",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/0/e/8/highres_319152520.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:214069157": {
+      "__typename": "Member",
+      "id": "214069157",
+      "name": "Monique",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:319152520"
+      }
+    },
+    "PhotoInfo:324924209": {
+      "__typename": "PhotoInfo",
+      "id": "324924209",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/e/9/1/highres_324924209.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478689250": {
+      "__typename": "Member",
+      "id": "478689250",
+      "name": "Luke Georg",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324924209"
+      }
+    },
+    "PhotoInfo:324761044": {
+      "__typename": "PhotoInfo",
+      "id": "324761044",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/0/5/4/highres_324761044.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:477968406": {
+      "__typename": "Member",
+      "id": "477968406",
+      "name": "Joshua Rodriguez ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324761044"
+      }
+    },
+    "PhotoInfo:324915058": {
+      "__typename": "PhotoInfo",
+      "id": "324915058",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/a/d/2/highres_324915058.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478661111": {
+      "__typename": "Member",
+      "id": "478661111",
+      "name": "Izabele Lucena",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324915058"
+      }
+    },
+    "PhotoInfo:302010291": {
+      "__typename": "PhotoInfo",
+      "id": "302010291",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/6/5/3/highres_302010291.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:318957362": {
+      "__typename": "Member",
+      "id": "318957362",
+      "name": "Tomas Reinhardt",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:302010291"
+      }
+    },
+    "PhotoInfo:324922288": {
+      "__typename": "PhotoInfo",
+      "id": "324922288",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/7/1/0/highres_324922288.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478684145": {
+      "__typename": "Member",
+      "id": "478684145",
+      "name": "faridmzpro",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324922288"
+      }
+    },
+    "PhotoInfo:324922123": {
+      "__typename": "PhotoInfo",
+      "id": "324922123",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/6/6/b/highres_324922123.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:478683643": {
+      "__typename": "Member",
+      "id": "478683643",
+      "name": "Younes ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324922123"
+      }
+    },
+    "PhotoInfo:317856468": {
+      "__typename": "PhotoInfo",
+      "id": "317856468",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/e/7/4/highres_317856468.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:388667423": {
+      "__typename": "Member",
+      "id": "388667423",
+      "name": "Robert Zelaya",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:317856468"
+      }
+    },
+    "PhotoInfo:324481427": {
+      "__typename": "PhotoInfo",
+      "id": "324481427",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/9/3/highres_324481427.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:477410814": {
+      "__typename": "Member",
+      "id": "477410814",
+      "name": "christophert7000",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324481427"
+      }
+    },
+    "PhotoInfo:322963973": {
+      "__typename": "PhotoInfo",
+      "id": "322963973",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/b/c/5/highres_322963973.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:276492410": {
+      "__typename": "Member",
+      "id": "276492410",
+      "name": "Genesis Castro",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322963973"
+      }
+    },
+    "Event:313120145": {
+      "__typename": "Event",
+      "id": "313120145",
+      "title": "\ud83c\udf86FEBRUARY\ud83d\ude95Monday After Work NYC Networking Social\ud83d\udc54Young Professionals\ud83d\udd0c\ud83d\uddfd",
+      "dateTime": "2026-02-02T18:15:00-05:00",
+      "description": "\ud83d\uddd3\ufe0fMore @ [linktr.ee/NYC.Connects.Social](https://linktr.ee/NYC.Connects.Social) Young Professionals (21+-35+) Networking and Social Monday after work! Read all info\n\n\ud83c\udf9f\ufe0fTickets\ud83c\udf9f\ufe0f\ud83d\udcb5$3\ud83d\udcf2VENMO @frankiegfrank (with title title & date of event)\n\n\ud83c\udf0d\ud83d\udd0c\ud83d\uddfdA Monday After work NYC Social by NYC CONNECTS Social Meetup! Make new professional connections & friends at our event. We are to the left of the bar, darts area.\n\n\ud83d\udc54\ud83d\uddfdYoung professionals aged 21+-35 years old attending. If older, yes you can join! We are open to all those in NYC that want to make new connections. 1-2 drink purchases or food required to attend.\nQuestions? text (718) 360-3975\ud83d\uddfd\ud83c\udf7b\n\nIf you are totally new to NYC, fantastic! Come make new friends on Monday with us; something to look forward to after work!\n\n* Make new NYC friends\n* Meetup social\n* Young professionals and friends\n* Network, connect and meet those new to NYC\n* NYC business networking\n* Bronx - Manhattan - Queens - Brooklyn - Staten Island - New Jersey - Long Island networking\n\nMeet, talk with new people in NYC, make new connections in New York City.\n\ud83d\uddd3\ufe0fMore @ [linktr.ee/NYC.Connects.Social](https://linktr.ee/NYC.Connects.Social)\n\nIndustries that join and participate!\nNYC Finance networking Social\nNYC Accounting networking Social\nNYC Technology and startups networking Social\nNYC College graduates making new friends Social\nNYC Healthcare networking Social\nNYC Fintech Networking Social\nNYC Legal and lawyers networking Social\nNYC PHD graduates networking Social\nNYC Education and teachers Networking Social\nNYC Real Estate Networking",
+      "aeoDescription": null,
+      "eventType": "PHYSICAL",
+      "eventUrl": "https://www.meetup.com/nycconnects-social/events/313120145/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:532339581"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:34766392"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 274,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:216689213"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:9866012"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:192591905"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:110847592"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:449584007"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:810271"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:380932"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:472228766"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:138801372"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:140479352"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:214069157"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478689250"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477968406"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478661111"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:318957362"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478684145"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478683643"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:388667423"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477410814"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:276492410"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Sugar Mouse, NYC",
+        "address": "47 3rd Avenue",
+        "city": "New York",
+        "state": "NY",
+        "country": "us"
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"313120145\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:313120145",
+        "id": "313120145"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-offline"
+      }
+    },
+    "PhotoInfo:450913547": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/3/4/e/b/highres_450913547.jpeg",
+      "id": "450913547"
+    },
+    "Group:14038372": {
+      "__typename": "Group",
+      "id": "14038372",
+      "name": "Bayesian Data Analysis",
+      "urlname": "bda-group",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:450913547"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.74,
+          "totalRatings": 152
+        }
+      }
+    },
+    "PhotoInfo:246275209": {
+      "__typename": "PhotoInfo",
+      "id": "246275209",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/9/8/9/highres_246275209.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:187491546": {
+      "__typename": "Member",
+      "id": "187491546",
+      "name": "Brian Parbhu",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:246275209"
+      }
+    },
+    "PhotoInfo:314360368": {
+      "__typename": "PhotoInfo",
+      "id": "314360368",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/f/9/0/highres_314360368.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:314511577": {
+      "__typename": "Member",
+      "id": "314511577",
+      "name": "Will G",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:314360368"
+      }
+    },
+    "PhotoInfo:315662843": {
+      "__typename": "PhotoInfo",
+      "id": "315662843",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/1/b/highres_315662843.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:314307379": {
+      "__typename": "Member",
+      "id": "314307379",
+      "name": "Alex Kornienko",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:315662843"
+      }
+    },
+    "PhotoInfo:63202352": {
+      "__typename": "PhotoInfo",
+      "id": "63202352",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/5/7/5/0/highres_63202352.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:4614174": {
+      "__typename": "Member",
+      "id": "4614174",
+      "name": "Joey Markowitz",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:63202352"
+      }
+    },
+    "Member:55614832": {
+      "__typename": "Member",
+      "id": "55614832",
+      "name": "John Callahan",
+      "memberPhoto": null
+    },
+    "Member:301992390": {
+      "__typename": "Member",
+      "id": "301992390",
+      "name": "Alex Chicote",
+      "memberPhoto": null
+    },
+    "PhotoInfo:260829133": {
+      "__typename": "PhotoInfo",
+      "id": "260829133",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/3/a/d/highres_260829133.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:214349238": {
+      "__typename": "Member",
+      "id": "214349238",
+      "name": "Jackson Whitmore",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:260829133"
+      }
+    },
+    "PhotoInfo:284811954": {
+      "__typename": "PhotoInfo",
+      "id": "284811954",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/c/a/f/2/highres_284811954.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:264932934": {
+      "__typename": "Member",
+      "id": "264932934",
+      "name": "Dr Alan Beckles",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:284811954"
+      }
+    },
+    "Member:411645144": {
+      "__typename": "Member",
+      "id": "411645144",
+      "name": "Craig Allen",
+      "memberPhoto": null
+    },
+    "PhotoInfo:271806817": {
+      "__typename": "PhotoInfo",
+      "id": "271806817",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/a/a/1/highres_271806817.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:239614809": {
+      "__typename": "Member",
+      "id": "239614809",
+      "name": "Blaine Mooers",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:271806817"
+      }
+    },
+    "PhotoInfo:315293950": {
+      "__typename": "PhotoInfo",
+      "id": "315293950",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/d/2/b/e/highres_315293950.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:314511593": {
+      "__typename": "Member",
+      "id": "314511593",
+      "name": "Will Geary",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:315293950"
+      }
+    },
+    "Member:478457258": {
+      "__typename": "Member",
+      "id": "478457258",
+      "name": "John Cody",
+      "memberPhoto": null
+    },
+    "PhotoInfo:299355785": {
+      "__typename": "PhotoInfo",
+      "id": "299355785",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/d/a/9/highres_299355785.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:186737754": {
+      "__typename": "Member",
+      "id": "186737754",
+      "name": "Sandeep M",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:299355785"
+      }
+    },
+    "Member:402445556": {
+      "__typename": "Member",
+      "id": "402445556",
+      "name": "Sam Kuhn",
+      "memberPhoto": null
+    },
+    "Member:472074582": {
+      "__typename": "Member",
+      "id": "472074582",
+      "name": "Arup Kumar Das",
+      "memberPhoto": null
+    },
+    "PhotoInfo:278227518": {
+      "__typename": "PhotoInfo",
+      "id": "278227518",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/d/5/e/highres_278227518.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:257134403": {
+      "__typename": "Member",
+      "id": "257134403",
+      "name": "William Dean",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:278227518"
+      }
+    },
+    "PhotoInfo:255665142": {
+      "__typename": "PhotoInfo",
+      "id": "255665142",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/4/1/6/highres_255665142.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:2796505": {
+      "__typename": "Member",
+      "id": "2796505",
+      "name": "Jacki Buros",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:255665142"
+      }
+    },
+    "PhotoInfo:268585604": {
+      "__typename": "PhotoInfo",
+      "id": "268585604",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/4/0/4/highres_268585604.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:231377291": {
+      "__typename": "Member",
+      "id": "231377291",
+      "name": "Carlos Iguar\u00e1n",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:268585604"
+      }
+    },
+    "PhotoInfo:256214089": {
+      "__typename": "PhotoInfo",
+      "id": "256214089",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/7/0/9/highres_256214089.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:204434153": {
+      "__typename": "Member",
+      "id": "204434153",
+      "name": "George Hagstrom",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:256214089"
+      }
+    },
+    "Member:206851676": {
+      "__typename": "Member",
+      "id": "206851676",
+      "name": "Christopher Harvey",
+      "memberPhoto": null
+    },
+    "Event:312906252": {
+      "__typename": "Event",
+      "id": "312906252",
+      "title": "Bayesian Models in Production",
+      "dateTime": "2026-02-05T19:30:00-05:00",
+      "description": "Hi Everyone,\n\nToday Ian Costley from Wegmans Food Markets will be giving a talk on how do we get Bayesian models we have worked on in either Stan or PyMC into production once we have finished the initial development, training, and validation cycles.\n\nHere's a short outline of what will be discussed:\n\n* What \"production\" means in practice (latency, reliability, ownership, monitoring, etc.)\n* \"Just get it out there deployments\" - the best model is a useable model\n* Pragmatic / scrappy approaches for serving models on older or available infrastructure\n* More structured cloud/MLOps setups (in our case: Azure + Databricks)\n* How we use tools like MLFlow and Databricks suite for Stan/PyMC deployments\n* Trade offs and general lessons learned",
+      "aeoDescription": null,
+      "eventType": "ONLINE",
+      "eventUrl": "https://www.meetup.com/bda-group/events/312906252/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": null,
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:14038372"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 140,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:187491546"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:314511577"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:314307379"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:4614174"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:55614832"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:301992390"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:214349238"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:264932934"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:411645144"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:239614809"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:314511593"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478457258"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:186737754"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:402445556"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:472074582"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:257134403"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:2796505"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:231377291"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:204434153"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:206851676"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "Online event",
+        "address": "",
+        "city": "",
+        "state": "",
+        "country": ""
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312906252\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312906252",
+        "id": "312906252"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-online"
+      }
+    },
+    "PhotoInfo:531576542": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/8/e/b/e/highres_531576542.jpeg",
+      "id": "531576542"
+    },
+    "PhotoInfo:524074555": {
+      "__typename": "PhotoInfo",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-events/",
+      "highResUrl": "https://secure.meetupstatic.com/photos/event/8/6/f/b/highres_524074555.jpeg",
+      "id": "524074555"
+    },
+    "Group:11913282": {
+      "__typename": "Group",
+      "id": "11913282",
+      "name": "A11yNYC - Accessibility New York City",
+      "urlname": "a11ynyc",
+      "timezone": "America/New_York",
+      "keyGroupPhoto": {
+        "__ref": "PhotoInfo:524074555"
+      },
+      "stats": {
+        "__typename": "GroupStats",
+        "eventRatings": {
+          "__typename": "GroupStatsEventRatings",
+          "average": 4.76,
+          "totalRatings": 993
+        }
+      }
+    },
+    "PhotoInfo:314740158": {
+      "__typename": "PhotoInfo",
+      "id": "314740158",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/c/d/e/highres_314740158.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:18159021": {
+      "__typename": "Member",
+      "id": "18159021",
+      "name": "Ben Ogilvie",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:314740158"
+      }
+    },
+    "PhotoInfo:321466907": {
+      "__typename": "PhotoInfo",
+      "id": "321466907",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/b/7/3/b/highres_321466907.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:255944854": {
+      "__typename": "Member",
+      "id": "255944854",
+      "name": "Irina Morozova",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:321466907"
+      }
+    },
+    "PhotoInfo:323426349": {
+      "__typename": "PhotoInfo",
+      "id": "323426349",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/6/e/d/highres_323426349.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:7691": {
+      "__typename": "Member",
+      "id": "7691",
+      "name": "Meryl K. Evans",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323426349"
+      }
+    },
+    "PhotoInfo:317677864": {
+      "__typename": "PhotoInfo",
+      "id": "317677864",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/9/3/e/8/highres_317677864.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:51435202": {
+      "__typename": "Member",
+      "id": "51435202",
+      "name": "Thomas Logan",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:317677864"
+      }
+    },
+    "PhotoInfo:318537433": {
+      "__typename": "PhotoInfo",
+      "id": "318537433",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/e/0/5/9/highres_318537433.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:368686682": {
+      "__typename": "Member",
+      "id": "368686682",
+      "name": "Heiki Tsang",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:318537433"
+      }
+    },
+    "PhotoInfo:322408856": {
+      "__typename": "PhotoInfo",
+      "id": "322408856",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/7/0/b/8/highres_322408856.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:79120642": {
+      "__typename": "Member",
+      "id": "79120642",
+      "name": "Lina Trifon",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322408856"
+      }
+    },
+    "PhotoInfo:323375273": {
+      "__typename": "PhotoInfo",
+      "id": "323375273",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/9/c/9/highres_323375273.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:474286052": {
+      "__typename": "Member",
+      "id": "474286052",
+      "name": "Victoria Z",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:323375273"
+      }
+    },
+    "PhotoInfo:324199164": {
+      "__typename": "PhotoInfo",
+      "id": "324199164",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/a/d/c/highres_324199164.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:6421383": {
+      "__typename": "Member",
+      "id": "6421383",
+      "name": "Charlie Triplett",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:324199164"
+      }
+    },
+    "PhotoInfo:293112654": {
+      "__typename": "PhotoInfo",
+      "id": "293112654",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/3/1/6/e/highres_293112654.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:292557099": {
+      "__typename": "Member",
+      "id": "292557099",
+      "name": "Victoria B",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:293112654"
+      }
+    },
+    "Member:475312204": {
+      "__typename": "Member",
+      "id": "475312204",
+      "name": "Husena Jadliwala",
+      "memberPhoto": null
+    },
+    "Member:478041750": {
+      "__typename": "Member",
+      "id": "478041750",
+      "name": "Jennifer Liu",
+      "memberPhoto": null
+    },
+    "Member:420774631": {
+      "__typename": "Member",
+      "id": "420774631",
+      "name": "Sharon",
+      "memberPhoto": null
+    },
+    "PhotoInfo:295048363": {
+      "__typename": "PhotoInfo",
+      "id": "295048363",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/6/e/c/b/highres_295048363.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:206757153": {
+      "__typename": "Member",
+      "id": "206757153",
+      "name": "Katherine",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:295048363"
+      }
+    },
+    "Member:477896577": {
+      "__typename": "Member",
+      "id": "477896577",
+      "name": "Anton Salnikov",
+      "memberPhoto": null
+    },
+    "PhotoInfo:319361738": {
+      "__typename": "PhotoInfo",
+      "id": "319361738",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/a/3/0/a/highres_319361738.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:372033290": {
+      "__typename": "Member",
+      "id": "372033290",
+      "name": "Huanzhou",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:319361738"
+      }
+    },
+    "PhotoInfo:256866142": {
+      "__typename": "PhotoInfo",
+      "id": "256866142",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/1/7/f/e/highres_256866142.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:181304682": {
+      "__typename": "Member",
+      "id": "181304682",
+      "name": "Nai",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:256866142"
+      }
+    },
+    "PhotoInfo:279213342": {
+      "__typename": "PhotoInfo",
+      "id": "279213342",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/8/2/3/e/highres_279213342.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:18906571": {
+      "__typename": "Member",
+      "id": "18906571",
+      "name": "DJ Patel",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:279213342"
+      }
+    },
+    "PhotoInfo:36428572": {
+      "__typename": "PhotoInfo",
+      "id": "36428572",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/2/1/7/c/highres_36428572.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:34685592": {
+      "__typename": "Member",
+      "id": "34685592",
+      "name": "Kate O'Connor",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:36428572"
+      }
+    },
+    "Member:477935634": {
+      "__typename": "Member",
+      "id": "477935634",
+      "name": "tombethune",
+      "memberPhoto": null
+    },
+    "PhotoInfo:322321156": {
+      "__typename": "PhotoInfo",
+      "id": "322321156",
+      "highResUrl": "https://secure.meetupstatic.com/photos/member/4/8/4/highres_322321156.jpeg",
+      "baseUrl": "https://secure-content.meetupstatic.com/images/classic-member/"
+    },
+    "Member:468104073": {
+      "__typename": "Member",
+      "id": "468104073",
+      "name": "Sadhir Razaak Nazer ",
+      "memberPhoto": {
+        "__ref": "PhotoInfo:322321156"
+      }
+    },
+    "Event:312256022": {
+      "__typename": "Event",
+      "id": "312256022",
+      "title": "Every Jira Ticket Is Your Accessibility Policy",
+      "dateTime": "2026-02-03T19:30:00-05:00",
+      "description": "This event will be online at [YouTube](https://www.youtube.com/watch?v=-nwUCAS42fI) and in-person. **The speaker and live stream starts at 7:30 pm ET**. In-person attendees may arrive as early as 7 pm ET. If arriving late, please leave a comment on this page and someone will come down ASAP.\n\n**Important note**\nGoogle Maps currently incorrectly pins the location around the corner on Crosby Street. The entrance is not on Crosby. The entrance is on Spring Street, inside the Marc Jacobs International building. It is roughly halfway between Crosby and Lafayette, almost directly across Spring Street from the Chipotle restaurant.\n\n**Description**\nThe currency on which modern software gets built is the Jira ticket. If it's in the Jira ticket, it gets done. If accessibility isn't there, a remediation fire drill is.\n\nHere's how to leverage the ways agile teams already work to scale our accessibility work \u2014 without adding layers of bureaucracy \u2014 and help everyone from design, dev, and QA speak the same language of inclusion.\n\nIf you're running fire drills instead of an accessibility program, here's how to actually break the cycle, truly shift left, and scale your time and expertise. We'll cover:\n\n* Why having an accessibility mindset isn't working\n* Existing tooling and processes we can leverage\n* What are acceptance criteria\n* Who's responsible for them?\n* Where to get criteria (AtomicA11y.com)\n* Helping teams choose acceptance criteria\n\n**Presenter bio**\n[Charlie Triplett](https://www.linkedin.com/in/charlietriplett/) is an accessibility leader with over 20 years of experience in UX design and UI engineering, now focused on building global enterprise accessibility management programs.\n\nHe invented AtomicA11y.com, wrote TheBookOnAccessibility.com, and contributed the Design Systems chapter of Inclusive Design for Accessibility: A practical guide to digital accessibility, UX, and inclusive web and app design.\n\n**Accessibility**\nThe presentation will have human captions [CC], not automatic captions. For ASL preferred speakers, learn about the [Aira ASL App](https://aira.io/aira-asl-app/), and download it before the event.\n\nFor the Blind and Low Vision community, learn about the [Aira Explorer App](https://aira.io/aira-explorer-app/) and download it before the event.\n\nTo access the online webinar for audio description, use the A11yNYC Access Offer to call, or simply inform your Visual Interpreter that you'd like that offer applied when you connect.\n\nFor additional accessibility requirements, please email meryl@equalentry.com **two weeks** **before** the event.\n\n**Livestream**\n[YouTube link](https://www.youtube.com/watch?v=-nwUCAS42fI)\n\nProvided by Internet Society Accessibility SIG.\n\n**Location details**\nThe event is on the 4th floor. Everyone must be accompanied to the event on the 4th floor. Because everyone needs to be escorted, please arrive early or on time. When you enter the ground floor, a representative from A11yNYC will be there to provide elevator access.\n\nThe building is near several transit stops:\n6 train\n\n* Spring Street (non-accessible stop): 100 feet\n* Canal Street (accessible stop): 0.4 miles\n\nNQRW trains\n\n* Prince Street (non-accessible stop): 0.2 miles\n* Canal Street (accessible stop): 0.3 miles\n\nM1 / M55 Bus lines\n\n* Broadway/Spring Street stop: 500 feet\n\nCabs and rideshares can let passengers out right near the building entrance\n\n**Accreditation**\nAll A11yNYC meetups are pre-approved for IAAP Continuing Accessibility Education Credits (CAEC).\n\n**Sponsors**\nThanks to [AKQA](https://www.akqa.com/), [Deque](https://www.deque.com/), [Evinced](https://www.evinced.com/), [Equal Entry](https://equalentry.com/), and [Fable](https://makeitfable.com/) for sponsoring. Want to be a sponsor? Contact meryl@equalentry.com",
+      "aeoDescription": "Online talk on using Jira tickets to scale accessibility for design, dev, and QA; outcome: define concrete accessibility acceptance criteria.",
+      "eventType": "PHYSICAL",
+      "eventUrl": "https://www.meetup.com/a11ynyc/events/312256022/",
+      "isAttending": false,
+      "isSaved": false,
+      "maxTickets": 0,
+      "rsvpState": "JOIN_OPEN",
+      "featuredEventPhoto": {
+        "__ref": "PhotoInfo:531576542"
+      },
+      "feeSettings": null,
+      "group": {
+        "__ref": "Group:11913282"
+      },
+      "socialProofInsights": null,
+      "rsvps": {
+        "__typename": "RsvpConnection",
+        "totalCount": 151,
+        "edges": [
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:18159021"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:255944854"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:7691"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": true,
+              "member": {
+                "__ref": "Member:51435202"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:368686682"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:79120642"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:474286052"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:6421383"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:292557099"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:475312204"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:478041750"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:420774631"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:206757153"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477896577"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:372033290"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:181304682"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:18906571"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:34685592"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:477935634"
+              }
+            }
+          },
+          {
+            "__typename": "RsvpEdge",
+            "node": {
+              "__typename": "Rsvp",
+              "isHost": false,
+              "member": {
+                "__ref": "Member:468104073"
+              }
+            }
+          }
+        ]
+      },
+      "series": null,
+      "venue": {
+        "__typename": "Venue",
+        "name": "72 Spring St",
+        "address": "72 Spring St",
+        "city": "New York",
+        "state": "NY",
+        "country": "us"
+      }
+    },
+    "RecommendedEventsEdge:{\"node\":{\"id\":\"312256022\"}}": {
+      "__typename": "RecommendedEventsEdge",
+      "node": {
+        "__ref": "Event:312256022",
+        "id": "312256022"
+      },
+      "metadata": {
+        "__typename": "SearchMetadata",
+        "recId": "21e7c7f5-ca26-4c21-8ce5-c86e8d11a581",
+        "recSource": "ml-popular-events-nearby-offline"
+      }
+    }
+  },
+  "_sentryTraceData": "03a93c921ed75219ae23e366e0cf1aa0-bdf93be13a03f8e4-0",
+  "_sentryBaggage": "sentry-environment=production,sentry-release=f4e83e94edd2e98bba41a7be3c6ec6c5fec6508d,sentry-public_key=5d12cd2317664353456ab4c40d079af2,sentry-trace_id=03a93c921ed75219ae23e366e0cf1aa0,sentry-org_id=6787,sentry-sampled=false,sentry-sample_rand=0.8716306173299817,sentry-sample_rate=0.1"
+}
