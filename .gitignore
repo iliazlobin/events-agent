@@ -136,3 +136,14 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Project-specific: Temporary files and debug data
+test_*.py
+!tests/
+data/debug/
+scripts/inspect_*.py
+scripts/debug_*.py
+scripts/test_*.py
+scripts/analyze_*.py
+scripts/crawl_*.py
+.cleanup_backup/

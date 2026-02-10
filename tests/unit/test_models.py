@@ -121,6 +121,9 @@ def test_event_source_enum():
     """Test EventSource enum values."""
     assert EventSource.LUMA.value == "luma"
     assert EventSource.MEETUP.value == "meetup"
+    assert EventSource.FEVER.value == "fever"
+    assert EventSource.COZYMEAL.value == "cozymeal"
+    assert EventSource.EVENTBRITE.value == "eventbrite"
 
 
 def test_event_model_dump():
@@ -138,3 +141,114 @@ def test_event_model_dump():
     assert data['event_id'] == "test-123"
     assert data['source'] == EventSource.LUMA
     assert data['title'] == "Test Event"
+
+
+def test_event_with_experience_fields():
+    """Test creating an event with experience-specific fields."""
+    event = Event(
+        event_id="concert-123",
+        source=EventSource.FEVER,
+        url="https://feverup.com/event/concert-123",
+        title="Candlelight Concert: Adele",
+        start_datetime=datetime(2026, 2, 10, 19, 0),
+        experience_type="concert",
+        category="music",
+        tags=["candlelight", "classical", "adele"],
+        performer_names=["String Quartet NYC"],
+        genre="Classical",
+        duration_minutes=90,
+        rating=4.8,
+        review_count=250,
+    )
+
+    assert event.experience_type == "concert"
+    assert event.category == "music"
+    assert len(event.tags) == 3
+    assert event.performer_names[0] == "String Quartet NYC"
+    assert event.genre == "Classical"
+    assert event.duration_minutes == 90
+    assert event.rating == 4.8
+    assert event.review_count == 250
+
+
+def test_event_with_cooking_class_fields():
+    """Test creating a cooking class event with chef fields."""
+    event = Event(
+        event_id="class-456",
+        source=EventSource.COZYMEAL,
+        url="https://cozymeal.com/class/class-456",
+        title="Italian Pasta Making Class",
+        start_datetime=datetime(2026, 2, 12, 18, 0),
+        experience_type="cooking",
+        chef_name="Chef Mario",
+        chef_rating=4.9,
+        chef_bio="Award-winning Italian chef with 20 years experience",
+        skill_level="beginner",
+        cuisine_type="Italian",
+        duration_minutes=120,
+    )
+
+    assert event.experience_type == "cooking"
+    assert event.chef_name == "Chef Mario"
+    assert event.chef_rating == 4.9
+    assert event.skill_level == "beginner"
+    assert event.cuisine_type == "Italian"
+    assert event.duration_minutes == 120
+
+
+def test_event_chef_rating_validation():
+    """Test that chef_rating must be between 0 and 5."""
+    with pytest.raises(ValidationError):
+        Event(
+            event_id="class-123",
+            source=EventSource.COZYMEAL,
+            url="https://cozymeal.com/class/class-123",
+            title="Cooking Class",
+            start_datetime=datetime(2026, 2, 12, 18, 0),
+            chef_rating=6.0,  # Invalid - exceeds 5
+        )
+
+
+def test_event_rating_validation():
+    """Test that rating must be between 0 and 5."""
+    with pytest.raises(ValidationError):
+        Event(
+            event_id="event-123",
+            source=EventSource.FEVER,
+            url="https://feverup.com/event/event-123",
+            title="Event",
+            start_datetime=datetime(2026, 2, 12, 18, 0),
+            rating=-1.0,  # Invalid - negative
+        )
+
+
+def test_event_duration_validation():
+    """Test that duration_minutes must be >= 0."""
+    with pytest.raises(ValidationError):
+        Event(
+            event_id="event-123",
+            source=EventSource.FEVER,
+            url="https://feverup.com/event/event-123",
+            title="Event",
+            start_datetime=datetime(2026, 2, 12, 18, 0),
+            duration_minutes=-30,  # Invalid - negative
+        )
+
+
+def test_event_with_eventbrite_source():
+    """Test creating an Eventbrite event."""
+    event = Event(
+        event_id="eb-789",
+        source=EventSource.EVENTBRITE,
+        url="https://eventbrite.com/e/magic-show-789",
+        title="Magic Show: House of Illusions",
+        start_datetime=datetime(2026, 2, 15, 20, 0),
+        experience_type="magic",
+        category="entertainment",
+        performer_names=["David Blaine", "Penn & Teller"],
+        duration_minutes=120,
+    )
+
+    assert event.source == EventSource.EVENTBRITE
+    assert event.experience_type == "magic"
+    assert len(event.performer_names) == 2

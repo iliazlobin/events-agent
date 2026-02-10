@@ -10,6 +10,9 @@ class EventSource(str, Enum):
     """Event source platform."""
     LUMA = "luma"
     MEETUP = "meetup"
+    FEVER = "fever"
+    COZYMEAL = "cozymeal"
+    EVENTBRITE = "eventbrite"
 
 
 class Event(BaseModel):
@@ -65,6 +68,27 @@ class Event(BaseModel):
     ai_summary: Optional[str] = Field(None, description="AI-generated event summary")
     image_url: Optional[str] = Field(None, description="Main event image URL")
     topics: Optional[list[str]] = Field(None, description="Event topics/tags")
+
+    # Experience type and categorization
+    experience_type: Optional[str] = Field(None, description="Type: concert, magic, comedy, cooking, etc.")
+    category: Optional[str] = Field(None, description="Event category or genre")
+    tags: Optional[list[str]] = Field(None, description="Event tags/keywords")
+
+    # Cooking class specific fields
+    chef_name: Optional[str] = Field(None, description="Chef name for cooking classes")
+    chef_rating: Optional[float] = Field(None, ge=0, le=5, description="Chef rating (0-5)")
+    chef_bio: Optional[str] = Field(None, description="Chef biography")
+    skill_level: Optional[str] = Field(None, description="Skill level: beginner/intermediate/advanced")
+    cuisine_type: Optional[str] = Field(None, description="Cuisine type: Italian, French, etc.")
+
+    # Performance specific fields (comedy, magic, concerts)
+    performer_names: Optional[list[str]] = Field(None, description="List of performer names")
+    genre: Optional[str] = Field(None, description="Performance genre")
+    duration_minutes: Optional[int] = Field(None, ge=0, description="Event duration in minutes")
+
+    # Enhanced rating (some aggregators have ratings)
+    rating: Optional[float] = Field(None, ge=0, le=5, description="Event rating (0-5)")
+    review_count: Optional[int] = Field(None, ge=0, description="Number of reviews")
 
     # Enhanced location
     latitude: Optional[float] = Field(None, ge=-90, le=90, description="Venue latitude")

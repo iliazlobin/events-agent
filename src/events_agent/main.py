@@ -5,6 +5,9 @@ from datetime import datetime
 from playwright.sync_api import sync_playwright
 from events_agent.crawlers.luma_crawler import LumaCrawler
 from events_agent.crawlers.meetup_crawler import MeetupCrawler
+from events_agent.crawlers.fever_crawler import FeverCrawler
+from events_agent.crawlers.cozymeal_crawler import CozymealCrawler
+from events_agent.crawlers.eventbrite_crawler import EventbriteCrawler
 from events_agent.storage.data_manager import DataManager
 from events_agent.processors.event_processor import EventProcessor, ProcessingPipeline
 from events_agent.utils.event_validator import EventValidator
@@ -28,7 +31,8 @@ def main(max_events: int = 100):
         max_events: Maximum number of events to return (default: 100)
     """
     print("=" * 60)
-    print("Events Agent - Crawling Luma and Meetup")
+    print("Events Agent - Crawling Events from 5 Sources")
+    print("Sources: Luma, Meetup, Fever, Cozymeal, Eventbrite")
     print(f"Max events: {max_events}")
     print("=" * 60)
 
@@ -56,7 +60,7 @@ def main(max_events: int = 100):
             sources_events["luma"] = []
 
         # Crawl Meetup (with max_events limit for infinite scroll)
-        print("\n[2/2] Crawling Meetup.com...")
+        print("\n[2/5] Crawling Meetup.com...")
         meetup_crawler = MeetupCrawler(
             max_events_total=max_events,
             max_events_per_day=50,
@@ -70,6 +74,39 @@ def main(max_events: int = 100):
         except Exception as e:
             print(f"  ✗ Error crawling Meetup: {e}")
             sources_events["meetup"] = []
+
+        # Crawl Fever
+        print("\n[3/5] Crawling Fever...")
+        fever_crawler = FeverCrawler(max_events=max_events)
+        try:
+            fever_events = fever_crawler.crawl(browser, "nyc")
+            print(f"  ✓ Found {len(fever_events)} Fever events")
+            sources_events["fever"] = fever_events
+        except Exception as e:
+            print(f"  ✗ Error crawling Fever: {e}")
+            sources_events["fever"] = []
+
+        # Crawl Cozymeal
+        print("\n[4/5] Crawling Cozymeal...")
+        cozymeal_crawler = CozymealCrawler(max_events=max_events, max_pages=10)
+        try:
+            cozymeal_events = cozymeal_crawler.crawl(browser, "nyc")
+            print(f"  ✓ Found {len(cozymeal_events)} Cozymeal cooking classes")
+            sources_events["cozymeal"] = cozymeal_events
+        except Exception as e:
+            print(f"  ✗ Error crawling Cozymeal: {e}")
+            sources_events["cozymeal"] = []
+
+        # Crawl Eventbrite
+        print("\n[5/5] Crawling Eventbrite...")
+        eventbrite_crawler = EventbriteCrawler(max_events=max_events)
+        try:
+            eventbrite_events = eventbrite_crawler.crawl(browser, "nyc")
+            print(f"  ✓ Found {len(eventbrite_events)} Eventbrite events")
+            sources_events["eventbrite"] = eventbrite_events
+        except Exception as e:
+            print(f"  ✗ Error crawling Eventbrite: {e}")
+            sources_events["eventbrite"] = []
 
         browser.close()
 
