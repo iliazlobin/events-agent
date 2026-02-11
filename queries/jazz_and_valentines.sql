@@ -138,7 +138,7 @@ SELECT
     url
 FROM events
 WHERE (tags LIKE '%valentine%' OR title LIKE '%valentine%' OR description LIKE '%romantic%')
-  AND start_datetime >= '2026-02-07'
+  AND start_datetime >= '2026-02-13'
   AND start_datetime <= '2026-02-16'
   AND city = 'New York'
 ORDER BY start_datetime, price_cents;
