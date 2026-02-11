@@ -1,5 +1,5 @@
 ---
-name: init
+name: project-init
 description: Initialize this project
 ---
 

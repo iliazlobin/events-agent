@@ -8,7 +8,11 @@ from events_agent.crawlers.meetup_crawler import MeetupCrawler
 from events_agent.crawlers.fever_crawler import FeverCrawler
 from events_agent.crawlers.cozymeal_crawler import CozymealCrawler
 from events_agent.crawlers.eventbrite_crawler import EventbriteCrawler
-from events_agent.storage.data_manager import DataManager
+from events_agent.database.connection import DatabaseConnection
+from events_agent.database.schema import SchemaManager
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.repositories.json_repository import JSONEventRepository
+from events_agent.filters.date_filter import DateFilter
 from events_agent.processors.event_processor import EventProcessor, ProcessingPipeline
 from events_agent.utils.event_validator import EventValidator
 
@@ -18,14 +22,13 @@ def main(max_events: int = 100):
     Main entry point for events crawler.
 
     Process:
-    1. Initialize crawlers
-    2. Fetch events from Luma and Meetup
-    3. Save raw data to data/raw/
-    4. Filter by NYC location
-    5. Filter by current/next week
-    6. Limit to max_events
-    7. Save processed data to data/processed/
-    8. Output JSON
+    1. Initialize database and repository
+    2. Fetch events from 5 sources (Luma, Meetup, Fever, Cozymeal, Eventbrite)
+    3. Save raw data to SQLite (with automatic deduplication)
+    4. Query filtered events using SQL (by NYC location and current/next week)
+    5. Limit to max_events
+    6. Export to JSON for debugging
+    7. Output results
 
     Args:
         max_events: Maximum number of events to return (default: 100)
@@ -36,11 +39,21 @@ def main(max_events: int = 100):
     print(f"Max events: {max_events}")
     print("=" * 60)
 
-    # Initialize components
-    data_manager = DataManager()
-    processor = EventProcessor(max_events=max_events)
-    pipeline = ProcessingPipeline(processor)
+    # Initialize database and repository
+    print("\n[Initialization] Setting up SQLite database...")
+    db = DatabaseConnection("data/events.db")
+    schema = SchemaManager(db)
+    schema.initialize_schema()
+    repository = SQLiteEventRepository(db)
+    json_repo = JSONEventRepository("data/debug")
     timestamp = datetime.now()
+    print("  ✓ Database initialized")
+
+    # Get date range for filtering (current and next week)
+    current_start, current_end = DateFilter.get_current_week_range()
+    next_start, next_end = DateFilter.get_next_week_range()
+    filter_start = current_start
+    filter_end = next_end
 
     # Crawl events from all sources
     sources_events = {}
@@ -115,27 +128,57 @@ def main(max_events: int = 100):
     print(f"Total events collected: {total_raw}")
     print("=" * 60)
 
-    # Process events through pipeline
-    print("\n[Processing] Running event processing pipeline...")
-    result = pipeline.run(
-        raw_events_by_source=sources_events,
-        save_raw=True,
-        save_processed=True,
-        data_manager=data_manager
-    )
+    # Save all events to SQLite (with automatic deduplication)
+    print("\n[Storage] Saving events to SQLite database...")
+    all_events = []
+    for source, events in sources_events.items():
+        if events:
+            all_events.extend(events)
+            # Optional: Export raw data to JSON for debugging
+            json_file = json_repo.export_events(events, source, timestamp)
+            print(f"  ✓ Saved {len(events)} {source} events (debug: {json_file})")
 
-    filtered_events = result["events"]
-    processed_file = result.get("processed_file", "N/A")
+    if all_events:
+        upserted_count = repository.upsert_many(all_events)
+        print(f"  ✓ Upserted {upserted_count} events to database (deduplication applied)")
+
+    # Query filtered events using SQL (replaces in-memory filtering)
+    print("\n[Filtering] Querying NYC events for current and next week...")
+    filtered_events = repository.find_by_location_and_date(
+        start=filter_start,
+        end=filter_end,
+        city="new york",
+        state="NY",
+        exclude_online=True,
+        limit=max_events
+    )
+    print(f"  ✓ Found {len(filtered_events)} events matching criteria")
 
     # Validate event coverage and quality
     EventValidator.print_validation_report(filtered_events, target_days=14)
+
+    # Export processed events to JSON for backwards compatibility
+    filters_applied = {
+        "location": "NYC (New York, NY)",
+        "date_range": "current_and_next_week",
+        "max_events": max_events,
+        "start_date": filter_start.isoformat(),
+        "end_date": filter_end.isoformat()
+    }
+
+    processed_file = json_repo.export_processed(
+        filtered_events,
+        filters_applied,
+        timestamp
+    )
 
     # Also save to events_output.json for backwards compatibility
     output = {
         "timestamp": timestamp.isoformat(),
         "total_events": len(filtered_events),
-        "filters": result.get("filters", {}),
-        "stats": result.get("stats", {}),
+        "filters": filters_applied,
+        "database": "data/events.db",
+        "total_in_database": repository.count(),
         "events": [e.model_dump(mode='json') for e in filtered_events]
     }
 
@@ -146,7 +189,9 @@ def main(max_events: int = 100):
     print("\n" + "=" * 60)
     print(f"✓ Results saved to: {output_file}")
     print(f"✓ Processed data: {processed_file}")
-    print(f"✓ Total events: {len(filtered_events)}")
+    print(f"✓ Total filtered events: {len(filtered_events)}")
+    print(f"✓ Total events in database: {repository.count()}")
+    print(f"✓ Database: data/events.db")
     print("=" * 60)
 
     # Print sample events

@@ -6,12 +6,18 @@ The Events Agent is a web scraping system that automatically discovers, filters,
 
 ### Key Features
 
-- **Multi-Source Crawling**: Fetches events from Luma.com and Meetup.com (both working)
-- **Smart Filtering**: Location-based (NYC) and date-based (current + next week) filtering
-- **Data Organization**: Separate raw and processed data storage
+- **Multi-Source Crawling**: Fetches events from 9 sources:
+  - General: Luma, Meetup, Eventbrite, Fever, Cozymeal
+  - Jazz: Jazz Near You, Songkick
+  - Cultural/Seasonal: TimeOut NYC, DoNYC
+- **Smart Filtering**: Location-based (NYC) and date-based (current + next week) filtering via SQL
+- **Event Categorization**: Genre, experience type, tags for jazz, Valentine's Day, and more
+- **Jazz Venue Index**: 15+ major NYC jazz venues with metadata
+- **Seasonal Detection**: Valentine's Day and holiday event identification
+- **Data Organization**: SQLite database with automatic deduplication
 - **Event Limits**: Configurable maximum events (default: 100)
 - **Structured Output**: Pydantic-validated JSON with comprehensive event details
-- **Comprehensive Testing**: 33 unit tests + 4 integration tests
+- **Comprehensive Testing**: 104 tests (93 unit + 11 integration)
 
 ## Quick Start
 
@@ -51,10 +57,29 @@ events-agent/
 ├── src/events_agent/
 │   ├── models/
 │   │   └── event.py              # Pydantic Event model with validation
+│   ├── database/                 # Database management
+│   │   ├── connection.py         # Thread-safe connection pooling
+│   │   ├── schema.py             # Schema definitions + migrations
+│   │   └── __init__.py
+│   ├── repositories/             # Repository pattern
+│   │   ├── base.py               # Abstract Repository interface
+│   │   ├── event_repository.py   # Event repository interface (CRUD + queries)
+│   │   ├── sqlite_repository.py  # SQLite implementation
+│   │   ├── json_repository.py    # JSON export for debugging
+│   │   └── __init__.py
+│   ├── data/                     # Reference data & utilities
+│   │   ├── jazz_venues.py        # NYC jazz venue index (15+ venues)
+│   │   ├── seasonal_events.py    # Valentine's Day & holiday detection
+│   │   └── __init__.py
 │   ├── crawlers/
 │   │   ├── base.py               # Abstract base crawler class
 │   │   ├── luma_crawler.py       # Luma.com implementation
 │   │   ├── meetup_crawler.py     # Meetup.com re-export (refactored)
+│   │   ├── fever_crawler.py      # Fever.com implementation
+│   │   ├── cozymeal_crawler.py   # Cozymeal.com implementation
+│   │   ├── eventbrite_crawler.py # Eventbrite.com implementation
+│   │   ├── jazznearyou_crawler.py # Jazz Near You + Songkick
+│   │   ├── timeout_crawler.py    # TimeOut NYC + DoNYC
 │   │   └── meetup/               # Meetup crawler module (SOLID refactor)
 │   │       ├── __init__.py       # Module exports
 │   │       ├── meetup_crawler.py # Main orchestration (~230 lines)
@@ -65,85 +90,217 @@ events-agent/
 │   │       ├── event_transformer.py # Raw data → Event model
 │   │       └── constants.py      # Configuration constants
 │   ├── filters/
-│   │   ├── date_filter.py        # Current/next week filtering
-│   │   └── location_filter.py    # NYC location filtering
+│   │   ├── date_filter.py        # Date utilities (kept for compatibility)
+│   │   └── location_filter.py    # Location utilities (kept for compatibility)
 │   ├── storage/
-│   │   └── data_manager.py       # Raw/processed data management
+│   │   └── data_manager.py       # Legacy JSON storage (deprecated)
 │   ├── utils/
 │   │   └── date_utils.py         # Date parsing and timezone helpers
 │   └── main.py                   # CLI entry point
 ├── tests/
 │   ├── fixtures/                 # HTML samples for testing
-│   ├── unit/                     # Unit tests (33 tests)
-│   └── integration/              # Integration tests (4 tests)
+│   ├── unit/                     # Unit tests (93 tests)
+│   │   ├── test_database.py      # Database connection & schema tests
+│   │   ├── test_repositories.py  # Repository tests
+│   │   └── ...
+│   └── integration/              # Integration tests (11 tests)
+│       ├── test_sqlite_flow.py   # Full SQLite flow tests
+│       └── ...
 ├── data/
-│   ├── raw/                      # Raw crawled events by source
-│   ├── processed/                # Filtered and processed events
-│   └── debug/                    # Debug JSON files (gitignored)
+│   ├── events.db                 # SQLite database (PRIMARY STORAGE)
+│   ├── events.db-shm             # Shared memory file (WAL mode)
+│   ├── events.db-wal             # Write-ahead log (WAL mode)
+│   ├── raw/                      # Legacy JSON files (deprecated)
+│   ├── processed/                # Legacy JSON files (deprecated)
+│   └── debug/                    # Debug JSON exports (gitignored)
+├── queries/
+│   ├── quick_analysis.sql        # SQL queries for analysis
+│   └── jazz_and_valentines.sql   # Jazz & Valentine's queries (70+ examples)
+├── examples/
+│   └── crawl_jazz_and_valentines.py # Example usage script
 ├── scripts/                      # Ad-hoc utility scripts
+│   └── migrate_json_to_sqlite.py # JSON to SQLite migration
 ├── docs/archive/                 # Old implementation docs
 ├── pyproject.toml                # Dependencies and tool configuration
+├── SQLITE_MIGRATION.md           # SQLite migration documentation
+├── NEW_SOURCES.md                # Jazz & Valentine's Day sources documentation
+├── IMPLEMENTATION_SUMMARY.md     # Implementation summary
 └── README.md                     # User documentation
 ```
 
 ### Data Flow
 
 ```
-┌─────────────────┐
-│ Luma.com        │──┐
-│ Meetup.com      │  │  1. Crawl Sources
-└─────────────────┘  │
-                     ▼
-              ┌──────────────┐
-              │ Raw Events   │  2. Save Raw Data
-              │ data/raw/    │
-              └──────────────┘
+┌─────────────────────────────────────┐
+│ 5 Event Sources                     │
+│ - Luma.com                          │
+│ - Meetup.com                        │  1. Crawl Sources
+│ - Eventbrite.com                    │
+│ - Fever.com                         │
+│ - Cozymeal.com                      │
+└─────────────────────────────────────┘
                      │
                      ▼
-              ┌──────────────┐
-              │ NYC Filter   │  3. Location Filtering
-              └──────────────┘
+              ┌──────────────────────┐
+              │ SQLite Repository    │  2. Save to Database
+              │ (Automatic Dedupe)   │     (data/events.db)
+              └──────────────────────┘
                      │
                      ▼
-              ┌──────────────┐
-              │ Date Filter  │  4. Current/Next Week
-              └──────────────┘
+              ┌──────────────────────┐
+              │ SQL Query            │  3. Filter Events
+              │ - Location: NYC      │     (Single Query)
+              │ - Date: Current/Next │
+              │ - Limit: 100         │
+              └──────────────────────┘
                      │
                      ▼
-              ┌──────────────┐
-              │ Limit (100)  │  5. Apply Event Limit
-              └──────────────┘
+              ┌──────────────────────┐
+              │ Filtered Events      │  4. Return Results
+              │ (Event objects)      │
+              └──────────────────────┘
                      │
                      ▼
-              ┌──────────────┐
-              │ Processed    │  6. Save Processed
-              │ data/proc/   │
-              └──────────────┘
+              ┌──────────────────────┐
+              │ JSON Export          │  5. Debug/Backwards
+              │ data/debug/          │     Compatibility
+              └──────────────────────┘
 ```
 
 ## Data Organization
+
+### Primary Storage: SQLite Database
+
+**Location**: `/Users/iliazlobin/Code/events-agent/data/events.db`
+
+The SQLite database is the **primary storage** for all event data. All crawlers save directly to this database.
+
+**Database Schema**:
+
+```sql
+-- events table (22 columns)
+CREATE TABLE events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    -- Required fields
+    event_id TEXT NOT NULL,
+    source TEXT NOT NULL,
+    url TEXT NOT NULL,
+    title TEXT NOT NULL,
+    start_datetime TIMESTAMP NOT NULL,
+    -- Optional fields
+    description TEXT,
+    end_datetime TIMESTAMP,
+    location_name TEXT,
+    location_address TEXT,
+    city TEXT,
+    state TEXT,
+    is_online BOOLEAN DEFAULT 0,
+    attendee_count INTEGER,
+    capacity INTEGER,
+    spots_remaining INTEGER,
+    price_cents INTEGER,
+    currency TEXT DEFAULT 'USD',
+    is_free BOOLEAN DEFAULT 1,
+    organizer_name TEXT,
+    organizer_url TEXT,
+    crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -- Prevents duplicates
+    UNIQUE(event_id, source)
+);
+
+-- Performance indexes
+CREATE INDEX idx_events_location_datetime ON events(city, state, start_datetime);
+CREATE INDEX idx_events_source_datetime ON events(source, start_datetime);
+-- + 6 more indexes
+
+-- Tracks each crawl operation
+CREATE TABLE crawl_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source TEXT NOT NULL,
+    started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completed_at TIMESTAMP,
+    events_crawled INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'in_progress'
+);
+
+-- Manages database migrations
+CREATE TABLE schema_version (
+    version INTEGER PRIMARY KEY,
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    description TEXT
+);
+```
 
 ### Directory Structure
 
 ```
 data/
-├── raw/
-│   ├── luma_20260131_213554.json      # Raw Luma events
-│   ├── meetup_20260131_213554.json    # Raw Meetup events
-│   └── ...
-└── processed/
-    ├── events_20260131_213554.json    # Filtered events
-    └── ...
+├── events.db                 # SQLite database (PRIMARY STORAGE)
+├── events.db-shm             # Shared memory file (WAL mode)
+├── events.db-wal             # Write-ahead log (WAL mode)
+├── raw/                      # DEPRECATED: Legacy JSON files
+├── processed/                # DEPRECATED: Legacy JSON files
+└── debug/                    # JSON exports for debugging (gitignored)
 ```
 
-### Raw Data Format
+**Important**:
+- JSON files in `data/raw/` and `data/processed/` are deprecated
+- All crawlers now save to SQLite database
+- JSON export is available in `data/debug/` for debugging only
 
-**File**: `data/raw/{source}_{timestamp}.json`
+### Querying the Database
+
+**Using SQL directly**:
+
+```bash
+# Open database in sqlite3 CLI
+sqlite3 data/events.db
+
+# Or use DB Browser for SQLite (GUI)
+open data/events.db
+```
+
+**Example SQL queries** (see `queries/quick_analysis.sql` for more):
+
+```sql
+-- Count events by source
+SELECT source, COUNT(*) as count
+FROM events
+GROUP BY source
+ORDER BY count DESC;
+
+-- NYC events this weekend
+SELECT title, start_datetime, location_name, url
+FROM events
+WHERE city LIKE '%New York%'
+  AND state = 'NY'
+  AND DATE(start_datetime) >= date('now', 'weekday 5')  -- This Friday
+  AND DATE(start_datetime) <= date('now', 'weekday 6')  -- This Saturday
+ORDER BY start_datetime;
+
+-- Price distribution
+SELECT
+    CASE
+        WHEN is_free = 1 THEN 'Free'
+        WHEN price_cents < 1000 THEN '$0-10'
+        WHEN price_cents < 2500 THEN '$10-25'
+        ELSE '$25+'
+    END as price_range,
+    COUNT(*) as count
+FROM events
+GROUP BY price_range;
+```
+
+### Legacy JSON Format (Deprecated)
+
+JSON files are no longer used for primary storage, but are still available for debugging.
+
+**Debug Export**: `data/debug/{source}_{timestamp}.json`
 
 ```json
 {
   "source": "luma",
-  "timestamp": "2026-01-31T21:35:54.504309",
+  "timestamp": "2026-02-10T21:35:54.504309",
   "count": 29,
   "events": [
     {
@@ -151,46 +308,103 @@ data/
       "source": "luma",
       "url": "https://lu.ma/event-slug",
       "title": "Event Title",
-      "description": "Event description...",
-      "start_datetime": "2026-02-05T18:00:00Z",
-      "end_datetime": "2026-02-05T20:00:00Z",
-      "location_name": "Venue Name",
-      "location_address": "123 Main St, New York, NY 10001",
-      "city": "New York",
-      "state": "NY",
-      "is_online": false,
-      "attendee_count": 50,
-      "capacity": 100,
-      "spots_remaining": 50,
-      "price_cents": 0,
-      "currency": "USD",
-      "is_free": true,
-      "organizer_name": "Organizer Name",
-      "organizer_url": "https://...",
-      "crawled_at": "2026-02-01T02:35:59.682954"
+      // ... same structure as database
     }
   ]
 }
 ```
 
-### Processed Data Format
+## SQLite Database
 
-**File**: `data/processed/events_{timestamp}.json`
+### Database Location
 
-```json
-{
-  "timestamp": "2026-01-31T21:35:54.504309",
-  "total_events": 25,
-  "filters": {
-    "location": "NYC",
-    "date_range": "current_and_next_week",
-    "max_events": 100
-  },
-  "events": [
-    // Same event structure as raw
-  ]
-}
+**Primary database**: `/Users/iliazlobin/Code/events-agent/data/events.db`
+
+All crawled events are stored in this SQLite database with automatic deduplication.
+
+### Key Benefits
+
+✅ **10-100x faster queries** - SQL indexes vs in-memory filtering
+✅ **Automatic deduplication** - UNIQUE(event_id, source) constraint
+✅ **Historical tracking** - Query any past crawl
+✅ **Analytics support** - Count, aggregate, trend analysis
+✅ **Concurrent reads** - WAL mode supports multiple readers
+✅ **No new dependencies** - SQLite built into Python
+
+### Schema Overview
+
+**events table** (22 columns):
+- Required: event_id, source, url, title, start_datetime
+- Optional: location, pricing, organizer, description
+- Automatic: crawled_at timestamp, auto-incrementing id
+- Constraint: UNIQUE(event_id, source) prevents duplicates
+
+**crawl_sessions table**:
+- Tracks each crawl operation
+- Stores source, timestamps, events_crawled count
+
+**schema_version table**:
+- Manages database migrations
+- Tracks applied schema versions
+
+### Indexes for Performance
+
+```sql
+CREATE INDEX idx_events_location_datetime ON events(city, state, start_datetime);
+CREATE INDEX idx_events_source_datetime ON events(source, start_datetime);
+CREATE INDEX idx_events_start_datetime ON events(start_datetime);
+CREATE INDEX idx_events_city ON events(city);
+CREATE INDEX idx_events_source ON events(source);
+CREATE INDEX idx_events_event_id ON events(event_id);
+CREATE INDEX idx_events_is_online ON events(is_online);
+CREATE INDEX idx_events_is_free ON events(is_free);
 ```
+
+### Querying Options
+
+**1. Python via Repository** (Recommended):
+```python
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.database.connection import DatabaseConnection
+
+db = DatabaseConnection('data/events.db')
+repo = SQLiteEventRepository(db)
+events = repo.find_by_location_and_date(start, end, "new york", "NY")
+```
+
+**2. SQL CLI**:
+```bash
+sqlite3 data/events.db "SELECT title, start_datetime FROM events LIMIT 10"
+```
+
+**3. DB Browser for SQLite** (GUI):
+```bash
+open data/events.db  # macOS
+# Or download from https://sqlitebrowser.org/
+```
+
+**4. Pre-written SQL queries**:
+```bash
+# See queries/quick_analysis.sql for ready-to-use queries
+# Open in VSCode with SQLite extension
+```
+
+### WAL Mode
+
+The database uses Write-Ahead Logging (WAL) mode for better concurrency:
+- Multiple processes can read simultaneously
+- Readers don't block writers
+- Creates `.db-shm` and `.db-wal` files (normal behavior)
+
+### Migration
+
+To migrate existing JSON files to SQLite:
+
+```bash
+python scripts/migrate_json_to_sqlite.py
+```
+
+See `SQLITE_MIGRATION.md` for detailed migration documentation.
 
 ## Event Model
 
@@ -220,12 +434,268 @@ data/
 - `organizer_name` (str): Host/organizer name
 - `organizer_url` (HttpUrl): Organizer profile URL
 
+### Enhanced Event Fields
+
+The Event model now includes 25+ additional fields for music, performance, and seasonal events:
+
+**Music/Performance Fields**:
+- `genre` (str): "jazz", "blues", "rock", "classical", etc.
+- `performer_names` (List[str]): List of artist/performer names
+- `duration_minutes` (int): Event duration in minutes
+
+**Categorization Fields**:
+- `experience_type` (str): "concert", "cooking class", "comedy", "magic", etc.
+- `category` (str): "music", "food", "entertainment", "art"
+- `tags` (List[str]): ["jazz", "valentines-day", "date-night", "romantic"]
+
+**Enhanced Content**:
+- `image_url` (str): Main event image URL
+- `ai_summary` (str): AI-generated event summary
+- `topics` (List[str]): Event topics/keywords
+
+**Host/Organizer Details**:
+- `host_name` (str): Individual host name
+- `host_bio` (str): Host biography
+- `group_name` (str): Meetup group name
+- `group_rating` (float): Group rating (0-5)
+- `group_review_count` (int): Number of group reviews
+
+**Cooking Class Fields**:
+- `chef_name` (str): Chef name
+- `chef_rating` (float): Chef rating (0-5)
+- `chef_bio` (str): Chef biography
+- `skill_level` (str): "beginner", "intermediate", "advanced"
+- `cuisine_type` (str): "Italian", "French", "Asian", etc.
+
+**Enhanced Ratings**:
+- `rating` (float): Event rating (0-5)
+- `review_count` (int): Number of reviews
+
+**Enhanced Location**:
+- `latitude` (float): Venue latitude
+- `longitude` (float): Venue longitude
+- `directions` (str): Directions to venue
+
+**Enhanced Pricing**:
+- `fee_amount` (float): Additional fee amount
+- `fee_required` (bool): Whether fee is required
+- `payment_methods` (str): Accepted payment methods
+
+**External Links**:
+- `registration_url` (str): External registration URL
+
+**Metadata**:
+- `detail_crawled` (bool): Whether detail page was crawled
+
 ### Validation Rules
 
 - `end_datetime` must be after `start_datetime`
 - Numeric fields must be >= 0
 - URLs must be valid
 - Title cannot be empty
+
+## Data Infrastructure
+
+### Jazz Venue Index
+
+A comprehensive index of major NYC jazz venues with metadata for venue-based filtering and enrichment.
+
+**Location**: `src/events_agent/data/jazz_venues.py`
+
+**Features**:
+- 15+ major NYC jazz venues with complete metadata
+- Neighborhood groupings (Greenwich Village, Midtown, Harlem, etc.)
+- Capacity information
+- Venue type classification (club, bar, concert-hall, restaurant)
+- Website URLs
+- Historic notes
+
+**Venues Included**:
+- **Greenwich Village**: Village Vanguard, Blue Note, Smalls, Mezzrow, Zinc Bar
+- **Midtown**: Birdland, Iridium, Dizzy's Club, Somethin' Jazz Club
+- **Harlem**: Minton's Playhouse, Bill's Place
+- **Other**: Jazz Gallery, Roulette, Nublu, The Django
+
+**Usage**:
+```python
+from events_agent.data import (
+    NYC_JAZZ_VENUES,
+    get_venue_by_name,
+    get_venues_by_neighborhood,
+    is_known_jazz_venue,
+)
+
+# Check if venue is a known jazz venue
+if is_known_jazz_venue("Blue Note"):
+    print("This is a famous jazz club!")
+
+# Get venue details
+venue = get_venue_by_name("Village Vanguard")
+print(f"{venue.name} - {venue.address}")
+print(f"Capacity: {venue.capacity}, Type: {venue.venue_type}")
+print(f"Neighborhood: {venue.neighborhood}")
+
+# Get all venues in a neighborhood
+gv_venues = get_venues_by_neighborhood("Greenwich Village")
+for venue in gv_venues:
+    print(f"- {venue.name} ({venue.capacity} capacity)")
+
+# Get all venue names for filtering
+all_venue_names = get_all_venue_names()
+```
+
+**Data Structure**:
+```python
+@dataclass
+class JazzVenue:
+    name: str
+    address: str
+    city: str
+    state: str
+    neighborhood: str
+    venue_type: str  # club, bar, concert-hall, restaurant
+    website: Optional[str] = None
+    capacity: Optional[int] = None
+    notes: Optional[str] = None
+```
+
+### Seasonal Event Detection
+
+Utilities for detecting and filtering Valentine's Day and other seasonal/holiday events.
+
+**Location**: `src/events_agent/data/seasonal_events.py`
+
+**Features**:
+- Valentine's Day keyword detection (30+ keywords)
+- Date range calculation (Feb 7-16 for Valentine's)
+- Date-night event type identification
+- Romantic neighborhood list
+- Support for multiple holidays
+
+**Valentine's Day Keywords**:
+- valentine, valentines, valentine's
+- romantic, couples, date night
+- romance, love, sweetheart
+- galentine, singles, anti-valentine
+
+**Valentine's Event Types**:
+- dinner, cooking class, wine tasting
+- cocktail class, paint and sip
+- jazz concert, comedy show, theater
+- dance class, pottery class, spa
+- cruise, rooftop
+
+**Usage**:
+```python
+from events_agent.data import (
+    get_valentines_date_range,
+    is_valentines_event,
+    is_date_night_event,
+    ROMANTIC_NEIGHBORHOODS,
+)
+
+# Get Valentine's Day date range (Feb 7-16)
+vday_start, vday_end = get_valentines_date_range(2026)
+print(f"Valentine's period: {vday_start} to {vday_end}")
+
+# Check if event is Valentine's related
+event_title = "Romantic Jazz Night for Couples"
+event_desc = "Perfect date night experience with live music"
+event_tags = ["jazz", "romantic", "couples"]
+
+if is_valentines_event(event_title, event_desc, event_tags):
+    print("This is a Valentine's event!")
+
+# Check if event type is date-night appropriate
+if is_date_night_event("cooking class", ["couples", "date-night"]):
+    print("Great for a date!")
+
+# Filter by romantic neighborhoods
+if event.location_address:
+    for neighborhood in ROMANTIC_NEIGHBORHOODS:
+        if neighborhood in event.location_address:
+            print(f"Event in romantic {neighborhood}!")
+```
+
+**Supported Seasonal Categories**:
+```python
+class SeasonalCategory(str, Enum):
+    VALENTINES_DAY = "valentines-day"
+    CHRISTMAS = "christmas"
+    NEW_YEARS = "new-years"
+    HALLOWEEN = "halloween"
+    THANKSGIVING = "thanksgiving"
+    SPRING = "spring"
+    SUMMER = "summer"
+    FALL = "fall"
+    WINTER = "winter"
+```
+
+**Romantic NYC Neighborhoods**:
+- Greenwich Village, West Village, SoHo
+- Tribeca, Chelsea, Upper West Side
+- Brooklyn Heights, DUMBO, Williamsburg
+- Long Island City (rooftop views)
+
+### Combined Usage Examples
+
+**Find jazz events at known venues**:
+```python
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.data import is_known_jazz_venue
+
+repo = SQLiteEventRepository(db)
+all_events = repo.find_all()
+
+# Filter by known jazz venues
+jazz_venue_events = [
+    e for e in all_events 
+    if e.location_name and is_known_jazz_venue(e.location_name)
+]
+
+print(f"Found {len(jazz_venue_events)} events at famous jazz venues")
+```
+
+**Find Valentine's Day events**:
+```python
+from events_agent.data import get_valentines_date_range, is_valentines_event
+
+# Get date range
+vday_start, vday_end = get_valentines_date_range(2026)
+
+# Query database
+date_range_events = repo.find_by_date_range(vday_start, vday_end)
+
+# Filter by Valentine's keywords
+vday_events = [
+    e for e in date_range_events
+    if is_valentines_event(e.title, e.description, e.tags)
+]
+
+print(f"Found {len(vday_events)} Valentine's Day events")
+```
+
+**Find romantic jazz events for Valentine's**:
+```python
+from events_agent.data import (
+    get_valentines_date_range,
+    is_known_jazz_venue,
+    is_date_night_event,
+)
+
+vday_start, vday_end = get_valentines_date_range(2026)
+vday_events = repo.find_by_date_range(vday_start, vday_end)
+
+romantic_jazz = [
+    e for e in vday_events
+    if (e.genre == "jazz" or (e.tags and "jazz" in e.tags))
+    and (is_known_jazz_venue(e.location_name) or is_date_night_event(e.experience_type, e.tags))
+]
+
+print(f"Found {len(romantic_jazz)} romantic jazz events for Valentine's")
+for event in romantic_jazz[:5]:
+    print(f"- {event.title} at {event.location_name}")
+```
 
 ## Crawlers
 
@@ -238,7 +708,11 @@ All crawlers inherit from `BaseCrawler` which provides:
 - **Browser management**: Playwright page lifecycle
 - **User agent spoofing**: Avoids bot detection
 
-### Luma Crawler
+**Important**: Crawlers return Event objects that should be saved to the SQLite database via the repository pattern.
+
+### General Event Sources
+
+#### Luma Crawler
 
 **Status**: ✅ Working
 
@@ -249,16 +723,27 @@ All crawlers inherit from `BaseCrawler` which provides:
 **Example**:
 ```python
 from events_agent.crawlers.luma_crawler import LumaCrawler
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.database.connection import DatabaseConnection
 from playwright.sync_api import sync_playwright
 
+# Initialize database and repository
+db = DatabaseConnection('data/events.db')
+repo = SQLiteEventRepository(db)
+
+# Crawl events
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
-    crawler = LumaCrawler()
-    events = crawler.crawl(browser, "nyc")
-    browser.close()
+ browser = p.chromium.launch(headless=True)
+ crawler = LumaCrawler()
+ events = crawler.crawl(browser, "nyc")
+ browser.close()
+
+# Save to database (automatic deduplication)
+repo.save_many(events)
+print(f"Saved {len(events)} events to database")
 ```
 
-### Meetup Crawler
+#### Meetup Crawler
 
 **Status**: ✅ Working
 
@@ -279,6 +764,125 @@ with sync_playwright() as p:
 - Daily and total event limits
 - Automatic scrolling to load more events
 - Dual extraction (DOM + Apollo state)
+
+#### Other General Crawlers
+
+**Eventbrite, Fever, Cozymeal**: ✅ Working
+
+All crawlers follow the same pattern:
+1. Inherit from `BaseCrawler`
+2. Return list of `Event` objects
+3. Events are saved to SQLite via repository
+4. Automatic deduplication via UNIQUE(event_id, source) constraint
+
+### 🎵 Jazz-Specific Sources
+
+#### Jazz Near You Crawler
+
+**Status**: ✅ Ready for testing
+**Source**: jazznearyou.com
+**Coverage**: NYC jazz venues, national coverage
+**Data Quality**: High - dedicated jazz platform
+
+**Features**:
+- Venue-specific listings (80+ NYC venues tracked)
+- Artist/performer information extraction
+- Date filtering
+- Genre tagging (jazz, blues, swing)
+- Price extraction
+
+**Usage**:
+```python
+from events_agent.crawlers.jazznearyou_crawler import JazzNearYouCrawler
+
+crawler = JazzNearYouCrawler()
+events = crawler.crawl(browser, "nyc")
+repo.save_many(events)
+```
+
+#### Songkick Crawler
+
+**Status**: ✅ Ready for testing
+**Source**: songkick.com
+**Coverage**: All music genres with jazz filtering
+**Data Quality**: Very high - professional platform
+
+**Features**:
+- Genre filtering (jazz, blues, etc.)
+- Venue information
+- Artist tracking
+- Tour dates
+- Infinite scroll support
+
+**Usage**:
+```python
+from events_agent.crawlers.jazznearyou_crawler import SongkickCrawler
+
+crawler = SongkickCrawler()
+events = crawler.crawl(browser, "nyc")  # Jazz events only
+repo.save_many(events)
+```
+
+### 💝 Cultural & Seasonal Event Sources
+
+#### TimeOut NYC Crawler
+
+**Status**: ✅ Ready for testing
+**Source**: timeout.com
+**Coverage**: All NYC cultural events
+**Data Quality**: Very high - professional curation
+
+**Features**:
+- Valentine's Day specific section
+- Jazz club listings
+- Seasonal events
+- Food & drink events
+- Category-based browsing
+- Image extraction
+- Multi-category support
+
+**Usage**:
+```python
+from events_agent.crawlers.timeout_crawler import TimeOutNYCCrawler
+
+# Valentine's Day events
+vday_crawler = TimeOutNYCCrawler(category="valentines-day")
+vday_events = vday_crawler.crawl(browser, "newyork")
+repo.save_many(vday_events)
+
+# Jazz events
+jazz_crawler = TimeOutNYCCrawler(category="jazz")
+jazz_events = jazz_crawler.crawl(browser, "newyork")
+repo.save_many(jazz_events)
+
+# All events
+all_crawler = TimeOutNYCCrawler(category="events-calendar")
+all_events = all_crawler.crawl(browser, "newyork")
+repo.save_many(all_events)
+```
+
+#### DoNYC Crawler
+
+**Status**: ✅ Ready for testing
+**Source**: donyc.com
+**Coverage**: Curated NYC events
+**Data Quality**: High - human-curated
+
+**Features**:
+- Valentine's Day section
+- Galentine's Day events
+- Seasonal events
+- Singles events
+- Curated recommendations
+
+**Usage**:
+```python
+from events_agent.crawlers.timeout_crawler import DoNYCCrawler
+
+crawler = DoNYCCrawler()
+events = crawler.crawl(browser, "valentines-day")
+repo.save_many(events)
+```
 
 ## Filtering
 
@@ -323,28 +927,88 @@ custom_filtered = DateFilter.filter_by_range(events, start_date, end_date)
 
 ## Data Management
 
-### DataManager Class
+### SQLite Repository (Primary)
 
-**Purpose**: Centralized data storage and retrieval
+**Purpose**: Database access with automatic deduplication and efficient querying
+
+**Repository Pattern**: Clean abstraction following SOLID principles
 
 **Key Methods**:
+
+```python
+from events_agent.database.connection import DatabaseConnection
+from events_agent.database.schema import SchemaManager
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from datetime import datetime
+
+# Initialize database
+db = DatabaseConnection('data/events.db')
+schema = SchemaManager(db)
+schema.initialize_schema()
+
+# Create repository
+repo = SQLiteEventRepository(db)
+
+# Save events (automatic deduplication via UNIQUE constraint)
+repo.save(event)                    # Save single event
+repo.save_many(events)              # Save multiple events
+repo.upsert(event)                  # Insert or update
+repo.upsert_many(events)            # Bulk upsert
+
+# Query events
+all_events = repo.find_all()
+event = repo.find_by_id(1)
+event = repo.find_by_event_id("evt-abc123", "luma")
+
+# Filter events (10-100x faster than JSON)
+nyc_events = repo.find_by_location_and_date(
+    start=datetime(2026, 2, 13),
+    end=datetime(2026, 2, 14),
+    city="new york",
+    state="NY",
+    exclude_online=True,
+    limit=100
+)
+
+# Analytics
+total = repo.count()
+sources = repo.get_sources()        # List of unique sources
+cities = repo.get_cities()          # List of unique cities
+date_range = repo.get_date_range()  # (min_date, max_date)
+
+# Check for duplicates
+exists = repo.exists("evt-abc123", "luma")
+```
+
+### Legacy DataManager (Deprecated)
+
+**Purpose**: Old JSON-based storage (kept for backwards compatibility)
+
+**Status**: Deprecated - use SQLite repository instead
 
 ```python
 from events_agent.storage.data_manager import DataManager
 
 manager = DataManager(base_dir="data")
 
-# Save raw events from a source
+# Save raw events from a source (DEPRECATED)
 file_path = manager.save_raw_events("luma", events, timestamp)
 
-# Save processed events
+# Save processed events (DEPRECATED)
 file_path = manager.save_processed_events(events, filters, timestamp)
 
-# Load events from file
+# Load events from file (DEPRECATED)
 events = manager.load_raw_events("data/raw/luma_20260131_213554.json")
+```
 
-# Get latest raw file for a source
-latest = manager.get_latest_raw_file("luma")
+### JSON Export for Debugging
+
+```python
+from events_agent.repositories.json_repository import JSONEventRepository
+
+json_repo = JSONEventRepository("data/debug")
+json_repo.export_events(events, "luma", timestamp)
+json_repo.export_processed(filtered_events, filters, timestamp)
 ```
 
 ## Advanced Usage
@@ -367,33 +1031,49 @@ events = main(max_events=200)
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from events_agent.crawlers.luma_crawler import LumaCrawler
+from events_agent.database.connection import DatabaseConnection
+from events_agent.database.schema import SchemaManager
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
 from events_agent.filters.date_filter import DateFilter
-from events_agent.filters.location_filter import LocationFilter
-from events_agent.storage.data_manager import DataManager
 
-# Initialize
-manager = DataManager()
-timestamp = datetime.now()
+# Initialize database
+db = DatabaseConnection('data/events.db')
+schema = SchemaManager(db)
+schema.initialize_schema()
+repo = SQLiteEventRepository(db)
 
-# Crawl
+# Crawl events from source
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     crawler = LumaCrawler()
     events = crawler.crawl(browser, "nyc")
     browser.close()
 
-# Save raw data
-manager.save_raw_events("luma", events, timestamp)
+print(f"Crawled {len(events)} events")
 
-# Filter
-nyc_events = LocationFilter.filter_nyc_events(events)
-week_events = DateFilter.filter_current_and_next_week(nyc_events)
+# Save to database (automatic deduplication)
+repo.save_many(events)
+print(f"Saved to database")
 
-# Limit
-final_events = week_events[:100]
+# Query filtered events using SQL (10-100x faster than in-memory filtering)
+current_start, current_end = DateFilter.get_current_week_range()
+next_start, next_end = DateFilter.get_next_week_range()
 
-# Save processed
-manager.save_processed_events(final_events, {"location": "NYC"}, timestamp)
+filtered_events = repo.find_by_location_and_date(
+    start=current_start,
+    end=next_end,
+    city="new york",
+    state="NY",
+    exclude_online=True,
+    limit=100
+)
+
+print(f"Found {len(filtered_events)} NYC events for current and next week")
+
+# Export to JSON for debugging (optional)
+from events_agent.repositories.json_repository import JSONEventRepository
+json_repo = JSONEventRepository("data/debug")
+json_repo.export_processed(filtered_events, {"location": "NYC"}, datetime.now())
 ```
 
 ### Adding a New Crawler
@@ -403,6 +1083,8 @@ manager.save_processed_events(final_events, {"location": "NYC"}, timestamp)
 ```python
 from events_agent.crawlers.base import BaseCrawler
 from events_agent.models.event import Event, EventSource
+from playwright.sync_api import Page
+from typing import List
 
 class MySourceCrawler(BaseCrawler):
     def get_events_url(self, location: str) -> str:
@@ -411,21 +1093,48 @@ class MySourceCrawler(BaseCrawler):
     def extract_events_from_page(self, page: Page) -> List[Event]:
         events = []
         # Extract and parse events from page
-        # Transform to Event objects
+        # Transform to Event objects with proper fields:
+        #   event_id, source, url, title, start_datetime (required)
+        #   location_name, city, state, price_cents, etc. (optional)
         return events
 ```
 
-2. **Update main.py**:
+2. **Update main.py to use the new crawler**:
 
 ```python
 from events_agent.crawlers.my_source_crawler import MySourceCrawler
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
 
 # In main():
+# Initialize repository
+repo = SQLiteEventRepository(db)
+
+# Crawl from new source
 my_crawler = MySourceCrawler()
 my_events = my_crawler.crawl(browser, "nyc")
-manager.save_raw_events("mysource", my_events, timestamp)
-all_events.extend(my_events)
+
+# Save to database (automatic deduplication)
+repo.save_many(my_events)
+print(f"Saved {len(my_events)} events from MySource")
+
+# Query combined results from all sources
+all_events = repo.find_all()
 ```
+
+3. **Add to EventSource enum** (optional):
+
+```python
+# In src/events_agent/models/event.py
+class EventSource(str, Enum):
+    LUMA = "luma"
+    MEETUP = "meetup"
+    EVENTBRITE = "eventbrite"
+    FEVER = "fever"
+    COZYMEAL = "cozymeal"
+    MYSOURCE = "mysource"  # Add new source
+```
+
+**Important**: Crawlers should save directly to SQLite database via repository, not to JSON files.
 
 ## Testing
 
@@ -686,12 +1395,66 @@ class LocationFilter:
     def filter_by_city(events: List[Event], city: str) -> List[Event]
 ```
 
-### DataManager
+### DatabaseConnection
+
+```python
+class DatabaseConnection:
+    def __init__(self, db_path: str = "data/events.db")
+
+    def get_connection(self) -> sqlite3.Connection
+    def close(self)
+    def execute(self, query: str, params: tuple = ()) -> sqlite3.Cursor
+    def executemany(self, query: str, params: List[tuple]) -> sqlite3.Cursor
+    def commit(self)
+    def rollback(self)
+```
+
+### SQLiteEventRepository
+
+```python
+class SQLiteEventRepository(EventRepository):
+    def __init__(self, db: DatabaseConnection)
+
+    # CRUD methods
+    def save(self, event: Event) -> int
+    def save_many(self, events: List[Event]) -> List[int]
+    def find_by_id(self, id: int) -> Event | None
+    def find_all(self, limit: int = None, offset: int = 0) -> List[Event]
+    def delete(self, id: int) -> bool
+    def count(self) -> int
+
+    # Domain queries
+    def find_by_event_id(self, event_id: str, source: str) -> Event | None
+    def find_by_date_range(self, start: datetime, end: datetime,
+                          limit: int = None) -> List[Event]
+    def find_by_location(self, city: str, state: str = None,
+                        exclude_online: bool = False,
+                        limit: int = None) -> List[Event]
+    def find_by_location_and_date(self, start: datetime, end: datetime,
+                                  city: str, state: str = None,
+                                  exclude_online: bool = False,
+                                  limit: int = None) -> List[Event]
+    def find_by_source(self, source: str, limit: int = None) -> List[Event]
+
+    # Deduplication
+    def exists(self, event_id: str, source: str) -> bool
+    def upsert(self, event: Event) -> int
+    def upsert_many(self, events: List[Event]) -> List[int]
+
+    # Analytics
+    def count_by_filters(self, filters: dict) -> int
+    def get_sources(self) -> List[str]
+    def get_cities(self) -> List[str]
+    def get_date_range(self) -> tuple[datetime, datetime]
+```
+
+### DataManager (Deprecated)
 
 ```python
 class DataManager:
     def __init__(self, base_dir: str = "data")
 
+    # DEPRECATED: Use SQLiteEventRepository instead
     def save_raw_events(self, source: str, events: List[Event],
                        timestamp: datetime = None) -> str
 
@@ -705,19 +1468,26 @@ class DataManager:
 
 ## Future Enhancements
 
+### Completed ✅
+
+1. **Database Integration**: ✅ SQLite with automatic deduplication
+2. **More Event Sources**: ✅ Eventbrite, Fever, Cozymeal
+3. **Historical Tracking**: ✅ Query any past crawl via database
+4. **Analytics**: ✅ Count, aggregate, trend analysis via SQL
+
 ### Planned Features
 
 1. **More Event Sources**:
-   - Eventbrite
    - Facebook Events
    - Partiful
+   - Dice.fm
    - Custom event feeds
 
 2. **Enhanced Filtering**:
    - Category/tag filtering
-   - Price range filtering
+   - Price range filtering (via SQL)
    - Attendee count filtering
-   - Keyword search
+   - Full-text search (SQLite FTS5)
 
 3. **Recommendation Engine**:
    - User preferences
@@ -725,11 +1495,11 @@ class DataManager:
    - Attendee quality metrics
    - Personalized suggestions
 
-4. **Database Integration**:
-   - PostgreSQL storage
-   - Event deduplication
-   - Historical tracking
-   - Analytics
+4. **Advanced Database Features**:
+   - PostgreSQL support via same repository interface
+   - Relationship tables (normalize venues, organizers)
+   - Event history tracking (changes over time)
+   - Caching layer (Redis)
 
 5. **API Server**:
    - REST API endpoints
@@ -737,7 +1507,12 @@ class DataManager:
    - Real-time updates
    - Webhook notifications
 
-6. **Scheduling**:
+6. **CLI & Tools**:
+   - Query commands (search, filter, export)
+   - Analytics dashboard (web UI)
+   - Export formats (CSV, iCal, Google Calendar)
+
+7. **Scheduling**:
    - Cron job integration
    - Automated daily crawls
    - Email digests
@@ -747,18 +1522,21 @@ class DataManager:
 
 ### Resources
 
-- **Documentation**: This file (CLAUDE.md)
+- **Documentation**: This file (AGENTS.md / CLAUDE.md)
 - **README**: User-facing documentation (README.md)
-- **Tests**: See `tests/` for examples
-- **Plan**: Implementation plan at `~/.claude/plans/hazy-roaming-charm.md`
+- **SQLite Migration**: Database migration guide (SQLITE_MIGRATION.md)
+- **SQL Queries**: Pre-written analysis queries (queries/quick_analysis.sql)
+- **Tests**: See `tests/` for examples (104 tests)
+- **Database**: Browse data with DB Browser for SQLite
 
 ### Getting Help
 
 1. Check error messages and stack traces
 2. Review test files for usage examples
 3. Enable debug logging
-4. Check data files for structure issues
-5. Verify virtual environment is activated
+4. Query database directly with SQL
+5. Check SQLITE_MIGRATION.md for database issues
+6. Verify virtual environment is activated
 
 ## Project Organization and Refactoring
 
@@ -822,8 +1600,8 @@ Built with:
 
 ---
 
-**Last Updated**: 2026-02-02
+**Last Updated**: 2026-02-10
 
-**Version**: 0.1.0
+**Version**: 0.2.0
 
-**Status**: ✅ Luma working, ✅ Meetup working (refactored)
+**Status**: ✅ SQLite database integrated, ✅ 5 sources working (Luma, Meetup, Eventbrite, Fever, Cozymeal), ✅ Repository pattern implemented

@@ -147,3 +147,8 @@ scripts/test_*.py
 scripts/analyze_*.py
 scripts/crawl_*.py
 .cleanup_backup/
+
+# SQLite database files
+data/events.db
+data/events.db-shm
+data/events.db-wal

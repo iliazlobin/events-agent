@@ -1,7 +1,59 @@
 """Date parsing and formatting utilities."""
 
+import re
 from datetime import datetime
 from typing import Optional
+
+
+def parse_datetime_with_fallback(date_string: Optional[str]) -> Optional[datetime]:
+    """
+    Parse datetime from various string formats with fallback.
+
+    Tries ISO format first, then common display formats like:
+    - "Feb 15, 2026 7:00 PM"
+    - "Saturday, February 15 at 7:00 PM"
+    - "2/15/2026 7:00 PM"
+
+    Args:
+        date_string: Date string in various formats
+
+    Returns:
+        datetime object or None if parsing fails
+    """
+    if not date_string or not str(date_string).strip():
+        return None
+
+    # Try ISO format first
+    dt = parse_iso_datetime(str(date_string))
+    if dt:
+        return dt
+
+    # Try common formats
+    formats = [
+        "%b %d, %Y %I:%M %p",  # Feb 15, 2026 7:00 PM
+        "%B %d, %Y %I:%M %p",  # February 15, 2026 7:00 PM
+        "%m/%d/%Y %I:%M %p",  # 2/15/2026 7:00 PM
+        "%Y-%m-%d %H:%M:%S",  # 2026-02-15 19:00:00
+        "%Y-%m-%d %H:%M",  # 2026-02-15 19:00
+        "%b %d, %Y",  # Feb 15, 2026
+        "%B %d, %Y",  # February 15, 2026
+        "%m/%d/%Y",  # 2/15/2026
+    ]
+
+    for fmt in formats:
+        try:
+            return datetime.strptime(str(date_string).strip(), fmt)
+        except ValueError:
+            continue
+
+    # Try extracting ISO-like pattern
+    iso_match = re.search(r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?", str(date_string))
+    if iso_match:
+        dt = parse_iso_datetime(iso_match.group(0).replace(" ", "T"))
+        if dt:
+            return dt
+
+    return None
 
 
 def parse_iso_datetime(date_string: str) -> Optional[datetime]:

@@ -2,7 +2,11 @@
 
 import pytest
 from datetime import datetime
-from events_agent.utils.date_utils import parse_iso_datetime, format_event_date
+from events_agent.utils.date_utils import (
+    parse_iso_datetime,
+    parse_datetime_with_fallback,
+    format_event_date,
+)
 
 
 def test_parse_iso_datetime_with_z():
@@ -70,3 +74,30 @@ def test_format_event_date_noon():
     formatted = format_event_date(dt)
 
     assert "12:00 PM" in formatted
+
+
+def test_parse_datetime_with_fallback_iso():
+    """Test parse_datetime_with_fallback with ISO format."""
+    dt = parse_datetime_with_fallback("2026-02-05T18:00:00Z")
+    assert dt is not None
+    assert dt.year == 2026
+    assert dt.month == 2
+    assert dt.day == 5
+    assert dt.hour == 18
+
+
+def test_parse_datetime_with_fallback_display_format():
+    """Test parse_datetime_with_fallback with display format."""
+    dt = parse_datetime_with_fallback("Feb 15, 2026 7:00 PM")
+    assert dt is not None
+    assert dt.year == 2026
+    assert dt.month == 2
+    assert dt.day == 15
+    assert dt.hour == 19
+
+
+def test_parse_datetime_with_fallback_invalid():
+    """Test parse_datetime_with_fallback returns None for invalid input."""
+    assert parse_datetime_with_fallback("not-a-date") is None
+    assert parse_datetime_with_fallback("") is None
+    assert parse_datetime_with_fallback(None) is None

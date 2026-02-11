@@ -13,6 +13,12 @@ class EventSource(str, Enum):
     FEVER = "fever"
     COZYMEAL = "cozymeal"
     EVENTBRITE = "eventbrite"
+    JAZZNEARYOU = "jazznearyou"
+    SONGKICK = "songkick"
+    TIMEOUT = "timeout"
+    DONYC = "donyc"
+    RESIDENTADVISOR = "residentadvisor"
+    BANDSINTOWN = "bandsintown"
 
 
 class Event(BaseModel):
