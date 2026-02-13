@@ -1,5 +1,5 @@
 ---
-name: cleanup
+name: refactor
 description: Remove temporary, debugging, and non-essential files from the project while preserving production code, tests, and crawled data. Use when the project has accumulated inspection scripts, debug files, or temporary test files.
 disable-model-invocation: true
 allowed-tools: Bash(find *), Bash(rm *), Bash(ls *), Bash(du *), Bash(tar *)

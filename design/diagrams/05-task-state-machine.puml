@@ -1,0 +1,118 @@
+@startuml Task State Machine
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Distributed Crawler - Task State Machine
+
+[*] --> Created : Scheduler creates task
+
+state Created {
+    Created : task_id = UUID
+    Created : retry_count = 0
+    Created : priority = high/medium/low
+}
+
+Created --> Queued : LPUSH to Redis
+
+state Queued {
+    Queued : Waiting in crawl_tasks list
+    Queued : Timeout: 24 hours
+}
+
+Queued --> InProgress : Worker pulls task (BRPOP)
+
+state InProgress {
+    InProgress : Worker ID assigned
+    InProgress : Deduplication check
+    InProgress : Politeness check
+    InProgress : Crawl execution
+}
+
+InProgress --> Validating : Events extracted
+
+state Validating {
+    Validating : Pydantic validation
+    Validating : Filter invalid events
+}
+
+Validating --> Saving : Valid events found
+
+state Saving {
+    Saving : Batch INSERT to PostgreSQL
+    Saving : UNIQUE constraint check
+}
+
+Saving --> Completed : Success
+
+state Completed {
+    Completed : Events saved
+    Completed : Metrics recorded
+    Completed : Task acknowledged
+}
+
+Completed --> [*]
+
+' Failure paths
+InProgress --> Retrying : Transient error\n(network timeout, 503)
+Validating --> Retrying : Temporary validation error
+
+state Retrying {
+    Retrying : retry_count++
+    Retrying : backoff_delay = 2^retry_count min
+}
+
+Retrying --> Queued : retry_count < 3\n(re-enqueue with delay)
+Retrying --> Failed : retry_count >= 3
+
+InProgress --> Failed : Permanent error\n(404, 410, invalid URL)
+Saving --> Failed : Database error\n(after retries)
+
+state Failed {
+    Failed : Moved to DLQ
+    Failed : Error details logged
+    Failed : Alert if DLQ > threshold
+}
+
+Failed --> [*]
+
+' Rate limiting path
+InProgress --> Delayed : Rate limit (429, 403)
+
+state Delayed {
+    Delayed : Longer backoff
+    Delayed : retry_after header respected
+}
+
+Delayed --> Queued : Re-enqueue with delay
+
+' Worker failure path
+InProgress --> Abandoned : Worker crash/timeout
+
+state Abandoned {
+    Abandoned : Worker heartbeat stopped
+    Abandoned : Task not acknowledged
+}
+
+Abandoned --> Queued : Scheduler detects failure\n(re-enqueue with original retry_count)
+
+note right of Queued
+    Tasks have 24-hour TTL.
+    After timeout, moved to DLQ
+    for manual review.
+end note
+
+note right of Retrying
+    Exponential backoff:
+    • Retry 1: 1 minute
+    • Retry 2: 5 minutes
+    • Retry 3: 30 minutes
+end note
+
+note right of Failed
+    Dead Letter Queue allows:
+    • Manual inspection
+    • Error analysis
+    • Reprocessing if needed
+end note
+
+@enduml

@@ -1,0 +1,83 @@
+@startuml System Architecture Overview
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+
+title Distributed Crawler - System Architecture (Phase 2)
+
+package "Scheduler Layer" {
+    [Scheduler] as scheduler
+    note right of scheduler
+        • Seeds crawl tasks
+        • Monitors worker health
+        • Manages schedules
+    end note
+}
+
+package "Message Queue Layer" {
+    database "Redis" as redis {
+        [Task Queue] as queue
+        [Dead Letter Queue] as dlq
+        [Deduplication Store] as dedup
+        [Politeness State] as politeness
+        [Metrics Store] as metrics_store
+    }
+}
+
+package "Worker Layer" {
+    [Worker 1] as worker1
+    [Worker 2] as worker2
+    [Worker 3] as worker3
+    [Worker N] as workerN
+
+    note right of worker1
+        • Pull tasks from queue
+        • Execute crawls
+        • Save events
+        • Record metrics
+    end note
+}
+
+package "Crawler Layer" {
+    [Playwright Browser] as browser
+    [Luma Crawler] as luma
+    [Meetup Crawler] as meetup
+    [Other Crawlers] as others
+}
+
+package "Storage Layer" {
+    database "PostgreSQL" as postgres {
+        [events] as events_table
+        [crawl_sessions] as sessions_table
+        [schema_version] as schema_table
+    }
+}
+
+' Connections
+scheduler --> queue : Enqueue tasks
+worker1 --> queue : Pull tasks (BRPOP)
+worker2 --> queue : Pull tasks (BRPOP)
+worker3 --> queue : Pull tasks (BRPOP)
+workerN --> queue : Pull tasks (BRPOP)
+
+worker1 --> dedup : Check URL
+worker1 --> politeness : Check/Record access
+worker1 --> metrics_store : Record metrics
+
+worker1 --> browser : Launch/Control
+browser --> luma : Crawl
+browser --> meetup : Crawl
+browser --> others : Crawl
+
+worker1 --> events_table : Batch INSERT
+worker1 --> sessions_table : Track session
+
+worker2 --> events_table : Batch INSERT
+worker3 --> events_table : Batch INSERT
+workerN --> events_table : Batch INSERT
+
+scheduler --> redis : Monitor queue depth
+scheduler ..> worker1 : Heartbeat check
+scheduler ..> worker2 : Heartbeat check
+
+@enduml

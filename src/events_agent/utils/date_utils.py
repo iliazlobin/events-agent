@@ -46,6 +46,26 @@ def parse_datetime_with_fallback(date_string: Optional[str]) -> Optional[datetim
         except ValueError:
             continue
 
+    # Try formats without year (assume current year)
+    formats_no_year = [
+        ("%a, %b %d %I:%M %p", "%a, %b %d, %Y %I:%M %p"),  # Thu, Feb 12 7:00 pm
+        ("%b %d %I:%M %p", "%b %d, %Y %I:%M %p"),  # Feb 12 7:00 pm
+        ("%a, %b %d", "%a, %b %d, %Y"),  # Thu, Feb 12
+        ("%b %d", "%b %d, %Y"),  # Feb 12
+    ]
+
+    current_year = datetime.now().year
+    for fmt_without_year, fmt_with_year in formats_no_year:
+        try:
+            # Parse without year first to extract month/day
+            temp_str = str(date_string).strip()
+            # Try parsing and add current year
+            parsed = datetime.strptime(temp_str, fmt_without_year)
+            # Reconstruct with current year
+            return parsed.replace(year=current_year)
+        except ValueError:
+            continue
+
     # Try extracting ISO-like pattern
     iso_match = re.search(r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?", str(date_string))
     if iso_match:

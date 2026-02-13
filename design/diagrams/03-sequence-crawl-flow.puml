@@ -1,0 +1,97 @@
+@startuml Crawl Sequence Flow
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Distributed Crawler - Crawl Sequence Flow
+
+actor Scheduler
+participant "Redis\nQueue" as Redis
+participant Worker
+participant Deduplicator
+participant "Politeness\nManager" as Politeness
+participant Crawler
+participant "PostgreSQL" as DB
+participant "Metrics\nCollector" as Metrics
+
+== Task Scheduling ==
+Scheduler -> Redis: LPUSH crawl_tasks\n{source: "luma", location: "nyc"}
+activate Redis
+Redis --> Scheduler: OK
+deactivate Redis
+
+== Worker Processing ==
+Worker -> Redis: BRPOP crawl_tasks (blocking)
+activate Worker
+activate Redis
+Redis --> Worker: task {task_id, source, location}
+deactivate Redis
+
+Worker -> Worker: Parse task JSON
+
+== Deduplication Check ==
+Worker -> Deduplicator: is_seen(url)
+activate Deduplicator
+Deduplicator -> Redis: SISMEMBER seen_urls, url
+activate Redis
+Redis --> Deduplicator: false
+deactivate Redis
+Deduplicator --> Worker: Not seen
+deactivate Deduplicator
+
+Worker -> Deduplicator: mark_seen(url)
+Deduplicator -> Redis: SADD seen_urls, url
+
+== Politeness Check ==
+Worker -> Politeness: can_crawl(hostname)
+activate Politeness
+Politeness -> Redis: GET last_access:hostname
+activate Redis
+Redis --> Politeness: timestamp
+deactivate Redis
+Politeness -> Politeness: Check if 10s elapsed
+Politeness --> Worker: Yes, can crawl
+
+Worker -> Politeness: wait_if_needed(hostname)
+Politeness -> Politeness: Sleep if needed
+Politeness --> Worker: Ready
+deactivate Politeness
+
+== Crawl Execution ==
+Worker -> Crawler: crawl(browser, location)
+activate Crawler
+Crawler -> Crawler: Navigate to source URL
+Crawler -> Crawler: Extract events from page
+Crawler -> Crawler: Transform to Event objects
+Crawler --> Worker: List[Event] (42 events)
+deactivate Crawler
+
+== Event Validation ==
+Worker -> Worker: Validate with Pydantic schema
+Worker -> Worker: Filter invalid events
+
+== Database Save ==
+Worker -> DB: Batch INSERT (100 events)
+activate DB
+DB -> DB: Check UNIQUE constraint\n(event_id, source)
+DB -> DB: Insert new events
+DB --> Worker: Saved 42 events
+deactivate DB
+
+== Metrics Recording ==
+Worker -> Politeness: record_access(hostname, fetch_time)
+Politeness -> Redis: SETEX last_access:hostname, 60, timestamp
+
+Worker -> Metrics: record_crawl(source, events_count, duration, success)
+activate Metrics
+Metrics -> Redis: ZADD metrics:luma:events, timestamp, 42
+Metrics -> Redis: ZADD metrics:luma:duration, timestamp, 12.5
+Metrics -> Redis: INCR metrics:luma:success
+Metrics --> Worker: OK
+deactivate Metrics
+
+== Task Completion ==
+Worker -> Worker: Log crawl summary
+Worker -> Redis: ACK task (implicit - not requeued)
+deactivate Worker
+
+@enduml

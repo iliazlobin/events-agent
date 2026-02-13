@@ -90,8 +90,16 @@ class SQLiteEventRepository(EventRepository):
                 description, end_datetime, location_name, location_address,
                 city, state, is_online, attendee_count, capacity,
                 spots_remaining, price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                organizer_name, organizer_url, crawled_at,
+                ai_summary, image_url, topics, experience_type, category, tags,
+                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
+                performer_names, genre, duration_minutes, host_name, host_bio,
+                group_name, group_rating, group_review_count, rating, review_count,
+                latitude, longitude, directions, fee_amount, fee_required,
+                payment_methods, registration_url, detail_crawled
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             tuples,
         )
@@ -355,8 +363,16 @@ class SQLiteEventRepository(EventRepository):
                 description, end_datetime, location_name, location_address,
                 city, state, is_online, attendee_count, capacity,
                 spots_remaining, price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                organizer_name, organizer_url, crawled_at,
+                ai_summary, image_url, topics, experience_type, category, tags,
+                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
+                performer_names, genre, duration_minutes, host_name, host_bio,
+                group_name, group_rating, group_review_count, rating, review_count,
+                latitude, longitude, directions, fee_amount, fee_required,
+                payment_methods, registration_url, detail_crawled
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(event_id, source) DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
@@ -376,7 +392,36 @@ class SQLiteEventRepository(EventRepository):
                 is_free = excluded.is_free,
                 organizer_name = excluded.organizer_name,
                 organizer_url = excluded.organizer_url,
-                crawled_at = excluded.crawled_at
+                crawled_at = excluded.crawled_at,
+                ai_summary = excluded.ai_summary,
+                image_url = excluded.image_url,
+                topics = excluded.topics,
+                experience_type = excluded.experience_type,
+                category = excluded.category,
+                tags = excluded.tags,
+                chef_name = excluded.chef_name,
+                chef_rating = excluded.chef_rating,
+                chef_bio = excluded.chef_bio,
+                skill_level = excluded.skill_level,
+                cuisine_type = excluded.cuisine_type,
+                performer_names = excluded.performer_names,
+                genre = excluded.genre,
+                duration_minutes = excluded.duration_minutes,
+                host_name = excluded.host_name,
+                host_bio = excluded.host_bio,
+                group_name = excluded.group_name,
+                group_rating = excluded.group_rating,
+                group_review_count = excluded.group_review_count,
+                rating = excluded.rating,
+                review_count = excluded.review_count,
+                latitude = excluded.latitude,
+                longitude = excluded.longitude,
+                directions = excluded.directions,
+                fee_amount = excluded.fee_amount,
+                fee_required = excluded.fee_required,
+                payment_methods = excluded.payment_methods,
+                registration_url = excluded.registration_url,
+                detail_crawled = excluded.detail_crawled
             """,
             self._event_to_tuple(event),
         )
@@ -410,8 +455,16 @@ class SQLiteEventRepository(EventRepository):
                 description, end_datetime, location_name, location_address,
                 city, state, is_online, attendee_count, capacity,
                 spots_remaining, price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                organizer_name, organizer_url, crawled_at,
+                ai_summary, image_url, topics, experience_type, category, tags,
+                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
+                performer_names, genre, duration_minutes, host_name, host_bio,
+                group_name, group_rating, group_review_count, rating, review_count,
+                latitude, longitude, directions, fee_amount, fee_required,
+                payment_methods, registration_url, detail_crawled
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                      ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(event_id, source) DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
@@ -431,7 +484,36 @@ class SQLiteEventRepository(EventRepository):
                 is_free = excluded.is_free,
                 organizer_name = excluded.organizer_name,
                 organizer_url = excluded.organizer_url,
-                crawled_at = excluded.crawled_at
+                crawled_at = excluded.crawled_at,
+                ai_summary = excluded.ai_summary,
+                image_url = excluded.image_url,
+                topics = excluded.topics,
+                experience_type = excluded.experience_type,
+                category = excluded.category,
+                tags = excluded.tags,
+                chef_name = excluded.chef_name,
+                chef_rating = excluded.chef_rating,
+                chef_bio = excluded.chef_bio,
+                skill_level = excluded.skill_level,
+                cuisine_type = excluded.cuisine_type,
+                performer_names = excluded.performer_names,
+                genre = excluded.genre,
+                duration_minutes = excluded.duration_minutes,
+                host_name = excluded.host_name,
+                host_bio = excluded.host_bio,
+                group_name = excluded.group_name,
+                group_rating = excluded.group_rating,
+                group_review_count = excluded.group_review_count,
+                rating = excluded.rating,
+                review_count = excluded.review_count,
+                latitude = excluded.latitude,
+                longitude = excluded.longitude,
+                directions = excluded.directions,
+                fee_amount = excluded.fee_amount,
+                fee_required = excluded.fee_required,
+                payment_methods = excluded.payment_methods,
+                registration_url = excluded.registration_url,
+                detail_crawled = excluded.detail_crawled
             """,
             tuples,
         )
@@ -550,6 +632,8 @@ class SQLiteEventRepository(EventRepository):
         Returns:
             Tuple of event field values in correct order for SQL.
         """
+        import json
+
         return (
             event.event_id,
             event.source.value,
@@ -572,6 +656,36 @@ class SQLiteEventRepository(EventRepository):
             event.organizer_name,
             str(event.organizer_url) if event.organizer_url else None,
             event.crawled_at.isoformat(),
+            # Additional fields
+            event.ai_summary,
+            str(event.image_url) if event.image_url else None,
+            json.dumps(event.topics) if event.topics else None,
+            event.experience_type,
+            event.category,
+            json.dumps(event.tags) if event.tags else None,
+            event.chef_name,
+            event.chef_rating,
+            event.chef_bio,
+            event.skill_level,
+            event.cuisine_type,
+            json.dumps(event.performer_names) if event.performer_names else None,
+            event.genre,
+            event.duration_minutes,
+            event.host_name,
+            event.host_bio,
+            event.group_name,
+            event.group_rating,
+            event.group_review_count,
+            event.rating,
+            event.review_count,
+            event.latitude,
+            event.longitude,
+            event.directions,
+            event.fee_amount,
+            1 if event.fee_required else 0 if event.fee_required is not None else None,
+            json.dumps(event.payment_methods) if event.payment_methods else None,
+            str(event.registration_url) if event.registration_url else None,
+            1 if event.detail_crawled else 0,
         )
 
     def _row_to_event(self, row: dict) -> Event:
@@ -583,6 +697,8 @@ class SQLiteEventRepository(EventRepository):
         Returns:
             Event model instance.
         """
+        import json
+
         return Event(
             event_id=row["event_id"],
             source=EventSource(row["source"]),
@@ -607,4 +723,40 @@ class SQLiteEventRepository(EventRepository):
             organizer_name=row["organizer_name"],
             organizer_url=row["organizer_url"],
             crawled_at=datetime.fromisoformat(row["crawled_at"]),
+            # Additional fields
+            ai_summary=row.get("ai_summary"),
+            image_url=row.get("image_url"),
+            topics=json.loads(row["topics"]) if row.get("topics") else None,
+            experience_type=row.get("experience_type"),
+            category=row.get("category"),
+            tags=json.loads(row["tags"]) if row.get("tags") else None,
+            chef_name=row.get("chef_name"),
+            chef_rating=row.get("chef_rating"),
+            chef_bio=row.get("chef_bio"),
+            skill_level=row.get("skill_level"),
+            cuisine_type=row.get("cuisine_type"),
+            performer_names=json.loads(row["performer_names"])
+            if row.get("performer_names")
+            else None,
+            genre=row.get("genre"),
+            duration_minutes=row.get("duration_minutes"),
+            host_name=row.get("host_name"),
+            host_bio=row.get("host_bio"),
+            group_name=row.get("group_name"),
+            group_rating=row.get("group_rating"),
+            group_review_count=row.get("group_review_count"),
+            rating=row.get("rating"),
+            review_count=row.get("review_count"),
+            latitude=row.get("latitude"),
+            longitude=row.get("longitude"),
+            directions=row.get("directions"),
+            fee_amount=row.get("fee_amount"),
+            fee_required=bool(row["fee_required"])
+            if row.get("fee_required") is not None
+            else None,
+            payment_methods=json.loads(row["payment_methods"])
+            if row.get("payment_methods")
+            else None,
+            registration_url=row.get("registration_url"),
+            detail_crawled=bool(row.get("detail_crawled")),
         )

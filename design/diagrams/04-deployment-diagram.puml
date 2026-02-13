@@ -1,0 +1,141 @@
+@startuml Deployment Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Distributed Crawler - Deployment Architecture (Phase 2)
+
+cloud "Internet" {
+    node "Event Sources" as sources {
+        [luma.com]
+        [meetup.com]
+        [eventbrite.com]
+        [...others]
+    }
+}
+
+node "Scheduler VM" <<VM>> {
+    artifact "events-agent" as scheduler_app {
+        component "Scheduler\nService" as scheduler
+    }
+
+    database "PostgreSQL" as postgres {
+        folder "events table"
+        folder "crawl_sessions"
+        folder "schema_version"
+    }
+
+    note right of postgres
+        2 CPU, 4 GB RAM
+        100 GB SSD
+        Port: 5432
+    end note
+}
+
+node "Redis VM" <<VM>> {
+    database "Redis" as redis {
+        component "Task Queue"
+        component "DLQ"
+        component "Dedup Store"
+        component "Politeness State"
+        component "Metrics"
+    }
+
+    note right of redis
+        2 GB RAM
+        Persistence: RDB + AOF
+        Port: 6379
+    end note
+}
+
+node "Worker VM 1" <<VM>> {
+    artifact "events-agent" as worker1_app {
+        component "Worker 1\nService" as worker1
+    }
+
+    component "Playwright\nBrowser" as browser1
+
+    note right of worker1
+        2 CPU, 4 GB RAM
+        Headless browser
+    end note
+}
+
+node "Worker VM 2" <<VM>> {
+    artifact "events-agent" as worker2_app {
+        component "Worker 2\nService" as worker2
+    }
+
+    component "Playwright\nBrowser" as browser2
+}
+
+node "Worker VM 3" <<VM>> {
+    artifact "events-agent" as worker3_app {
+        component "Worker 3\nService" as worker3
+    }
+
+    component "Playwright\nBrowser" as browser3
+}
+
+' External connections
+browser1 --> sources : HTTPS
+browser2 --> sources : HTTPS
+browser3 --> sources : HTTPS
+
+' Internal connections
+scheduler --> redis : TCP 6379\nEnqueue tasks
+worker1 --> redis : TCP 6379\nPull tasks
+worker2 --> redis : TCP 6379\nPull tasks
+worker3 --> redis : TCP 6379\nPull tasks
+
+worker1 --> postgres : TCP 5432\nSave events
+worker2 --> postgres : TCP 5432\nSave events
+worker3 --> postgres : TCP 5432\nSave events
+
+worker1 --> browser1 : Control
+worker2 --> browser2 : Control
+worker3 --> browser3 : Control
+
+' Deployment notes
+note bottom of scheduler_app
+    **Deployment:**
+    • systemd service
+    • Auto-restart on failure
+    • Logs: /var/log/events-agent/scheduler.log
+end note
+
+note bottom of worker1_app
+    **Deployment:**
+    • systemd service (events-worker@1.service)
+    • Auto-restart on failure
+    • Logs: /var/log/events-agent/worker-1.log
+    • Environment: .env file
+end note
+
+note bottom of redis
+    **Persistence:**
+    • RDB snapshot every 15 min
+    • AOF every 1 sec
+    • Backup: Daily to S3
+end note
+
+note bottom of postgres
+    **Backups:**
+    • pg_dump daily at 2 AM
+    • 7-day retention
+    • Stored: S3 or local NAS
+end note
+
+' Network zones
+rectangle "Private Network (10.0.0.0/24)" {
+    redis
+    postgres
+    worker1
+    worker2
+    worker3
+}
+
+rectangle "Public Network" {
+    sources
+}
+
+@enduml

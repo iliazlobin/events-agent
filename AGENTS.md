@@ -20,6 +20,112 @@ playwright install chromium
 python -m events_agent.main  # or: events-crawler
 ```
 
+## Visualization & Documentation
+
+### Excalidraw MCP Integration
+
+This project has access to the **Excalidraw MCP server** for creating hand-drawn architecture diagrams. When working on system design, documentation, or explaining architectural concepts, you should proactively use this capability.
+
+**When to create diagrams:**
+- Explaining system architecture or data flow
+- Documenting new features or components
+- Illustrating crawler workflows or database schemas
+- Creating visual guides for complex interactions
+- Updating README with system overview diagrams
+
+**How to create and export diagrams:**
+
+```bash
+# 1. Use the excalidraw MCP server (configured in .mcp.json)
+#    The AI will call create_view tool with diagram elements
+
+# 2. Export the diagram to a shareable URL
+.agents/skills/excalidraw-export/export_diagram.sh <checkpoint_id>
+
+# 3. The script returns a URL like:
+#    https://excalidraw.com/#json=abc123,def456
+
+# 4. Open the URL, download as PNG/SVG, and add to docs/diagrams/
+```
+
+**Diagram types to create:**
+- **System Architecture**: Show crawlers → database → repositories → filters flow
+- **Data Flow**: Event extraction → validation → storage → query pipeline
+- **Crawler Lifecycle**: Browser launch → page load → extraction → transform → save
+- **Database Schema**: Tables, relationships, indexes
+- **Repository Pattern**: Interface hierarchy and implementations
+
+**Including diagrams in documentation:**
+
+```markdown
+## Architecture Overview
+
+![System Architecture](docs/diagrams/architecture.png)
+
+*[Editable version](https://excalidraw.com/#json=...)*
+```
+
+**Best practices:**
+- Use consistent colors (refer to Excalidraw cheat sheet from `read_me` tool)
+- Label all components clearly
+- Include arrows showing data flow direction
+- Export both PNG (for README) and keep excalidraw.com link (for editing)
+- Store diagram sources in `docs/diagrams/` directory
+- Update diagrams when architecture changes
+
+## Visualization & Documentation
+
+### Excalidraw MCP Integration
+
+This project has access to the **Excalidraw MCP server** for creating hand-drawn architecture diagrams. When working on system design, documentation, or explaining architectural concepts, you should proactively use this capability.
+
+**When to create diagrams:**
+- Explaining system architecture or data flow
+- Documenting new features or components
+- Illustrating crawler workflows or database schemas
+- Creating visual guides for complex interactions
+- Updating README with system overview diagrams
+
+**How to create and export diagrams:**
+
+```bash
+# 1. Use the excalidraw MCP server (configured in .mcp.json)
+#    The AI will call create_view tool with diagram elements
+
+# 2. Export the diagram to a shareable URL
+.agents/skills/excalidraw-export/export_diagram.sh <checkpoint_id>
+
+# 3. The script returns a URL like:
+#    https://excalidraw.com/#json=abc123,def456
+
+# 4. Open the URL, download as PNG/SVG, and add to docs/diagrams/
+```
+
+**Diagram types to create:**
+- **System Architecture**: Show crawlers → database → repositories → filters flow
+- **Data Flow**: Event extraction → validation → storage → query pipeline
+- **Crawler Lifecycle**: Browser launch → page load → extraction → transform → save
+- **Database Schema**: Tables, relationships, indexes
+- **Repository Pattern**: Interface hierarchy and implementations
+
+**Including diagrams in documentation:**
+
+```markdown
+## Architecture Overview
+
+![System Architecture](docs/diagrams/architecture.png)
+
+*[Editable version](https://excalidraw.com/#json=...)*
+```
+
+**Best practices:**
+- Use consistent colors (refer to Excalidraw cheat sheet from `read_me` tool)
+- Label all components clearly
+- Include arrows showing data flow direction
+- Export both PNG (for README) and keep excalidraw.com link (for editing)
+- Store diagram sources in `docs/diagrams/` directory
+- Update diagrams when architecture changes
+
 ## Architecture
 
 ### Structure

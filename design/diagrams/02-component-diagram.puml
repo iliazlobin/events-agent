@@ -1,0 +1,122 @@
+@startuml Component Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Distributed Crawler - Component Diagram
+
+package "events_agent" {
+
+    package "scheduler" {
+        [SchedulerService] as scheduler_svc
+        [HealthMonitor] as health_mon
+        [TaskScheduler] as task_sched
+    }
+
+    package "worker" {
+        [WorkerService] as worker_svc
+        [TaskProcessor] as task_proc
+        [HeartbeatSender] as heartbeat
+    }
+
+    package "crawlers" {
+        [BaseCrawler] as base_crawler
+        [LumaCrawler] as luma
+        [MeetupCrawler] as meetup
+        [EventbriteCrawler] as eventbrite
+    }
+
+    package "repositories" {
+        [EventRepository] as event_repo
+        interface "IEventRepository" as ievent_repo
+        [SQLiteEventRepository] as sqlite_repo
+        [PostgreSQLEventRepository] as postgres_repo
+    }
+
+    package "database" {
+        [DatabaseConnection] as db_conn
+        [SchemaManager] as schema_mgr
+        [MigrationRunner] as migration
+    }
+
+    package "queue" {
+        [QueueClient] as queue_client
+        [TaskSerializer] as task_serial
+        [RetryManager] as retry_mgr
+    }
+
+    package "deduplication" {
+        [Deduplicator] as dedup
+        interface "IDeduplicator" as idedup
+        [RedisSetDeduplicator] as redis_set_dedup
+        [BloomFilterDeduplicator] as bloom_dedup
+    }
+
+    package "politeness" {
+        [PolitenessManager] as politeness_mgr
+        [RobotsTxtCache] as robots_cache
+        [RateLimiter] as rate_limiter
+    }
+
+    package "metrics" {
+        [MetricsCollector] as metrics_collector
+        [MetricsAggregator] as metrics_agg
+    }
+
+    package "models" {
+        [Event] as event_model
+        [CrawlTask] as task_model
+        [CrawlSession] as session_model
+    }
+}
+
+' Scheduler connections
+scheduler_svc --> task_sched
+scheduler_svc --> health_mon
+task_sched --> queue_client : Enqueue tasks
+health_mon --> queue_client : Monitor workers
+
+' Worker connections
+worker_svc --> task_proc
+worker_svc --> heartbeat
+task_proc --> queue_client : Pull tasks
+task_proc --> dedup : Check URL
+task_proc --> politeness_mgr : Check access
+task_proc --> base_crawler : Execute crawl
+task_proc --> event_repo : Save events
+task_proc --> metrics_collector : Record metrics
+
+' Crawler hierarchy
+base_crawler <|-- luma
+base_crawler <|-- meetup
+base_crawler <|-- eventbrite
+
+' Repository pattern
+ievent_repo <|.. sqlite_repo
+ievent_repo <|.. postgres_repo
+event_repo --> ievent_repo
+postgres_repo --> db_conn
+
+' Deduplication pattern
+idedup <|.. redis_set_dedup
+idedup <|.. bloom_dedup
+dedup --> idedup
+
+' Politeness components
+politeness_mgr --> robots_cache
+politeness_mgr --> rate_limiter
+
+' External dependencies
+database "Redis" as redis
+database "PostgreSQL" as postgres
+cloud "Web Sources" as web_sources
+
+queue_client --> redis
+redis_set_dedup --> redis
+bloom_dedup --> redis
+metrics_collector --> redis
+
+db_conn --> postgres
+luma --> web_sources
+meetup --> web_sources
+
+@enduml

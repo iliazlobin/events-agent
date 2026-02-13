@@ -1,0 +1,329 @@
+@startuml Class Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam classAttributeIconSize 0
+
+title Distributed Crawler - Class Diagram (Core Components)
+
+' Models
+package "models" {
+    class Event {
+        +event_id: str
+        +source: str
+        +url: str
+        +title: str
+        +start_datetime: datetime
+        +end_datetime: Optional[datetime]
+        +location_name: Optional[str]
+        +city: Optional[str]
+        +state: Optional[str]
+        +latitude: Optional[Decimal]
+        +longitude: Optional[Decimal]
+        +price_cents: Optional[int]
+        +is_free: bool
+        +category: Optional[str]
+        +tags: List[str]
+        --
+        +validate(): bool
+        +to_dict(): dict
+    }
+
+    class CrawlTask {
+        +task_id: str
+        +source: str
+        +location: str
+        +priority: str
+        +retry_count: int
+        +created_at: datetime
+        +metadata: dict
+        --
+        +to_json(): str
+        +from_json(json_str: str): CrawlTask
+    }
+
+    class CrawlSession {
+        +session_id: UUID
+        +source: str
+        +location: str
+        +status: str
+        +events_found: int
+        +events_saved: int
+        +errors: int
+        +started_at: datetime
+        +completed_at: Optional[datetime]
+        +worker_id: str
+        --
+        +duration(): timedelta
+        +success_rate(): float
+    }
+}
+
+' Repositories
+package "repositories" {
+    interface IEventRepository {
+        {abstract} +save_many(events: List[Event]): int
+        {abstract} +find_by_id(id: int): Optional[Event]
+        {abstract} +find_by_source(source: str): List[Event]
+        {abstract} +find_by_date_range(start, end): List[Event]
+        {abstract} +count(): int
+    }
+
+    class PostgreSQLEventRepository {
+        -db_connection: DatabaseConnection
+        -connection_pool: ConnectionPool
+        --
+        +save_many(events: List[Event]): int
+        +upsert_many(events: List[Event]): int
+        +find_by_id(id: int): Optional[Event]
+        +find_by_source(source: str): List[Event]
+        +find_by_date_range(start, end): List[Event]
+        +find_by_location_and_date(...): List[Event]
+        +count(): int
+        -_batch_insert(batch: List[Event])
+        -_row_to_event(row): Event
+    }
+
+    IEventRepository <|.. PostgreSQLEventRepository
+}
+
+' Crawlers
+package "crawlers" {
+    abstract class BaseCrawler {
+        #rate_limit_seconds: float
+        #timeout_ms: int
+        --
+        {abstract} +get_events_url(location: str): str
+        {abstract} +extract_events_from_page(page): List[Event]
+        +crawl(browser, location: str): List[Event]
+        #wait_for_rate_limit()
+        #handle_error(error)
+    }
+
+    class LumaCrawler {
+        -base_url: str
+        --
+        +get_events_url(location: str): str
+        +extract_events_from_page(page): List[Event]
+        -_parse_next_data(page): dict
+        -_transform_event(data: dict): Event
+    }
+
+    class MeetupCrawler {
+        -base_url: str
+        -transformer: MeetupTransformer
+        -extractor: MeetupExtractor
+        --
+        +get_events_url(location: str): str
+        +extract_events_from_page(page): List[Event]
+        -_scroll_to_load_more(page)
+        -_parse_apollo_state(page): dict
+    }
+
+    BaseCrawler <|-- LumaCrawler
+    BaseCrawler <|-- MeetupCrawler
+}
+
+' Queue
+package "queue" {
+    class QueueClient {
+        -redis_client: Redis
+        -queue_name: str
+        -dlq_name: str
+        --
+        +enqueue(task: CrawlTask): str
+        +dequeue(timeout: int): Optional[CrawlTask]
+        +requeue(task: CrawlTask, delay: int)
+        +move_to_dlq(task: CrawlTask, error: str)
+        +get_queue_depth(): int
+        +get_dlq_depth(): int
+    }
+
+    class RetryManager {
+        -max_retries: int
+        -retry_delays: List[int]
+        --
+        +should_retry(task: CrawlTask, error): bool
+        +get_backoff_delay(retry_count: int): int
+        +classify_error(error): ErrorType
+    }
+
+    QueueClient --> CrawlTask
+    QueueClient --> RetryManager
+}
+
+' Deduplication
+package "deduplication" {
+    interface IDeduplicator {
+        {abstract} +is_seen(url: str): bool
+        {abstract} +mark_seen(url: str)
+    }
+
+    class RedisSetDeduplicator {
+        -redis_client: Redis
+        -key: str
+        --
+        +is_seen(url: str): bool
+        +mark_seen(url: str)
+        -_normalize_url(url: str): str
+    }
+
+    class BloomFilterDeduplicator {
+        -redis_bloom: RedisBloom
+        -key: str
+        -error_rate: float
+        --
+        +is_seen(url: str): bool
+        +mark_seen(url: str)
+        -_normalize_url(url: str): str
+    }
+
+    IDeduplicator <|.. RedisSetDeduplicator
+    IDeduplicator <|.. BloomFilterDeduplicator
+}
+
+' Politeness
+package "politeness" {
+    class PolitenessManager {
+        -redis_client: Redis
+        -min_delay: int
+        -robots_cache: RobotsTxtCache
+        --
+        +can_crawl(hostname: str): bool
+        +wait_if_needed(hostname: str)
+        +record_access(hostname: str, fetch_time: float)
+    }
+
+    class RobotsTxtCache {
+        -redis_client: Redis
+        -ttl: int
+        --
+        +can_fetch(url: str, user_agent: str): bool
+        +get_crawl_delay(hostname: str): Optional[int]
+        -_fetch_robots_txt(hostname: str): str
+        -_parse_robots_txt(content: str): RobotFileParser
+    }
+
+    PolitenessManager --> RobotsTxtCache
+}
+
+' Worker
+package "worker" {
+    class WorkerService {
+        -worker_id: str
+        -redis_client: Redis
+        -queue_client: QueueClient
+        -task_processor: TaskProcessor
+        -heartbeat_sender: HeartbeatSender
+        --
+        +start()
+        +stop()
+        -_main_loop()
+        -_register_worker()
+    }
+
+    class TaskProcessor {
+        -deduplicator: IDeduplicator
+        -politeness_mgr: PolitenessManager
+        -event_repo: IEventRepository
+        -metrics: MetricsCollector
+        -browser: Browser
+        --
+        +process_task(task: CrawlTask): bool
+        -_execute_crawl(task): List[Event]
+        -_save_events(events): int
+        -_handle_error(task, error)
+    }
+
+    class HeartbeatSender {
+        -worker_id: str
+        -redis_client: Redis
+        -interval: int
+        --
+        +start()
+        +stop()
+        -_send_heartbeat()
+    }
+
+    WorkerService --> TaskProcessor
+    WorkerService --> HeartbeatSender
+    WorkerService --> QueueClient
+    TaskProcessor --> IDeduplicator
+    TaskProcessor --> PolitenessManager
+    TaskProcessor --> IEventRepository
+    TaskProcessor --> BaseCrawler
+}
+
+' Scheduler
+package "scheduler" {
+    class SchedulerService {
+        -queue_client: QueueClient
+        -task_scheduler: TaskScheduler
+        -health_monitor: HealthMonitor
+        --
+        +start()
+        +stop()
+        -_main_loop()
+    }
+
+    class TaskScheduler {
+        -sources_config: dict
+        -queue_client: QueueClient
+        --
+        +schedule_crawls()
+        +should_crawl(source: str): bool
+        -_get_next_crawl_time(source: str): datetime
+    }
+
+    class HealthMonitor {
+        -redis_client: Redis
+        -heartbeat_timeout: int
+        --
+        +check_workers(): List[str]
+        +get_worker_status(worker_id: str): dict
+        +requeue_worker_tasks(worker_id: str)
+        -_is_worker_alive(worker_id: str): bool
+    }
+
+    SchedulerService --> TaskScheduler
+    SchedulerService --> HealthMonitor
+    TaskScheduler --> QueueClient
+}
+
+' Metrics
+package "metrics" {
+    class MetricsCollector {
+        -redis_client: Redis
+        --
+        +record_crawl(source, events_count, duration, success)
+        +get_stats(source: str, hours: int): dict
+        -_trim_old_data(source: str, cutoff: int)
+    }
+}
+
+' External dependencies
+class Redis {
+    +get(key): str
+    +set(key, value)
+    +lpush(key, value)
+    +brpop(key, timeout): tuple
+    +sismember(key, member): bool
+    +sadd(key, member)
+}
+
+class PostgreSQL {
+    +execute(query, params)
+    +executemany(query, params_list)
+    +fetchall(): List
+    +commit()
+}
+
+' Relationships
+TaskProcessor --> MetricsCollector
+HealthMonitor --> Redis
+TaskScheduler --> Event
+PostgreSQLEventRepository --> PostgreSQL
+QueueClient --> Redis
+RedisSetDeduplicator --> Redis
+PolitenessManager --> Redis
+
+@enduml

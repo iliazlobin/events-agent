@@ -1,0 +1,150 @@
+@startuml Data Flow Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+
+title Distributed Crawler - Data Flow Diagram
+
+' External entities
+rectangle "Event Sources\n(External)" as sources {
+    (Luma.com)
+    (Meetup.com)
+    (Eventbrite.com)
+    (...others)
+}
+
+rectangle "System Administrator" as admin
+
+' Processes
+rectangle "==1.0==\nScheduler\nProcess" as p1 {
+    :Schedule crawls;
+    :Monitor workers;
+}
+
+rectangle "==2.0==\nTask Queue\nProcess" as p2 {
+    :Manage task queue;
+    :Handle priorities;
+    :Store metadata;
+}
+
+rectangle "==3.0==\nWorker\nProcess" as p3 {
+    :Pull tasks;
+    :Execute crawls;
+    :Extract events;
+    :Validate data;
+}
+
+rectangle "==4.0==\nDeduplication\nProcess" as p4 {
+    :Check URL uniqueness;
+    :Track seen URLs;
+}
+
+rectangle "==5.0==\nPoliteness\nProcess" as p5 {
+    :Enforce rate limits;
+    :Track last access;
+    :Respect robots.txt;
+}
+
+rectangle "==6.0==\nStorage\nProcess" as p6 {
+    :Save events;
+    :Track sessions;
+    :Manage schema;
+}
+
+rectangle "==7.0==\nMetrics\nProcess" as p7 {
+    :Collect metrics;
+    :Aggregate stats;
+    :Generate alerts;
+}
+
+' Data stores
+database "D1\nTask Queue\n(Redis List)" as d1
+database "D2\nDedup Store\n(Redis Set)" as d2
+database "D3\nPoliteness State\n(Redis Hash)" as d3
+database "D4\nEvent Database\n(PostgreSQL)" as d4
+database "D5\nMetrics Store\n(Redis Time Series)" as d5
+database "D6\nConfiguration\n(YAML/JSON)" as d6
+
+' Data flows
+admin --> d6 : Configure\nsources,\nschedules
+
+d6 --> p1 : Read\nconfiguration
+
+p1 --> d1 : Enqueue\ncrawl tasks
+
+d1 --> p3 : Dequeue\ntasks
+
+p3 --> p4 : URL to check
+p4 --> d2 : Check/Add URL
+d2 --> p4 : Seen/Unseen
+p4 --> p3 : Dedupe result
+
+p3 --> p5 : Hostname +\ntimestamp
+p5 --> d3 : Check last\naccess time
+d3 --> p5 : Can crawl?
+p5 --> p3 : Go/Wait
+
+p3 --> sources : HTTP(S) request
+sources --> p3 : HTML response
+
+p3 --> p3 : Extract +\nValidate events
+
+p3 --> p6 : Event batch\n(100 events)
+p6 --> d4 : INSERT events
+d4 --> p6 : Rows affected
+p6 --> p3 : Save result
+
+p3 --> p7 : Crawl metrics\n(count, duration,\nsuccess)
+p7 --> d5 : Store time\nseries data
+d5 --> p7 : Stats
+
+p1 --> p7 : Request stats
+p7 --> p1 : Queue depth,\nworker health
+
+p1 --> p3 : Monitor\nheartbeat
+p3 --> p1 : Heartbeat\nresponse
+
+admin --> p7 : Query metrics
+p7 --> admin : Dashboard\ndata
+
+note right of d1
+    **Task Queue Data:**
+    • task_id
+    • source
+    • location
+    • priority
+    • retry_count
+    • created_at
+end note
+
+note right of d2
+    **Dedup Store Data:**
+    • Normalized URLs
+    • TTL: 7 days
+    • Size: ~10M URLs
+end note
+
+note right of d3
+    **Politeness State:**
+    • hostname → last_access_time
+    • TTL: 60 seconds
+    • Min delay: 10s
+end note
+
+note right of d4
+    **Event Database:**
+    • events table (22 columns)
+    • crawl_sessions table
+    • UNIQUE(event_id, source)
+    • 8 performance indexes
+end note
+
+note right of d5
+    **Metrics Data:**
+    • Events per source
+    • Crawl duration
+    • Success/failure rate
+    • Retention: 7 days detailed,
+      90 days aggregated
+end note
+
+@enduml
