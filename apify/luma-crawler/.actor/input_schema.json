@@ -1,0 +1,38 @@
+{
+    "title": "Luma Events Crawler",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "urls": {
+            "title": "Start URLs",
+            "type": "array",
+            "description": "Luma calendar URLs to crawl (e.g., https://lu.ma/nyc)",
+            "editor": "stringList",
+            "default": ["https://lu.ma/nyc"],
+            "items": {
+                "type": "string"
+            }
+        },
+        "lookForwardWindow": {
+            "title": "Look Forward Window (days)",
+            "type": "integer",
+            "description": "Number of days to look forward when scrolling timeline",
+            "default": 7,
+            "minimum": 1
+        },
+        "maxItems": {
+            "title": "Maximum Items",
+            "type": "integer",
+            "description": "Maximum number of events to extract",
+            "default": 100,
+            "minimum": 1
+        },
+        "maxScrolls": {
+            "title": "Maximum Scrolls",
+            "type": "integer",
+            "description": "Maximum number of scrolls to perform on the timeline",
+            "default": 10,
+            "minimum": 1
+        }
+    }
+}

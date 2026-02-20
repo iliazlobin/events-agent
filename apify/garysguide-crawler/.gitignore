@@ -1,0 +1,7 @@
+node_modules/
+# dist - DO NOT IGNORE, needed for Apify deployment/
+storage/
+apify_storage/
+.env
+*.log
+.DS_Store

@@ -20,7 +20,7 @@ class SchemaManager:
         >>> schema.initialize_schema()
     """
 
-    CURRENT_VERSION = 2
+    CURRENT_VERSION = 3
 
     def __init__(self, db: DatabaseConnection):
         """Initialize schema manager.
@@ -102,6 +102,12 @@ class SchemaManager:
             logger.info("Applying migration 2: Add enhanced event fields")
             self._add_enhanced_event_fields()
             self._set_schema_version(2)
+
+        # Migration 3: Add aggregator fields for events from aggregators like Gary's Guide
+        if from_version < 3:
+            logger.info("Applying migration 3: Add aggregator metadata fields")
+            self._add_aggregator_fields()
+            self._set_schema_version(3)
 
     def _create_initial_schema(self) -> None:
         """Create initial database schema with events and crawl_sessions tables."""
@@ -278,6 +284,38 @@ class SchemaManager:
         
         self.db.commit()
         logger.info("Enhanced event fields added successfully")
+
+    def _add_aggregator_fields(self) -> None:
+        """Add aggregator metadata fields (Migration 3).
+
+        These fields support events discovered via aggregators like Gary's Guide
+        that point to events on other platforms (Luma, Meetup, etc.)
+        """
+        aggregator_columns = [
+            # Original provider info
+            "ALTER TABLE events ADD COLUMN original_provider TEXT",  # Domain: luma.com, meetup.com
+            "ALTER TABLE events ADD COLUMN aggregated_from TEXT",    # Aggregator: garysguide
+            "ALTER TABLE events ADD COLUMN short_url TEXT",          # Short URL: gary.to/abc123
+            "ALTER TABLE events ADD COLUMN aggregator_detail_url TEXT",  # Gary's Guide detail page
+        ]
+
+        for sql in aggregator_columns:
+            try:
+                self.db.execute(sql)
+            except Exception as e:
+                logger.debug(f"Could not add column (may already exist): {e}")
+
+        # Add index for aggregator queries
+        aggregator_indexes = [
+            "CREATE INDEX IF NOT EXISTS idx_events_original_provider ON events(original_provider)",
+            "CREATE INDEX IF NOT EXISTS idx_events_aggregated_from ON events(aggregated_from)",
+        ]
+
+        for index_sql in aggregator_indexes:
+            self.db.execute(index_sql)
+
+        self.db.commit()
+        logger.info("Aggregator metadata fields added successfully")
 
     def get_table_info(self, table_name: str) -> list:
         """Get table schema information.

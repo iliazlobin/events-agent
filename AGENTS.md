@@ -1,309 +1,641 @@
-# Events Agent
+# Events Agent - Agent Instructions
 
-NYC event aggregator using web scraping from 9 sources with SQLite storage, smart filtering, and event categorization.
+SF/NYC event aggregator using web scraping from multiple sources with SQLite storage.
 
-## Key Features
+**Active Sources**: Gary's Guide (Apify), Eventbrite, Fever, TimeOut, DoNYC (local)
+**Planned**: Funcheap SF, SF Travel
 
-- **9 Event Sources**: Luma, Meetup, Eventbrite, Fever, Cozymeal, Jazz Near You, Songkick, TimeOut NYC, DoNYC
-- **SQLite Database**: Primary storage with automatic deduplication (UNIQUE constraint on event_id + source)
-- **Smart Filtering**: SQL-based location (NYC) and date filtering (10-100x faster than in-memory)
-- **Event Categorization**: Genre, tags, experience types for jazz, Valentine's Day, seasonal events
-- **Jazz Venue Index**: 15+ NYC venues with metadata (`src/events_agent/data/jazz_venues.py`)
-- **104 Tests**: 93 unit + 11 integration tests
+## Core Principles
 
-## Quick Start
+- **Use SQLite**: Primary storage at `data/events.db` with auto-deduplication
+- **Use Mermaid**: For architecture diagrams and documentation
+- **Follow patterns**: Repository pattern, modular crawlers, Pydantic models, aggregator pattern
+- **Test coverage**: Add tests for new features (pytest)
+
+## Aggregator Pattern
+
+**Design**: Gary's Guide acts as event **aggregator**, not direct scraper
+- Collects metadata from Gary's Guide (title, date, location, image)
+- Resolves gary.to redirects to detect provider (luma.com, meetup.com, etc.)
+- **Does NOT** scrape individual event pages from other providers
+- Stores with `source=garysguide` + `original_provider=luma/meetup/etc.`
+- Dedicated crawlers (Luma, Meetup) handle full event details
+
+**Data Model** (Migration 3):
+```python
+original_provider: str       # "luma", "meetup", "eventbrite"
+aggregated_from: str         # "garysguide"
+short_url: str              # "http://gary.to/abc123"
+aggregator_detail_url: str  # Gary's Guide detail page
+```
+
+**Benefits**:
+- ✅ Avoids duplicate scraping of Luma/Meetup events
+- ✅ Reduces compute costs (no redundant page visits)
+- ✅ Discovery mechanism for events across platforms
+- ✅ Metadata enrichment (curation, short URLs)
+
+**See**: `design/AGGREGATOR_PATTERN.md` for full architecture
+
+## Apify Integration
+
+### Overview
+
+**Deployed Actors**: Gary's Guide crawler in TypeScript/Crawlee (cloud)
+**Local Source**: `apify/garysguide-crawler/`
+**Template**: `ts-crawlee-puppeteer-chrome` (TypeScript + Crawlee + Puppeteer)
+**MCP Server**: Configured via `~/.claude.json` for API access
+
+### Apify Actor Naming Convention
+
+- **Prefix**: `events-`
+- **Format**: `events-<source>` (NO `-crawler` suffix)
+- **Examples**:
+  - `events-garysguide`
+  - `events-luma`
+  - `events-eventbrite`
+  - `events-meetup`
+
+**Directory structure**: `apify/<source>-crawler/` (local directory uses `-crawler` suffix)
+- Local: `apify/garysguide-crawler/`
+- Deployed: `iliazlobin/events-garysguide`
+- Title format: "Events <Source>" (e.g., "Events Garysguide", "Events Luma")
+
+### Apify Crawler Architecture
+
+**File Structure**:
+```
+apify/garysguide-crawler/
+├── .actor/
+│   ├── actor.json           # Actor metadata (name, version, input schema)
+│   └── input_schema.json    # Input parameter definitions
+├── src/
+│   ├── main.ts             # Crawler initialization & configuration
+│   └── routes.ts           # Request handlers & scraping logic
+├── inputs/
+│   └── test-50.json        # Test input files
+├── package.json            # Dependencies & scripts
+└── storage/                # Local test data (gitignored)
+    └── datasets/default/   # Scraped events (JSON files)
+```
+
+**Design Pattern**:
+1. **Router-based handlers**: Separate handlers for different page types
+2. **Request enqueueing**: Use `crawler.addRequests()` to queue event URLs
+3. **Data extraction**: Parse DOM/JSON and save via `Dataset.pushData()`
+4. **Error handling**: Retry logic, graceful degradation, detailed logging
+
+**Key Components** (`src/main.ts`):
+```typescript
+// Initialize Apify actor
+await Actor.init()
+
+// Read input parameters
+const input = await Actor.getInput<InputSchema>()
+const { urls, maxItems, lookForwardWindow, maxScrolls } = input
+
+// Configure PuppeteerCrawler
+const crawler = new PuppeteerCrawler({
+  requestHandler: router,              // Route to handlers
+  maxRequestsPerCrawl: maxItems + 10, // Limit total requests
+  maxRequestsPerMinute: 3,            // Rate limiting
+  requestHandlerTimeoutSecs: 300,     // Timeout for long operations
+  useSessionPool: true,               // Session management
+  browserPoolOptions: {               // Anti-blocking
+    useFingerprints: true
+  }
+})
+
+// Run crawler
+await crawler.run(urls)
+await Actor.exit()
+```
+
+**Router Pattern** (`src/routes.ts`):
+```typescript
+export const router = createPuppeteerRouter()
+
+// Handler for listing pages (scrolls & enqueues events)
+router.addDefaultHandler(async ({ page, log, crawler }) => {
+  // Scroll to load more events
+  for (let i = 0; i < maxScrolls; i++) {
+    await scrollPageToBottom()
+    // Check if target date reached
+    if (lastDate >= targetDate) break
+  }
+
+  // Extract event URLs and enqueue them
+  for (const event of events) {
+    await crawler.addRequests([{
+      url: event.url,
+      label: 'event',          // Route to event handler
+      userData: { ...metadata } // Pass context
+    }])
+  }
+})
+
+// Handler for individual event pages
+router.addHandler('event', async ({ page, log, request }) => {
+  // Extract event details
+  const title = await page.$eval('h1.title', el => el.textContent)
+  const dateStart = parseDateTimeRange(dateStr, timeStr)
+  const price = await page.$eval('.price', el => el.textContent)
+
+  // Save to dataset
+  await Dataset.pushData({
+    url: request.url,
+    title,
+    dateStart,
+    price,
+    // ... other fields
+  })
+})
+```
+
+### Development Workflow
+
+#### 1. Writing a New Crawler
+
+**Create from template**:
+```bash
+# Initialize new actor
+apify create funcheap-crawler --template ts-crawlee-puppeteer-chrome
+cd apify/funcheap-crawler
+```
+
+**Define input schema** (`.actor/input_schema.json`):
+```json
+{
+  "title": "Funcheap Events Crawler",
+  "type": "object",
+  "properties": {
+    "region": {
+      "title": "Region",
+      "type": "string",
+      "description": "Region to crawl (sf, nyc, etc.)",
+      "default": "sf"
+    },
+    "maxItems": {
+      "title": "Maximum Items",
+      "type": "integer",
+      "default": 100,
+      "minimum": 1
+    },
+    "lookForwardWindow": {
+      "title": "Look Forward Window (days)",
+      "type": "integer",
+      "default": 30
+    }
+  }
+}
+```
+
+**Implement scraping logic** (`src/routes.ts`):
+- **List page handler**: Scroll, extract URLs, enqueue with `crawler.addRequests()`
+- **Detail page handler**: Extract fields, save with `Dataset.pushData()`
+- **Error handling**: Try/catch, validation, skip malformed data
+
+**Critical fixes for reliable crawling**:
+- ✅ Use `crawler.addRequests()` not `enqueueLinks()` for programmatic URLs
+- ✅ Set `requestHandlerTimeoutSecs: 300` for extensive scrolling
+- ✅ Use `maxRequestsPerCrawl: maxItems + buffer` to control limits
+- ✅ Add error handling for missing DOM elements
+
+#### 2. Testing Locally
+
+**Install dependencies**:
+```bash
+npm install
+```
+
+**Create test input** (`inputs/test.json`):
+```json
+{
+  "region": "sf",
+  "maxItems": 50,
+  "lookForwardWindow": 30
+}
+```
+
+**Run locally**:
+```bash
+# Run with test input
+apify run --input-file=inputs/test.json
+
+# Or use npm script
+npm run start:dev
+
+# Debug mode with purge
+apify run --input-file=inputs/test.json --purge
+```
+
+**Check results**:
+```bash
+# Count collected items
+find storage/datasets/default -name "*.json" | wc -l
+
+# View sample data
+cat storage/datasets/default/*.json | jq -s '.[0:3]'
+
+# Check for errors
+cat apify_storage/key_value_stores/default/SDK_CRAWLER_STATISTICS_0.json | jq
+```
+
+#### 3. Building & Deploying
+
+**Build TypeScript**:
+```bash
+npm run build
+```
+
+**Deploy to Apify**:
+```bash
+# First time - creates new actor
+apify push
+
+# Subsequent updates
+apify push
+```
+
+**Verify deployment**:
+```bash
+# List your actors
+apify actors ls
+
+# Get actor info
+apify info
+```
+
+#### 4. Running on Apify Platform
+
+**Via CLI**:
+```bash
+# Run specific actor
+apify actors call iliazlobin/events-garysguide-crawler
+
+# Run with input
+apify actors call iliazlobin/events-garysguide-crawler --input '{"region":"sf","maxItems":100,"lookForwardWindow":30}'
+```
+
+**Via Console**: https://console.apify.com/actors → Select actor → Run
+
+**Via MCP Server**: See "MCP Server Configuration" section below
+
+### MCP Server Configuration
+
+#### Setup
+
+**Already configured in `~/.claude.json`**:
+```json
+{
+  "mcpServers": {
+    "apify": {
+      "url": "https://mcp.apify.com",
+      "headers": {
+        "Authorization": "Bearer apify_api_XXX..."
+      }
+    }
+  }
+}
+```
+
+**Verify connection**:
+```bash
+# List available MCP tools
+claude mcp list
+
+# Should show: apify-slash-rag-web-browser, call-actor, etc.
+```
+
+#### Using MCP Server
+
+**List your actors**:
+```
+"Show me my Apify actors"
+```
+
+**Run actor via MCP**:
+```
+"Run my Events Gary's Guide crawler with these settings:
+- Region: sf
+- Max items: 100
+- Look forward: 30 days"
+```
+
+**Get results**:
+```
+"Get the dataset from my last Gary's Guide crawler run"
+```
+
+**MCP tools available**:
+- `search-actors` - Find actors in Apify Store
+- `fetch-actor-details` - Get actor info, input schema, README
+- `call-actor` - Run actor with input (supports async mode)
+- `get-actor-run` - Get run status and metadata
+- `get-actor-output` - Fetch dataset items from a run
+
+#### Testing MCP Integration
+
+**Single run test** (final validation):
+```
+"Run iliazlobin/events-garysguide-crawler with input:
+{
+  'region': 'sf',
+  'maxItems': 50,
+  'lookForwardWindow': 30
+}
+
+Wait for completion and show me the first 5 events."
+```
+
+**Expected output**:
+- Run starts (shows runId and widget)
+- Crawls ~50 events from Gary's Guide SF
+- Returns dataset preview with event details
+
+### Scheduling & Automation
+
+#### Creating a Schedule (Web Console)
+
+**Via Apify Console**:
+1. Navigate to https://console.apify.com/schedules
+2. Click **"Create new schedule"**
+3. Configure:
+   - **Name**: "Gary's Guide SF Daily Crawl"
+   - **Actor**: `iliazlobin/events-garysguide-crawler`
+   - **Cron expression**: `0 2 * * *` (2 AM daily)
+   - **Timezone**: America/Los_Angeles
+   - **Input**:
+     ```json
+     {
+       "region": "sf",
+       "maxItems": 100,
+       "lookForwardWindow": 30
+     }
+     ```
+4. Click **"Create"**
+
+**Common cron patterns**:
+- `0 2 * * *` - Daily at 2 AM
+- `0 */6 * * *` - Every 6 hours
+- `0 9 * * 1` - Every Monday at 9 AM
+- `0 0 1 * *` - First day of month at midnight
+
+#### Creating a Schedule (API)
+
+**Via Apify API**:
+```bash
+curl -X POST https://api.apify.com/v2/schedules \
+  -H "Authorization: Bearer $APIFY_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Gary'\''s Guide SF Daily Crawl",
+    "isEnabled": true,
+    "isExclusive": false,
+    "cronExpression": "0 2 * * *",
+    "timezone": "America/Los_Angeles",
+    "actorId": "iliazlobin/events-garysguide-crawler",
+    "input": {
+      "region": "sf",
+      "maxItems": 100,
+      "lookForwardWindow": 30
+    }
+  }'
+```
+
+#### Creating a Schedule (MCP)
+
+**Via Claude Code**:
+```
+"Create a daily schedule for my Gary's Guide crawler:
+- Run at 2 AM PST every day
+- Collect up to 100 events
+- Look 30 days ahead
+- Crawl SF region"
+```
+
+#### Monitoring & Notifications
+
+**Enable notifications**:
+1. Go to Schedule settings
+2. Enable **"Notify on run failure"**
+3. Add email/Slack webhook
+
+**Monitor runs**:
+```bash
+# List recent runs
+apify actor runs ls iliazlobin/events-garysguide-crawler
+
+# Get run details
+apify actor run info <run-id>
+
+# Get dataset from run
+apify dataset get-items <dataset-id> --format json > events.json
+```
+
+**Via MCP**:
+```
+"Show me the last 5 runs of my Gary's Guide crawler and their status"
+```
+
+### Integration with Python SQLite
+
+**Export from Apify**:
+```bash
+# Get dataset from latest run
+apify dataset get-items <dataset-id> --format json > garysguide_events.json
+```
+
+**Import to SQLite**:
+```python
+import json
+from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.database.connection import DatabaseConnection
+from events_agent.models.event import Event
+
+# Load Apify dataset
+with open('garysguide_events.json', 'r') as f:
+    apify_events = json.load(f)
+
+# Transform to Event objects
+events = []
+for item in apify_events:
+    events.append(Event(
+        event_id=item['url'].split('/')[-1],
+        source='garysguide',
+        url=item['url'],
+        title=item['title'],
+        start_datetime=item.get('dateStr'),
+        location_name=item.get('location'),
+        description=item.get('description'),
+        image_url=item.get('imageUrl'),
+        # ... map other fields
+    ))
+
+# Save to SQLite (auto-deduplication via UNIQUE constraint)
+db = DatabaseConnection('data/events.db')
+repo = SQLiteEventRepository(db)
+repo.save_many(events)
+
+print(f"Imported {len(events)} events from Apify")
+```
+
+### Configuration Management
+
+**Configuration Files**:
+
+1. **`apify/crawler_config.yaml`** - Crawler runtime settings
+   - Rate limits, retries, timeouts
+   - Session pool configuration
+   - Autoscaling parameters
+   - Managed via `scripts/manage_crawler_config.py`
+
+2. **`apify/crawler_schedules.yaml`** - Apify platform settings
+   - Memory allocation (default: 1024 MB)
+   - Schedule definitions (cron, timezone)
+   - Input configurations
+   - Notification settings
+   - Managed via `scripts/sync_apify_schedules.py`
+
+**Key Pattern**: Defaults + per-crawler overrides
+```yaml
+defaults:
+  memory_mbytes: 1024  # Default for all crawlers
+  timeout_secs: 3600
+
+schedules:
+  garysguide:
+    memory_mbytes: 2048  # Override for this crawler
+```
+
+**Management Commands**:
 
 ```bash
-python3 -m venv venv && source venv/bin/activate
-pip install -e .
-playwright install chromium
-python -m events_agent.main  # or: events-crawler
+# List all crawler configs
+python3 scripts/manage_crawler_config.py list
+
+# Show specific crawler
+python3 scripts/manage_crawler_config.py show --crawler garysguide
+
+# Validate all configs
+python3 scripts/manage_crawler_config.py validate
+
+# List all schedules
+python3 scripts/sync_apify_schedules.py list
+
+# Sync schedules to Apify (dry run)
+python3 scripts/sync_apify_schedules.py sync --dry-run
+
+# Sync schedules to Apify (live)
+export APIFY_API_TOKEN="your_token"
+python3 scripts/sync_apify_schedules.py sync
 ```
 
-## Visualization & Documentation
+**Benefits**:
+- ✅ Explicit, version-controlled configuration
+- ✅ No hardcoded values in crawler code
+- ✅ Validation prevents invalid settings
+- ✅ Easy to update multiple crawlers
+- ✅ Cost optimization via explicit memory limits
 
-### Excalidraw MCP Integration
+**See**: `docs/CRAWLER_CONFIG_OPTIMIZATION.md` for full details
 
-This project has access to the **Excalidraw MCP server** for creating hand-drawn architecture diagrams. When working on system design, documentation, or explaining architectural concepts, you should proactively use this capability.
+### Best Practices
 
-**When to create diagrams:**
-- Explaining system architecture or data flow
-- Documenting new features or components
-- Illustrating crawler workflows or database schemas
-- Creating visual guides for complex interactions
-- Updating README with system overview diagrams
+**Performance**:
+- Use `maxRequestsPerMinute: 3` to avoid rate limiting
+- Set `requestHandlerTimeoutSecs: 300` for extensive scrolling
+- Use `useFingerprints: true` for anti-blocking
 
-**How to create and export diagrams:**
+**Error Handling**:
+- Gracefully skip events with missing required fields
+- Log errors but don't fail entire run
+- Use retry logic with `maxRequestRetries: 3`
 
-```bash
-# 1. Use the excalidraw MCP server (configured in .mcp.json)
-#    The AI will call create_view tool with diagram elements
+**Data Quality**:
+- Validate dates before saving (avoid "Invalid time value")
+- Handle missing DOM elements with try/catch
+- Normalize data formats (dates, prices, locations)
 
-# 2. Export the diagram to a shareable URL
-.agents/skills/excalidraw-export/export_diagram.sh <checkpoint_id>
-
-# 3. The script returns a URL like:
-#    https://excalidraw.com/#json=abc123,def456
-
-# 4. Open the URL, download as PNG/SVG, and add to docs/diagrams/
-```
-
-**Diagram types to create:**
-- **System Architecture**: Show crawlers → database → repositories → filters flow
-- **Data Flow**: Event extraction → validation → storage → query pipeline
-- **Crawler Lifecycle**: Browser launch → page load → extraction → transform → save
-- **Database Schema**: Tables, relationships, indexes
-- **Repository Pattern**: Interface hierarchy and implementations
-
-**Including diagrams in documentation:**
-
-```markdown
-## Architecture Overview
-
-![System Architecture](docs/diagrams/architecture.png)
-
-*[Editable version](https://excalidraw.com/#json=...)*
-```
-
-**Best practices:**
-- Use consistent colors (refer to Excalidraw cheat sheet from `read_me` tool)
-- Label all components clearly
-- Include arrows showing data flow direction
-- Export both PNG (for README) and keep excalidraw.com link (for editing)
-- Store diagram sources in `docs/diagrams/` directory
-- Update diagrams when architecture changes
-
-## Visualization & Documentation
-
-### Excalidraw MCP Integration
-
-This project has access to the **Excalidraw MCP server** for creating hand-drawn architecture diagrams. When working on system design, documentation, or explaining architectural concepts, you should proactively use this capability.
-
-**When to create diagrams:**
-- Explaining system architecture or data flow
-- Documenting new features or components
-- Illustrating crawler workflows or database schemas
-- Creating visual guides for complex interactions
-- Updating README with system overview diagrams
-
-**How to create and export diagrams:**
-
-```bash
-# 1. Use the excalidraw MCP server (configured in .mcp.json)
-#    The AI will call create_view tool with diagram elements
-
-# 2. Export the diagram to a shareable URL
-.agents/skills/excalidraw-export/export_diagram.sh <checkpoint_id>
-
-# 3. The script returns a URL like:
-#    https://excalidraw.com/#json=abc123,def456
-
-# 4. Open the URL, download as PNG/SVG, and add to docs/diagrams/
-```
-
-**Diagram types to create:**
-- **System Architecture**: Show crawlers → database → repositories → filters flow
-- **Data Flow**: Event extraction → validation → storage → query pipeline
-- **Crawler Lifecycle**: Browser launch → page load → extraction → transform → save
-- **Database Schema**: Tables, relationships, indexes
-- **Repository Pattern**: Interface hierarchy and implementations
-
-**Including diagrams in documentation:**
-
-```markdown
-## Architecture Overview
-
-![System Architecture](docs/diagrams/architecture.png)
-
-*[Editable version](https://excalidraw.com/#json=...)*
-```
-
-**Best practices:**
-- Use consistent colors (refer to Excalidraw cheat sheet from `read_me` tool)
-- Label all components clearly
-- Include arrows showing data flow direction
-- Export both PNG (for README) and keep excalidraw.com link (for editing)
-- Store diagram sources in `docs/diagrams/` directory
-- Update diagrams when architecture changes
+**Cost Optimization** (Free tier: $5/month, 625 compute units):
+- Use `maxItems` to limit crawl scope
+- Schedule during off-peak hours
+- Export datasets regularly (7-day retention on free plan)
 
 ## Architecture
 
-### Structure
-- `src/events_agent/`
-  - `models/event.py` - Pydantic Event model (25+ fields)
-  - `database/` - Connection, schema, migrations
-  - `repositories/` - Repository pattern (base, SQLite, JSON)
-  - `data/` - Jazz venues index, seasonal event detection
-  - `crawlers/` - Base + 9 source implementations
-  - `filters/` - Date and location utilities (legacy)
-  - `utils/` - Date parsing, timezone helpers
-- `data/events.db` - PRIMARY STORAGE (SQLite with WAL mode)
-- `tests/` - 104 tests (unit + integration)
-- `queries/` - SQL analysis queries
+**Structure**: `src/events_agent/` → `models/`, `database/`, `repositories/`, `crawlers/`, `data/`, `filters/`, `utils/`
+**Data Flow**: Crawlers → SQLite (auto-dedupe) → SQL queries → Event objects
+**Storage**: `data/events.db` (SQLite with WAL mode)
 
-### Data Flow
-Crawlers → SQLite (dedupe on save) → SQL filter (location + date + limit) → Event objects
+## Key Components
 
-## Database
+**Database** (`data/events.db`):
+- `events` table: UNIQUE(event_id, source) constraint for deduplication
+- 8 performance indexes for fast queries
+- Use `SQLiteEventRepository` for all data access
 
-**Location**: `data/events.db` (SQLite with WAL mode for concurrent reads)
+**Event Model** (`models/event.py`):
+- Required: event_id, source, url, title, start_datetime
+- Optional: 25+ fields for location, pricing, capacity, categorization
 
-### Schema
-- **events** (22 columns): event_id, source, url, title, start_datetime (required) + location, pricing, organizer (optional). UNIQUE(event_id, source) prevents duplicates. 8 performance indexes.
-- **crawl_sessions**: Tracks crawl history
-- **schema_version**: Migration tracking
-
-### Usage
-```python
-from events_agent.repositories.sqlite_repository import SQLiteEventRepository
-from events_agent.database.connection import DatabaseConnection
-
-db = DatabaseConnection('data/events.db')
-repo = SQLiteEventRepository(db)
-
-# Save with auto-deduplication
-repo.save_many(events)
-
-# Query (10-100x faster than in-memory filtering)
-nyc_events = repo.find_by_location_and_date(start, end, "new york", "NY", limit=100)
-```
-
-**CLI**: `sqlite3 data/events.db` | **GUI**: `open data/events.db` (DB Browser for SQLite)
-**Queries**: See `queries/quick_analysis.sql` for examples
-**Migration**: `python scripts/migrate_json_to_sqlite.py` (see SQLITE_MIGRATION.md)
-
-## Event Model (Pydantic)
-
-**Required**: event_id, source, url, title, start_datetime
-**Optional** (25+ fields):
-- Location: location_name, city, state, latitude, longitude, is_online
-- Pricing: price_cents, currency, is_free, fee_amount
-- Capacity: attendee_count, capacity, spots_remaining
-- Categorization: genre, experience_type, category, tags
-- Music: performer_names, duration_minutes
-- Cooking: chef_name, chef_rating, skill_level, cuisine_type
-- Host: organizer_name, host_name, group_name, ratings
-- Content: description, image_url, ai_summary, topics
-
-**Validation**: end_datetime > start_datetime, numeric >= 0, valid URLs, non-empty title
-
-## Data Infrastructure
-
-### Jazz Venues (`src/events_agent/data/jazz_venues.py`)
-15+ NYC jazz venues with metadata: Village Vanguard, Blue Note, Smalls (G. Village), Birdland, Dizzy's Club (Midtown), Minton's (Harlem), etc.
-```python
-from events_agent.data import is_known_jazz_venue, get_venue_by_name
-if is_known_jazz_venue("Blue Note"):  # Check venue
-    venue = get_venue_by_name("Blue Note")  # Get details
-```
-
-### Seasonal Events (`src/events_agent/data/seasonal_events.py`)
-Valentine's Day detection (30+ keywords: valentine, romantic, couples), date ranges (Feb 7-16), event types (dinner, cooking class, jazz concert), romantic neighborhoods.
-```python
-from events_agent.data import get_valentines_date_range, is_valentines_event
-vday_start, vday_end = get_valentines_date_range(2026)
-if is_valentines_event(event.title, event.description, event.tags):
-    # Is Valentine's event
-```
+**Data Utilities** (`data/`):
+- `jazz_venues.py`: 15+ NYC jazz venues with metadata
+- `seasonal_events.py`: Valentine's Day detection (keywords, date ranges)
 
 ## Crawlers
 
-All inherit from `BaseCrawler` (rate limiting, error handling, Playwright management). Return Event objects → save to SQLite via repository.
+### Active Sources
 
-| Source | Status | Strategy | Features |
-|--------|--------|----------|----------|
-| **Luma** | ✅ | Next.js `__NEXT_DATA__` JSON | General events |
-| **Meetup** | ✅ | DOM + Apollo GraphQL, infinite scroll | Modular (7 files), date filtering |
-| **Eventbrite, Fever, Cozymeal** | ✅ | Various | General events |
-| **Jazz Near You** | ✅ | HTML parsing | 80+ NYC jazz venues, artist info |
-| **Songkick** | ✅ | Infinite scroll | Jazz filtering, tour dates |
-| **TimeOut NYC** | ✅ | Multi-category | Valentine's, jazz, seasonal, images |
-| **DoNYC** | ✅ | Category-based | Valentine's, galentine's, curated |
+**Apify Cloud Crawlers** (TypeScript/Crawlee):
+- **Gary's Guide** - Tech/startup events (SF, NYC regions) - 82+ events per region
 
-```python
-# Example usage
-from events_agent.crawlers.luma_crawler import LumaCrawler
-crawler = LumaCrawler()
-events = crawler.crawl(browser, "nyc")
-repo.save_many(events)  # Auto-deduplication
-```
+**Local Python Crawlers** (Playwright):
+- **Eventbrite** - General events with pagination (~120 events in 30s)
+- **Fever** - Entertainment events (~225 events in 12 min)
+- **TimeOut NYC** - NYC events and activities
+- **DoNYC** - NYC-specific events
 
-## Repository API
+**Planned**:
+- **Funcheap SF** - Free/cheap SF events
+- **SF Travel** - SF tourism and events
 
-**SQLiteEventRepository** - Main data access layer:
-```python
-repo = SQLiteEventRepository(DatabaseConnection('data/events.db'))
+**Pattern**: All extend `BaseCrawler` with rate limiting, error handling, Playwright
+**Usage**: `crawler.crawl(browser, "nyc")` → `repo.save_many(events)`
 
-# CRUD
-repo.save_many(events)  # Auto-dedupe via UNIQUE(event_id, source)
-repo.upsert_many(events)  # Insert or update
-repo.find_by_id(1)
-repo.find_by_event_id("evt-123", "luma")
+### Local Crawler SLAs
 
-# Queries (SQL-based, 10-100x faster)
-repo.find_by_location_and_date(start, end, "new york", "NY", limit=100)
-repo.find_by_date_range(start, end)
-repo.find_by_source("luma")
+| Crawler | SLA | Run Command |
+|---------|-----|-------------|
+| **Eventbrite** | 100+ events within 5 minutes | `python scripts/run_eventbrite_crawler.py` |
+| **Fever** | All events (~225) in ~12 min | Via `python -m events_agent.main` (max_events=0) |
 
-# Analytics
-repo.count(), repo.get_sources(), repo.get_cities(), repo.get_date_range()
-```
+Eventbrite uses pagination (`?page=N`); ~20 events per page. Default: 6 pages → ~120 events in ~30s.
+Fever uses `domcontentloaded` (not `networkidle`) to avoid timeout; DOM fallback when Schema.org fails.
 
-**Filters** (legacy, prefer SQL queries):
-- `LocationFilter.filter_nyc_events()` - NYC variations (manhattan, brooklyn, etc.)
-- `DateFilter.get_current_week_range()`, `filter_current_and_next_week()`
-
-**JSON Export** (debugging only):
-```python
-JSONEventRepository("data/debug").export_processed(events, filters, timestamp)
-```
-
-## Usage Examples
-
-**Custom event limit**: `main(max_events=50)`
-
-**Adding a new crawler**:
+**Adding new crawler**:
 1. Extend `BaseCrawler`, implement `get_events_url()` and `extract_events_from_page()`
-2. Save to database: `repo.save_many(crawler.crawl(browser, "nyc"))`
-3. Add to `EventSource` enum in `models/event.py`
+2. Add to `EventSource` enum in `models/event.py`
+3. Add tests using `/unit-testing` skill
 
-## Testing
+## Repository Pattern
 
-**Run**: `pytest tests/unit/ -v` | `pytest tests/integration/ -v` | `pytest --cov=events_agent`
-**Structure**: 93 unit tests (models, filters, utils), 11 integration tests (crawlers)
+**Primary**: `SQLiteEventRepository(DatabaseConnection('data/events.db'))`
+- `save_many(events)` - Auto-dedupe via UNIQUE constraint
+- `find_by_location_and_date(start, end, city, state, limit)` - Fast SQL queries
+- `find_by_source(source)`, `find_by_date_range(start, end)`
 
-## Troubleshooting
+**Legacy**: Avoid in-memory filters (`LocationFilter`, `DateFilter`) - use SQL queries instead
 
-| Issue | Solution |
-|-------|----------|
-| Playwright not found | `playwright install chromium` |
-| Module not found | `source venv/bin/activate && pip install -e .` |
-| Timezone errors | Already handled (naive datetime conversion) |
-| Rate limiting / 403 | Increase delay, use proxies, respect robots.txt |
+## Development
 
-**Debug**: `logging.basicConfig(level=logging.DEBUG)` | `page.screenshot(path="debug.png")`
-
-## Configuration
-
-**Environment** (optional `.env`): CRAWL_DELAY=2.0, HEADLESS=true, DATA_DIR=data
-**Crawler settings**: `LumaCrawler(rate_limit_seconds=5.0)`, `page.goto(url, timeout=120000)`
-
-## Best Practices
-
-- Use SQLite (10-100x faster queries), backup regularly
-- Headless browser, parallel crawling, limit pagination
-- Graceful degradation, error logging, Pydantic validation
-
-## Architecture Notes
-
-**SOLID Principles**: Repository pattern, modular crawlers (Meetup refactored from 697 lines → 7 modules: crawler, transformer, extractor, scroller, apollo parser, url builder, constants)
+**Testing**: `pytest tests/unit/ -v` or use `/unit-testing` skill for new classes
 **Tools**: Black (100 char), Ruff, Mypy, pytest
-**Key Docs**: README.md, SQLITE_MIGRATION.md, queries/quick_analysis.sql, tests/ (104 examples)
+**Debug**: `logging.basicConfig(level=logging.DEBUG)`, `page.screenshot(path="debug.png")`
 
-## Future Enhancements
+## Quick Reference
 
-**Completed**: ✅ SQLite, 9 sources, historical tracking, analytics
-**Planned**: Facebook/Partiful/Dice.fm sources, FTS5 search, price/category filtering, recommendation engine, PostgreSQL support, REST/GraphQL API, CLI tools, scheduled crawls
-
----
-**Version 0.2.0** | Python 3.10+ | Playwright + Pydantic + pytest | MIT License
+**Main command**: `python -m events_agent.main` or `events-crawler`
+**Database**: `data/events.db` (SQLite, open with `sqlite3` or DB Browser)
+**Tests**: 104 tests (93 unit, 11 integration)
+**Docs**: README.md, SQLITE_MIGRATION.md, queries/quick_analysis.sql

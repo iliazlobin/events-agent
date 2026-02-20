@@ -1,0 +1,9 @@
+{
+  "urls": [
+    "https://lu.ma/nyc",
+    "https://lu.ma/sf"
+  ],
+  "lookForwardWindow": 3,
+  "maxItems": 150,
+  "maxScrolls": 3
+}

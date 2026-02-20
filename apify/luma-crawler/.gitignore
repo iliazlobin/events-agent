@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.idea
+.venv
+.vscode
+apify_storage
+dist
+node_modules
+storage

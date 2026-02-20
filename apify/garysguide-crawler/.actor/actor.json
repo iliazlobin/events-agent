@@ -1,0 +1,12 @@
+{
+	"actorSpecification": 1,
+	"name": "events-garysguide",
+	"title": "Events Aggregator - Gary's Guide",
+	"description": "Gary's Guide event aggregator for tech/startup events (NYC & SF). Collects event metadata from Gary's Guide, resolves gary.to redirects to detect providers (Luma, Meetup, Eventbrite), and stores aggregator references WITHOUT scraping individual provider pages. Reduces duplicate scraping and costs.",
+	"version": "3.0",
+	"meta": {
+		"templateId": "ts-crawlee-puppeteer-chrome"
+	},
+	"input": "./input_schema.json",
+	"dockerfile": "./Dockerfile"
+}

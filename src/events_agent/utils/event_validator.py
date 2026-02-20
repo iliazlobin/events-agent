@@ -1,6 +1,6 @@
 """Event validation utilities."""
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Any
 from events_agent.models.event import Event
 
@@ -37,8 +37,13 @@ class EventValidator:
                 "message": "No events to validate"
             }
 
-        # Get date range from events
-        start_dates = [e.start_datetime for e in events]
+        # Get date range from events (normalize to UTC naive for comparison)
+        def _to_utc_naive(dt: datetime) -> datetime:
+            if dt.tzinfo:
+                return dt.astimezone(timezone.utc).replace(tzinfo=None)
+            return dt
+
+        start_dates = [_to_utc_naive(e.start_datetime) for e in events]
         min_date = min(start_dates)
         max_date = max(start_dates)
 
@@ -52,7 +57,7 @@ class EventValidator:
 
         days_with_events = set()
         for event in events:
-            event_date = event.start_datetime.replace(tzinfo=None) if event.start_datetime.tzinfo else event.start_datetime
+            event_date = _to_utc_naive(event.start_datetime)
             event_day = event_date.replace(hour=0, minute=0, second=0, microsecond=0)
             days_with_events.add(event_day)
 

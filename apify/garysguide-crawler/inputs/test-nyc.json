@@ -1,0 +1,5 @@
+{
+  "region": "nyc",
+  "maxItems": 25,
+  "lookForwardWindow": 30
+}

@@ -1,0 +1,5 @@
+{
+  "region": "sf",
+  "maxItems": 20,
+  "lookForwardWindow": 30
+}

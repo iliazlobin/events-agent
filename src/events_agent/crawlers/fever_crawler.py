@@ -75,15 +75,17 @@ class FeverCrawler(BaseCrawler):
                     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
                 })
 
-                page.goto(main_url, wait_until='networkidle', timeout=60000)
+                # Use domcontentloaded - networkidle often never fires on modern sites (analytics, etc.)
+                page.goto(main_url, wait_until='domcontentloaded', timeout=45000)
                 page.wait_for_timeout(3000)
 
                 # Extract event URLs from DOM
                 event_urls = self._extract_event_urls(page)
                 print(f"    Found {len(event_urls)} event URLs")
 
-                # Limit to max_events
-                event_urls = event_urls[:self.max_events]
+                # Limit to max_events (0 or None = no limit, crawl all)
+                if self.max_events and self.max_events > 0:
+                    event_urls = event_urls[: self.max_events]
 
             finally:
                 page.close()
@@ -175,8 +177,8 @@ class FeverCrawler(BaseCrawler):
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             })
 
-            page.goto(event_url, wait_until='domcontentloaded', timeout=30000)
-            page.wait_for_timeout(2000)
+            page.goto(event_url, wait_until='domcontentloaded', timeout=20000)
+            page.wait_for_timeout(1500)
 
             # Get HTML content
             html_content = page.content()
@@ -184,12 +186,20 @@ class FeverCrawler(BaseCrawler):
             # Extract Schema.org blocks
             schema_blocks = self._extract_schema_org_blocks(html_content)
 
-            # Find Event block
+            # Find Event block (@type can be string or list e.g. ["Event", "Thing"])
             for block in schema_blocks:
-                if isinstance(block, dict) and block.get('@type') == 'Event':
-                    return self._parse_fever_event(block, event_url)
+                if not isinstance(block, dict):
+                    continue
+                block_type = block.get('@type')
+                if block_type == 'Event' or (
+                    isinstance(block_type, list) and 'Event' in block_type
+                ):
+                    event = self._parse_fever_event(block, event_url)
+                    if event:
+                        return event
 
-            return None
+            # Fallback: try DOM extraction when Schema.org has no valid Event
+            return self._extract_event_from_dom(page, event_url)
 
         except Exception as e:
             print(f"        Error loading {event_url}: {e}")
@@ -197,6 +207,56 @@ class FeverCrawler(BaseCrawler):
 
         finally:
             page.close()
+
+    def _extract_event_from_dom(self, page: Page, event_url: str) -> Optional[Event]:
+        """
+        Fallback: extract event from DOM when Schema.org fails.
+
+        Extracts title from h1, date from meta or visible text patterns.
+        """
+        try:
+            title = page.evaluate('''() => {
+                const h1 = document.querySelector('h1');
+                return h1 ? h1.textContent?.trim() : null;
+            }''')
+            if not title:
+                return None
+
+            # Try to find date in page - Fever often shows "Feb 19 - May 14" or similar
+            date_str = page.evaluate('''() => {
+                const meta = document.querySelector('meta[property="article:start_date"], meta[name="startDate"]');
+                if (meta?.content) return meta.content;
+                const body = document.body?.innerText || '';
+                const m = body.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+\\d{1,2}/);
+                return m ? m[0] : null;
+            }''')
+            if not date_str:
+                return None
+
+            start_datetime = parse_iso_datetime(date_str)
+            if not start_datetime:
+                # Try parsing "Feb 19" format
+                from datetime import datetime
+                try:
+                    parsed = datetime.strptime(date_str.strip()[:10], '%b %d')
+                    start_datetime = parsed.replace(year=datetime.now().year)
+                except (ValueError, TypeError):
+                    return None
+
+            event_id = self._extract_event_id_from_url(event_url)
+            if not event_id:
+                event_id = f"fever-dom-{hash(title + event_url) % 10000000}"
+
+            return Event(
+                event_id=event_id,
+                source=EventSource.FEVER,
+                url=event_url,
+                title=title,
+                start_datetime=start_datetime,
+                experience_type=self._infer_experience_type(title, ''),
+            )
+        except Exception as e:
+            return None
 
     def _extract_schema_org_blocks(self, html_content: str) -> List[dict]:
         """
@@ -217,9 +277,14 @@ class FeverCrawler(BaseCrawler):
 
             for match in matches:
                 try:
-                    # Parse JSON
                     data = json.loads(match)
-                    blocks.append(data)
+                    # Handle @graph wrapper (common in Fever)
+                    if isinstance(data, dict) and "@graph" in data:
+                        for item in data.get("@graph", []):
+                            if isinstance(item, dict):
+                                blocks.append(item)
+                    else:
+                        blocks.append(data)
                 except json.JSONDecodeError:
                     continue
 

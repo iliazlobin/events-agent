@@ -1,0 +1,12 @@
+{
+	"actorSpecification": 1,
+	"name": "events-luma",
+	"title": "Events Luma",
+	"description": "Luma event crawler for tech/startup events. Extracts event details from Luma.com including title, date, location, description, and registration information.",
+	"version": "1.0",
+	"meta": {
+		"templateId": "ts-crawlee-puppeteer-chrome"
+	},
+	"input": "./input_schema.json",
+	"dockerfile": "./Dockerfile"
+}

@@ -1,0 +1,7 @@
+{
+    "lookForwardWindow": 7,
+    "maxItems": 10,
+    "urls": [
+        "https://www.meetup.com/find/?location=us--ny--New%20York&source=EVENTS&sortField=DATETIME&eventType=all"
+    ]
+}

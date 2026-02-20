@@ -13,21 +13,78 @@ class EventbriteCrawler(BaseCrawler):
     Crawler for Eventbrite (eventbrite.com) events.
 
     Strategy:
-    - Eventbrite embeds event data in window.__SERVER_DATA__.buckets
-    - Extract buckets from page and parse event objects
-    - Simpler than network interception - data is already on the page
+    - Eventbrite embeds event data in window.__SERVER_DATA__.search_data.events
+    - Paginate through pages (?page=N) to collect 100+ events within 5 min SLA
     """
 
-    def __init__(self, rate_limit_seconds: float = 2.0, max_events: int = 100):
+    def __init__(
+        self,
+        rate_limit_seconds: float = 1.0,
+        max_events: int = 150,
+        max_pages: int = 6,
+    ):
         """
         Initialize Eventbrite crawler.
 
         Args:
-            rate_limit_seconds: Minimum delay between requests
-            max_events: Maximum number of events to crawl (default: 100)
+            rate_limit_seconds: Minimum delay between page requests
+            max_events: Maximum number of events to crawl (default: 150)
+            max_pages: Maximum pages to fetch for pagination (default: 6, ~20 events/page)
         """
         super().__init__(rate_limit_seconds)
         self.max_events = max_events
+        self.max_pages = max_pages
+
+    def crawl(self, browser: Browser, location: str) -> List[Event]:
+        """
+        Custom crawl with pagination to load 100+ events within 5 min SLA.
+
+        Fetches multiple pages (?page=1, 2, ...) since each page has ~20 events.
+        """
+        import time as _time
+
+        base_url = self.get_events_url(location)
+        all_events: List[Event] = []
+        seen_ids: set = set()
+
+        for page_num in range(1, self.max_pages + 1):
+            if len(all_events) >= self.max_events:
+                break
+
+            url = f"{base_url.rstrip('/')}/?page={page_num}" if page_num > 1 else base_url
+            page = browser.new_page()
+
+            try:
+                page.set_extra_http_headers({
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                })
+
+                print(f"  Fetching page {page_num}: {url}")
+                page.goto(url, wait_until='domcontentloaded', timeout=60000)
+                page.wait_for_timeout(2500)
+
+                page_events = self.extract_events_from_page(page)
+                new_count = 0
+                for ev in page_events:
+                    if ev.event_id not in seen_ids:
+                        seen_ids.add(ev.event_id)
+                        all_events.append(ev)
+                        new_count += 1
+                        if len(all_events) >= self.max_events:
+                            break
+
+                print(f"    Page {page_num}: {len(page_events)} events ({new_count} new), total {len(all_events)}")
+                if len(page_events) == 0:
+                    break
+
+                _time.sleep(self.rate_limit_seconds)
+
+            except Exception as e:
+                print(f"  Error on page {page_num}: {e}")
+            finally:
+                page.close()
+
+        return all_events[: self.max_events]
 
     def get_events_url(self, location: str) -> str:
         """
@@ -44,11 +101,13 @@ class EventbriteCrawler(BaseCrawler):
         if location.lower() in ['nyc', 'new-york']:
             location = 'ny--new-york'
 
-        return f"https://www.eventbrite.com/d/{location}/events/"
+        return f"https://www.eventbrite.com/d/{location}/all-events/"
 
     def extract_events_from_page(self, page: Page) -> List[Event]:
         """
-        Extract events from Eventbrite page using __SERVER_DATA__.
+        Extract events from Eventbrite page using __SERVER_DATA__.search_data.events.
+
+        Eventbrite structure (2024+): search_data.events.results and promoted_results.
 
         Args:
             page: Playwright Page object
@@ -59,47 +118,23 @@ class EventbriteCrawler(BaseCrawler):
         events = []
 
         try:
-            # Extract __SERVER_DATA__ from page
-            server_data = page.evaluate('''() => {
-                if (typeof window.__SERVER_DATA__ !== 'undefined') {
-                    return window.__SERVER_DATA__;
-                }
-                return null;
+            # Extract from search_data.events (current Eventbrite structure)
+            results = page.evaluate('''() => {
+                const sd = window.__SERVER_DATA__?.search_data?.events;
+                if (!sd) return { results: [], promoted: [] };
+                return {
+                    results: sd.results || [],
+                    promoted: sd.promoted_results || []
+                };
             }''')
 
-            if not server_data:
-                print("      No __SERVER_DATA__ found on page")
-                return []
+            for event_data in results.get('results', []) + results.get('promoted', []):
+                event = self._parse_eventbrite_event(event_data)
+                if event:
+                    events.append(event)
 
-            # Extract events from buckets
-            buckets = server_data.get('buckets', [])
-            print(f"      Found {len(buckets)} buckets")
-
-            for bucket in buckets:
-                # Regular events
-                bucket_events = bucket.get('events', [])
-                for event_data in bucket_events:
-                    event = self._parse_eventbrite_event(event_data)
-                    if event:
-                        events.append(event)
-                        if len(events) >= self.max_events:
-                            break
-
-                # Promoted events
-                promoted_events = bucket.get('promoted_events', [])
-                for event_data in promoted_events:
-                    event = self._parse_eventbrite_event(event_data)
-                    if event:
-                        events.append(event)
-                        if len(events) >= self.max_events:
-                            break
-
-                if len(events) >= self.max_events:
-                    break
-
-            # Limit to max_events
-            events = events[:self.max_events]
-            print(f"      Extracted {len(events)} events from Eventbrite")
+            if events:
+                print(f"      Extracted {len(events)} events from Eventbrite")
 
         except Exception as e:
             print(f"      Error extracting Eventbrite events: {e}")

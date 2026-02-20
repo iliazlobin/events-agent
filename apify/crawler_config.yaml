@@ -1,0 +1,104 @@
+# Apify Crawler Configuration
+# Defines default settings and per-crawler overrides for memory, rate limits, and timeouts
+
+defaults:
+  # Memory allocation (Apify platform)
+  memory_mbytes: 1024  # 1 GB default - sufficient for most crawlers
+  
+  # Crawler performance settings
+  max_requests_per_minute: 15  # Balance between speed and blocking risk
+  max_request_retries: 3
+  request_handler_timeout_secs: 180  # 3 minutes
+  
+  # Session pool settings
+  session_pool_size: 5
+  session_max_usage_count: 10
+  session_max_error_score: 5
+  
+  # Autoscaling
+  min_concurrency: 1
+  max_concurrency: 5
+
+# Per-crawler configurations (override defaults as needed)
+crawlers:
+  
+  garysguide:
+    name: "events-garysguide"
+    title: "Gary's Guide Events Crawler"
+    description: "Scrapes tech/startup events from Gary's Guide (NYC & SF)"
+    
+    # Override defaults
+    memory_mbytes: 1024
+    max_requests_per_minute: 15  # Faster than default for cloud runs
+    request_handler_timeout_secs: 180
+    
+    # Schedule configuration (Apify platform)
+    schedule:
+      enabled: true
+      cron: "0 2 * * *"  # 2 AM daily
+      timezone: "America/New_York"
+    
+    # Default input for scheduled runs
+    default_input:
+      region: "sf"
+      maxItems: 100
+      lookForwardWindow: 90
+  
+  luma:
+    name: "events-crawler-luma"
+    title: "Luma Events Crawler"
+    description: "Scrapes events from Luma platform"
+    
+    # Override defaults
+    memory_mbytes: 1024
+    max_requests_per_minute: 10
+    request_handler_timeout_secs: 300  # 5 min for extensive scrolling
+    
+    # Schedule configuration
+    schedule:
+      enabled: true
+      cron: "0 3 * * *"  # 3 AM daily
+      timezone: "America/New_York"
+    
+    default_input:
+      urls: ["https://lu.ma/nyc", "https://lu.ma/sf"]
+      maxItems: 150
+      lookForwardWindow: 30
+      maxScrolls: 20
+  
+  meetup:
+    name: "events-crawler-meetup"
+    title: "Meetup Events Crawler"
+    description: "Scrapes events from Meetup.com"
+    
+    # Override defaults
+    memory_mbytes: 1024
+    max_requests_per_minute: 10
+    request_handler_timeout_secs: 120  # 2 min (GraphQL is faster)
+    
+    # Schedule configuration
+    schedule:
+      enabled: true
+      cron: "0 4 * * *"  # 4 AM daily
+      timezone: "America/New_York"
+    
+    default_input:
+      urls: ["https://www.meetup.com/find/?location=us--ny--new_york"]
+      maxItems: 150
+      lookForwardWindow: 30
+
+# Common crawler features
+features:
+  - Proxy rotation (Apify residential/datacenter)
+  - Browser fingerprinting
+  - Session management
+  - Auto-retry on failure
+  - Dataset export (JSON, CSV, Excel)
+  - Webhook notifications
+
+# Cost estimates (based on 1 GB memory, 30-60 min runtime)
+# Apify pricing: ~$0.25 per 1 compute unit (1 GB RAM for 1 hour)
+cost_per_run:
+  garysguide: "$0.20-0.25"  # ~50 min
+  luma: "$0.12-0.15"        # ~30 min  
+  meetup: "$0.10-0.12"      # ~25 min

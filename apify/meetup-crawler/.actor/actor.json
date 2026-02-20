@@ -1,0 +1,12 @@
+{
+	"actorSpecification": 1,
+	"name": "events-meetup",
+	"title": "Events Meetup",
+	"description": "Meetup event crawler for community events. Extracts event details from Meetup.com including title, date, location, description, and RSVP information.",
+	"version": "1.0",
+	"meta": {
+		"templateId": "ts-crawlee-puppeteer-chrome"
+	},
+	"input": "./input_schema.json",
+	"dockerfile": "./Dockerfile"
+}

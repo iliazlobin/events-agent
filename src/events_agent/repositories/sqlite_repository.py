@@ -688,75 +688,78 @@ class SQLiteEventRepository(EventRepository):
             1 if event.detail_crawled else 0,
         )
 
-    def _row_to_event(self, row: dict) -> Event:
+    def _row_to_event(self, row) -> Event:
         """Convert database row to Event model.
 
         Args:
-            row: Database row (sqlite3.Row object).
+            row: Database row (sqlite3.Row or dict).
 
         Returns:
             Event model instance.
         """
         import json
 
+        # sqlite3.Row doesn't support .get(); convert to dict
+        r = dict(row)
+
         return Event(
-            event_id=row["event_id"],
-            source=EventSource(row["source"]),
-            url=row["url"],
-            title=row["title"],
-            start_datetime=datetime.fromisoformat(row["start_datetime"]),
-            description=row["description"],
-            end_datetime=datetime.fromisoformat(row["end_datetime"])
-            if row["end_datetime"]
+            event_id=r["event_id"],
+            source=EventSource(r["source"]),
+            url=r["url"],
+            title=r["title"],
+            start_datetime=datetime.fromisoformat(r["start_datetime"]),
+            description=r["description"],
+            end_datetime=datetime.fromisoformat(r["end_datetime"])
+            if r.get("end_datetime")
             else None,
-            location_name=row["location_name"],
-            location_address=row["location_address"],
-            city=row["city"],
-            state=row["state"],
-            is_online=bool(row["is_online"]),
-            attendee_count=row["attendee_count"],
-            capacity=row["capacity"],
-            spots_remaining=row["spots_remaining"],
-            price_cents=row["price_cents"],
-            currency=row["currency"],
-            is_free=bool(row["is_free"]),
-            organizer_name=row["organizer_name"],
-            organizer_url=row["organizer_url"],
-            crawled_at=datetime.fromisoformat(row["crawled_at"]),
+            location_name=r["location_name"],
+            location_address=r["location_address"],
+            city=r["city"],
+            state=r["state"],
+            is_online=bool(r["is_online"]),
+            attendee_count=r["attendee_count"],
+            capacity=r["capacity"],
+            spots_remaining=r["spots_remaining"],
+            price_cents=r["price_cents"],
+            currency=r["currency"],
+            is_free=bool(r["is_free"]),
+            organizer_name=r["organizer_name"],
+            organizer_url=r["organizer_url"],
+            crawled_at=datetime.fromisoformat(r["crawled_at"]),
             # Additional fields
-            ai_summary=row.get("ai_summary"),
-            image_url=row.get("image_url"),
-            topics=json.loads(row["topics"]) if row.get("topics") else None,
-            experience_type=row.get("experience_type"),
-            category=row.get("category"),
-            tags=json.loads(row["tags"]) if row.get("tags") else None,
-            chef_name=row.get("chef_name"),
-            chef_rating=row.get("chef_rating"),
-            chef_bio=row.get("chef_bio"),
-            skill_level=row.get("skill_level"),
-            cuisine_type=row.get("cuisine_type"),
-            performer_names=json.loads(row["performer_names"])
-            if row.get("performer_names")
+            ai_summary=r.get("ai_summary"),
+            image_url=r.get("image_url"),
+            topics=json.loads(r["topics"]) if r.get("topics") else None,
+            experience_type=r.get("experience_type"),
+            category=r.get("category"),
+            tags=json.loads(r["tags"]) if r.get("tags") else None,
+            chef_name=r.get("chef_name"),
+            chef_rating=r.get("chef_rating"),
+            chef_bio=r.get("chef_bio"),
+            skill_level=r.get("skill_level"),
+            cuisine_type=r.get("cuisine_type"),
+            performer_names=json.loads(r["performer_names"])
+            if r.get("performer_names")
             else None,
-            genre=row.get("genre"),
-            duration_minutes=row.get("duration_minutes"),
-            host_name=row.get("host_name"),
-            host_bio=row.get("host_bio"),
-            group_name=row.get("group_name"),
-            group_rating=row.get("group_rating"),
-            group_review_count=row.get("group_review_count"),
-            rating=row.get("rating"),
-            review_count=row.get("review_count"),
-            latitude=row.get("latitude"),
-            longitude=row.get("longitude"),
-            directions=row.get("directions"),
-            fee_amount=row.get("fee_amount"),
-            fee_required=bool(row["fee_required"])
-            if row.get("fee_required") is not None
+            genre=r.get("genre"),
+            duration_minutes=r.get("duration_minutes"),
+            host_name=r.get("host_name"),
+            host_bio=r.get("host_bio"),
+            group_name=r.get("group_name"),
+            group_rating=r.get("group_rating"),
+            group_review_count=r.get("group_review_count"),
+            rating=r.get("rating"),
+            review_count=r.get("review_count"),
+            latitude=r.get("latitude"),
+            longitude=r.get("longitude"),
+            directions=r.get("directions"),
+            fee_amount=r.get("fee_amount"),
+            fee_required=bool(r["fee_required"])
+            if r.get("fee_required") is not None
             else None,
-            payment_methods=json.loads(row["payment_methods"])
-            if row.get("payment_methods")
+            payment_methods=json.loads(r["payment_methods"])
+            if r.get("payment_methods")
             else None,
-            registration_url=row.get("registration_url"),
-            detail_crawled=bool(row.get("detail_crawled")),
+            registration_url=r.get("registration_url"),
+            detail_crawled=bool(r.get("detail_crawled")),
         )

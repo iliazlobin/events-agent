@@ -88,9 +88,9 @@ def main(max_events: int = 100):
             print(f"  ✗ Error crawling Meetup: {e}")
             sources_events["meetup"] = []
 
-        # Crawl Fever
+        # Crawl Fever (max_events=0 = crawl all available)
         print("\n[3/5] Crawling Fever...")
-        fever_crawler = FeverCrawler(max_events=max_events)
+        fever_crawler = FeverCrawler(max_events=0, rate_limit_seconds=1.0)
         try:
             fever_events = fever_crawler.crawl(browser, "nyc")
             print(f"  ✓ Found {len(fever_events)} Fever events")

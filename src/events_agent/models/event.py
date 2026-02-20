@@ -11,14 +11,15 @@ class EventSource(str, Enum):
     LUMA = "luma"
     MEETUP = "meetup"
     FEVER = "fever"
-    COZYMEAL = "cozymeal"
     EVENTBRITE = "eventbrite"
+    COZYMEAL = "cozymeal"
     JAZZNEARYOU = "jazznearyou"
     SONGKICK = "songkick"
     TIMEOUT = "timeout"
     DONYC = "donyc"
-    RESIDENTADVISOR = "residentadvisor"
-    BANDSINTOWN = "bandsintown"
+    GARYSGUIDE = "garysguide"
+    FUNCHEAP = "funcheap"
+    SFTRAVEL = "sftravel"
 
 
 class Event(BaseModel):
@@ -108,6 +109,12 @@ class Event(BaseModel):
 
     # External links
     registration_url: Optional[str] = Field(None, description="External registration URL")
+
+    # Aggregator metadata (for events found via aggregators like Gary's Guide)
+    original_provider: Optional[str] = Field(None, description="Original provider domain (luma.com, meetup.com, etc.)")
+    aggregated_from: Optional[str] = Field(None, description="Aggregator that listed this event (garysguide, etc.)")
+    short_url: Optional[str] = Field(None, description="Short URL from aggregator (e.g., gary.to link)")
+    aggregator_detail_url: Optional[str] = Field(None, description="Detail page on aggregator site")
 
     # Metadata
     crawled_at: datetime = Field(default_factory=datetime.utcnow, description="When this was crawled")
