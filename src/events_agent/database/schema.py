@@ -20,7 +20,7 @@ class SchemaManager:
         >>> schema.initialize_schema()
     """
 
-    CURRENT_VERSION = 3
+    CURRENT_VERSION = 4
 
     def __init__(self, db: DatabaseConnection):
         """Initialize schema manager.
@@ -108,6 +108,12 @@ class SchemaManager:
             logger.info("Applying migration 3: Add aggregator metadata fields")
             self._add_aggregator_fields()
             self._set_schema_version(3)
+
+        # Migration 4: Add price range and registration status fields
+        if from_version < 4:
+            logger.info("Applying migration 4: Add price range and registration status fields")
+            self._add_price_range_and_status_fields()
+            self._set_schema_version(4)
 
     def _create_initial_schema(self) -> None:
         """Create initial database schema with events and crawl_sessions tables."""
@@ -316,6 +322,31 @@ class SchemaManager:
 
         self.db.commit()
         logger.info("Aggregator metadata fields added successfully")
+
+    def _add_price_range_and_status_fields(self) -> None:
+        """Add price range and registration status fields (Migration 4).
+
+        These fields capture min/max pricing for events with price tiers
+        and registration status flags from crawlers.
+        """
+        new_columns = [
+            # Price range fields
+            "ALTER TABLE events ADD COLUMN min_price_cents INTEGER",
+            "ALTER TABLE events ADD COLUMN max_price_cents INTEGER",
+
+            # Registration status fields
+            "ALTER TABLE events ADD COLUMN waitlist INTEGER DEFAULT 0",
+            "ALTER TABLE events ADD COLUMN registration_closed INTEGER DEFAULT 0",
+        ]
+
+        for sql in new_columns:
+            try:
+                self.db.execute(sql)
+            except Exception as e:
+                logger.debug(f"Could not add column (may already exist): {e}")
+
+        self.db.commit()
+        logger.info("Price range and registration status fields added successfully")
 
     def get_table_info(self, table_name: str) -> list:
         """Get table schema information.

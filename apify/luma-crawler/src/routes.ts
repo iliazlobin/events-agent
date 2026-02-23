@@ -318,24 +318,75 @@ router.addHandler('event', async ({ request, page, log }) => {
     log.debug(`registrationClosed/soldOut: ${registrationClosed}`)
   }
 
+  // Extract event ID from URL
+  const urlParts = pageUrl.split('/').filter(Boolean)
+  const eventId = urlParts[urlParts.length - 1] || 'unknown'
+
+  // Parse address into city/state
+  const addressParts = address ? address.split(',').map(s => s.trim()) : []
+  let city: string | null = null
+  let state: string | null = null
+
+  if (addressParts.length >= 2) {
+    // Last part is state, second to last is city
+    state = addressParts[addressParts.length - 1] || null
+    city = addressParts[addressParts.length - 2] || null
+  } else if (addressParts.length === 1) {
+    city = addressParts[0] || null
+  }
+
+  // Convert price to cents
+  const priceCents = price ? Math.round(price * 100) : null
+  const minPriceCents = minPrice ? Math.round(minPrice * 100) : null
+  const maxPriceCents = maxPrice ? Math.round(maxPrice * 100) : null
+
   const item = {
+    // Required fields
+    eventId: eventId,
+    source: 'luma',
     url: pageUrl,
-    dateStart: dateStartText,
-    dateEnd: dateEndText,
     title: title,
-    hosts,
-    group,
-    address,
-    guests,
-    attendees,
-    description,
-    cover,
-    price,
-    maxPrice,
-    minPrice,
-    spotsLeft,
-    waitlist,
-    registrationClosed,
+    startDatetime: dateStartText,
+
+    // Optional datetime
+    endDatetime: dateEndText,
+
+    // Location fields
+    locationName: null, // Luma doesn't have venue name separate from address
+    locationAddress: address,
+    city: city,
+    state: state,
+    isOnline: false, // TODO: detect online events
+
+    // Attendance
+    attendeeCount: attendees,
+    capacity: null,
+    spotsRemaining: spotsLeft,
+
+    // Pricing
+    priceCents: priceCents,
+    currency: 'USD',
+    isFree: !price || price === 0,
+
+    // Organizer/Host
+    organizerName: group,
+    hostName: hosts.length > 0 ? hosts[0] : null,
+
+    // Content
+    description: description,
+    imageUrl: cover,
+
+    // Enhanced fields (kept for reference, not in base model)
+    hosts: hosts, // Full host list
+    guests: guests, // Guest list
+    minPriceCents: minPriceCents,
+    maxPriceCents: maxPriceCents,
+    waitlist: waitlist,
+    registrationClosed: registrationClosed,
+
+    // Metadata
+    crawledAt: new Date().toISOString(),
+    detailCrawled: true,
   }
 
   log.info(`saving item (${JSON.stringify(item.url)}): ${item.title}`)

@@ -471,28 +471,80 @@ router.addHandler('event', async ({ page, log }) => {
   const waitlist = eventData.rsvpState === 'WAITLIST' || eventData.rsvpState === 'JOIN_WAITLIST'
   const registrationClosed = eventData.rsvpState === 'CLOSED' || eventData.rsvpState === 'PAST'
 
+  // Extract event ID from URL
+  const urlParts = pageUrl.split('/').filter(Boolean)
+  const eventId = urlParts[urlParts.length - 1] || 'unknown'
+
+  // Parse address into city/state
+  const addressParts = address ? address.split(',').map(s => s.trim()) : []
+  let city: string | null = null
+  let state: string | null = null
+
+  if (addressParts.length >= 2) {
+    // Last part is state, second to last is city
+    state = addressParts[addressParts.length - 1] || null
+    city = addressParts[addressParts.length - 2] || null
+  } else if (addressParts.length === 1) {
+    city = addressParts[0] || null
+  }
+
+  // Convert attendees to int
+  const attendeeCount = parseInt(attendees) || 0
+
+  // Convert price to cents
+  const priceCents = price ? Math.round(price * 100) : null
+  const minPriceCents = minPrice ? Math.round(minPrice * 100) : null
+  const maxPriceCents = maxPrice ? Math.round(maxPrice * 100) : null
+
   const item = {
+    // Required fields
+    eventId: eventId,
+    source: 'meetup',
     url: pageUrl,
-    dateStart: dateStartText,
-    dateEnd: dateEndText,
-    title,
-    hosts: [host],
-    group,
-    address,
-    guests,
-    attendees,
-    description,
-    cover,
-    tags,
-    venue,
-    online: isOnline,
+    title: title,
+    startDatetime: dateStartText,
+
+    // Optional datetime
+    endDatetime: dateEndText,
+
+    // Location fields
+    locationName: venue,
+    locationAddress: address,
+    city: city,
+    state: state,
+    isOnline: isOnline,
+
+    // Attendance
+    attendeeCount: attendeeCount,
+    capacity: null,
+    spotsRemaining: spotsLeft,
+
+    // Pricing
+    priceCents: priceCents,
+    currency: 'USD',
+    isFree: !price || price === 0,
+
+    // Organizer/Host
+    groupName: group,
+    hostName: host,
+
+    // Content
+    description: description,
+    imageUrl: cover,
+    tags: tags,
+
+    // Enhanced fields (kept for reference, not in base model)
+    hosts: [host], // Full host list
+    guests: guests, // Guest list (max 20)
+    minPriceCents: minPriceCents,
+    maxPriceCents: maxPriceCents,
+    waitlist: waitlist,
+    registrationClosed: registrationClosed,
     eventSeriesDates: eventSeriesDatesTexts,
-    price,
-    minPrice,
-    maxPrice,
-    spotsLeft,
-    waitlist,
-    registrationClosed,
+
+    // Metadata
+    crawledAt: new Date().toISOString(),
+    detailCrawled: true,
   }
 
   log.info(`saving item (${item.url}): ${item.title}`)

@@ -245,32 +245,64 @@ router.addHandler('event-detail-page', async ({ page, log, request }) => {
   const eventIdMatch = detailUrl.match(/\/events\/([a-z0-9]+)/i)
   const eventId = eventIdMatch ? eventIdMatch[1] : detailUrl.split('/').pop() || 'unknown'
 
+  // Parse date string to ISO datetime (best effort)
+  const dateStrRaw = garyMetadata.dateStr || listingDate
+  let startDatetime: string | null = null
+
+  try {
+    if (dateStrRaw) {
+      // Try to parse common date formats
+      const parsed = new Date(dateStrRaw)
+      if (!isNaN(parsed.getTime())) {
+        startDatetime = parsed.toISOString()
+      }
+    }
+  } catch (err) {
+    log.warning(`Could not parse date: ${dateStrRaw}`)
+  }
+
+  // Parse location into city/state
+  const locationParts = garyMetadata.location ? garyMetadata.location.split(',').map(s => s.trim()) : []
+  const city = locationParts[0] || null
+  const state = locationParts[1] || null
+
   // Save aggregator metadata to dataset (NO SCRAPING OF PROVIDER PAGE)
   const aggregatorData = {
-    // Use title from detail page, fallback to listing title
-    title: garyMetadata.title || listingTitle || 'Unknown Event',
-
-    // URLs
+    // Required fields
+    eventId: eventId,
+    source: 'garysguide', // This is from Gary's Guide
     url: finalUrl, // Final destination URL (where user will end up)
+    title: garyMetadata.title || listingTitle || 'Unknown Event',
+    startDatetime: startDatetime, // ISO datetime (may be null if unparseable)
+
+    // Optional datetime
+    endDatetime: null,
+
+    // Location fields
+    locationName: garyMetadata.location || null,
+    locationAddress: garyMetadata.location || null,
+    city: city,
+    state: state,
+    isOnline: false,
+
+    // Content
+    description: garyMetadata.description || null,
+    imageUrl: garyMetadata.imageUrl || null,
+
+    // Pricing
+    priceCents: null,
+    currency: 'USD',
+    isFree: true,
+
+    // Aggregator tracking
+    originalProvider: provider, // The event is on luma/meetup/etc.
+    aggregatedFrom: 'garysguide',
     shortUrl: garyMetadata.garyToUrl, // gary.to short link
     aggregatorDetailUrl: detailUrl, // Gary's Guide detail page
 
-    // Metadata from Gary's Guide
-    dateStr: garyMetadata.dateStr || listingDate,
-    location: garyMetadata.location,
-    description: garyMetadata.description,
-    imageUrl: garyMetadata.imageUrl,
-
-    // Aggregator tracking
-    source: 'garysguide', // This is from Gary's Guide
-    originalProvider: provider, // But the event is on luma/meetup/etc.
-    aggregatedFrom: 'garysguide',
-
-    // Event ID
-    eventId: eventId,
-
     // Metadata
-    scrapedAt: new Date().toISOString(),
+    crawledAt: new Date().toISOString(),
+    detailCrawled: false, // Aggregator mode - not crawling provider page
     isAggregated: true, // Flag indicating this is aggregated metadata only
   }
 

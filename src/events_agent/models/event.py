@@ -52,9 +52,13 @@ class Event(BaseModel):
     attendee_count: Optional[int] = Field(None, ge=0, description="Number of attendees/RSVPs")
     capacity: Optional[int] = Field(None, ge=0, description="Max capacity")
     spots_remaining: Optional[int] = Field(None, ge=0, description="Available spots")
+    waitlist: Optional[bool] = Field(None, description="Whether event has a waitlist")
+    registration_closed: Optional[bool] = Field(None, description="Whether registration is closed")
 
     # Pricing
     price_cents: Optional[int] = Field(None, ge=0, description="Price in cents")
+    min_price_cents: Optional[int] = Field(None, ge=0, description="Minimum price in cents (for price ranges)")
+    max_price_cents: Optional[int] = Field(None, ge=0, description="Maximum price in cents (for price ranges)")
     currency: str = Field("USD", description="Currency code")
     is_free: bool = Field(True, description="Whether event is free")
 
