@@ -1,6 +1,6 @@
 ---
-name: refactor
-description: Remove temporary, debugging, and non-essential files from the project while preserving production code, tests, and crawled data. Use when the project has accumulated inspection scripts, debug files, or temporary test files.
+name: clean-refactor
+description: Remove temporary files, unused code, and compact documentation while preserving all production functionality. Cleans up debug data, Python cache files, temporary logs, and consolidates documentation.
 disable-model-invocation: true
 allowed-tools: Bash(find *), Bash(rm *), Bash(ls *), Bash(du *), Bash(tar *)
 ---

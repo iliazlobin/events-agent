@@ -315,7 +315,7 @@ router.addHandler('search', async ({ page, log, enqueueLinks }) => {
   }
 })
 
-router.addHandler('event', async ({ page, log, request }) => {
+router.addHandler('event', async ({ page, log }) => {
   const pageUrl = (await page.url()) ?? ''
   const pageTitle = await page.title()
 
