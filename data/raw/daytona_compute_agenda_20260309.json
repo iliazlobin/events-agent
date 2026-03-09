@@ -1,0 +1,403 @@
+[
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-08",
+    "start_datetime": "2026-03-08T17:00:00-07:00",
+    "end_datetime": "2026-03-08T18:30:00-07:00",
+    "title": "Badge Pickup & Opening Reception",
+    "speaker_names": [],
+    "company_names": [],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099777"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T07:30:00-07:00",
+    "end_datetime": "2026-03-09T08:30:00-07:00",
+    "title": "Registration & Breakfast",
+    "speaker_names": [],
+    "company_names": [],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099836"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T08:30:00-07:00",
+    "end_datetime": "2026-03-09T09:30:00-07:00",
+    "title": "Opening Keynote",
+    "speaker_names": [
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "Daytona"
+    ],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099862"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T09:30:00-07:00",
+    "end_datetime": "2026-03-09T10:00:00-07:00",
+    "title": "Enterprise Agent Infrastructure: Sovereignty, Sandboxes, and the New Stack",
+    "speaker_names": [
+      "Wasem Alshikh",
+      "Matt Turck"
+    ],
+    "company_names": [
+      "Writer",
+      "Firstmark"
+    ],
+    "description": "A new stack is forming around enterprise agents. Not just models and prompts, but execution, isolation, governance, and deployment across customer-controlled environments. Waseem AlShikh shares how Writer approaches enterprise requirements like BYOC, security controls, and real implementation support, and why these constraints shape product architecture as much as they shape go-to-market. We connect the dots between sovereignty and runtime, and why sandboxes are showing up as a core primitive for agents that do actual work.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099880"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T10:00:00-07:00",
+    "end_datetime": "2026-03-09T10:30:00-07:00",
+    "title": "Your Database Wasn\u2019t Designed for Agents",
+    "speaker_names": [
+      "Nikita Shamgunov",
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "Neon",
+      "Daytona"
+    ],
+    "description": "Databases were built for applications with predictable traffic and human-driven workflows. Agents change that assumption. They create databases on demand, fork them aggressively, spike concurrency without warning, and expect instant availability. In this fireside, Nikita Shamgunov shares what happens when AI-driven workloads collide with traditional database architecture. We explore why the old tradeoffs between PLG scale and enterprise depth no longer hold, how bursty agent traffic forces a rethink of storage and compute separation, and what it takes to build a database layer that can handle both millions of ephemeral workloads and mission-critical systems at the same time.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099898"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T10:30:00-07:00",
+    "end_datetime": "2026-03-09T11:00:00-07:00",
+    "title": "The Nervous System for AI Agents: Why the Cloud Wasn\u2019t Built for This",
+    "speaker_names": [
+      "Russel D'Sa",
+      "Matt Turck"
+    ],
+    "company_names": [
+      "LiveKit",
+      "Firstmark"
+    ],
+    "description": "Modern cloud infrastructure was designed for stateless web applications. AI agents are not stateless web applications.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099917"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T11:00:00-07:00",
+    "end_datetime": "2026-03-09T11:30:00-07:00",
+    "title": "Build a Moat by Owning Your AI Stack",
+    "speaker_names": [
+      "Lin Qiao"
+    ],
+    "company_names": [
+      "Fireworks AI"
+    ],
+    "description": "As AI capabilities commoditize, model ownership becomes a more durable advantage than model choice. In this keynote, Lin Qiao, CEO and co-founder of Fireworks AI will share hard-won lessons from building AI products: managing inference costs, finding product-market fit, and scaling reliably without ceding control to third-party platforms. She'll explain why owning your AI stack is the key to a defensible moat with autonomous agents. \u1427",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099933"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T11:30:00-07:00",
+    "end_datetime": "2026-03-09T12:00:00-07:00",
+    "title": "What Does the AWS of Tomorrow Look Like?",
+    "speaker_names": [
+      "Parag Agrawal",
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "Parallel",
+      "Daytona"
+    ],
+    "description": "The world\u2019s businesses first reorganized around the web, then around cloud. Now they\u2019re reorganizing around agents. That shift isn\u2019t just new apps. It\u2019s a new infrastructure stack. In this fireside chat, Parag Agrawal breaks down the core primitives every serious agent system will need: LLMs for reasoning, execution environments, web access and search, and secure connections to private tools and data. We\u2019ll explore what changes when search is built for agents instead of humans, how evaluation and reliability look different when the \u201cuser\u201d is autonomous, and what new primitives will define the next AWS era.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099948"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T12:00:00-07:00",
+    "end_datetime": "2026-03-09T13:00:00-07:00",
+    "title": "Lunch Break",
+    "speaker_names": [],
+    "company_names": [],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099963"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T13:00:00-07:00",
+    "end_datetime": "2026-03-09T13:30:00-07:00",
+    "title": "Everything Gets Rebuilt: Agents, Harnesses, and the New Compute Layer",
+    "speaker_names": [
+      "Harrison Chase",
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "LangChain",
+      "Daytona"
+    ],
+    "description": "As LangChain moves from prompt orchestration to deep agent harnesses with code execution and virtual file systems, the requirements change. Agents that can write and run code are no longer lightweight abstractions. They require isolation, state management, and scalable execution environments.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099978"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T13:30:00-07:00",
+    "end_datetime": "2026-03-09T14:00:00-07:00",
+    "title": "APIs Are Eating the Agent Stack",
+    "speaker_names": [
+      "Abhinav Asthana",
+      "Peter Zakin"
+    ],
+    "company_names": [
+      "Postman",
+      "Upfront"
+    ],
+    "description": "Agents may be the headline, but APIs are the foundation. As autonomous systems become primary consumers of software, the real question isn\u2019t just model quality. It\u2019s whether your APIs are structured, governed, and discoverable enough for agents to use correctly. In this fireside chat, Postman CEO Abhinav Asthana explores what changes when agents, not humans, are the main callers of APIs: how MCP reshapes tool interfaces, why governance and access control become existential, and how companies can avoid hallucinated integrations. We\u2019ll also discuss Postman\u2019s push into agent platforms with Astro and what it takes to make APIs truly agent-ready in an enterprise world.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.099995"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T14:00:00-07:00",
+    "end_datetime": "2026-03-09T14:30:00-07:00",
+    "title": "Data is the Interface: The File System for Agents",
+    "speaker_names": [
+      "Aaron Levie",
+      "Mark Suster"
+    ],
+    "company_names": [
+      "Box",
+      "Upfront"
+    ],
+    "description": "Agents do not run on chat. They run on context. And in the enterprise, that context lives in your unstructured data. In this fireside, Aaron Levie unpacks why data and cloud content systems are becoming the default interface for agents, and what's needed to make enterprise knowledge usable by autonomous software.\u00a0We explore how files serve\u00a0as local building blocks that agents can navigate, the importance of permissioning and governance when the user is non-human, and why the content layer becomes more important, not less, as the rest of the agent stack evolves.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100010"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T14:30:00-07:00",
+    "end_datetime": "2026-03-09T15:00:00-07:00",
+    "title": "What Is a Computer Now",
+    "speaker_names": [
+      "Beyang Liu",
+      "Tina He"
+    ],
+    "company_names": [
+      "Amp",
+      "Pace Capital"
+    ],
+    "description": "We are rebuilding the computer around agents. Not adding a chat box to old software. In this fireside, Beyang Liu unpacks why the core assumptions behind most applications no longer hold when an agent can translate intent into action, use tools directly, and generate software on the fly. We explore the emerging \u201cagent OS\u201d stack, what belongs in a privileged kernel layer versus user-space automation, and why coding agents are just the starting point for a much bigger shift in how knowledge work gets done.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100026"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T15:00:00-07:00",
+    "end_datetime": "2026-03-09T15:30:00-07:00",
+    "title": "Coffee Break",
+    "speaker_names": [],
+    "company_names": [],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100041"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T15:30:00-07:00",
+    "end_datetime": "2026-03-09T16:00:00-07:00",
+    "title": "The Datacenter in 2026: CPUs, RL Environments, and Agent-Driven Workloads",
+    "speaker_names": [
+      "Dylan Patel",
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "SemiAnalysis",
+      "Daytona"
+    ],
+    "description": "As AI systems move beyond static inference into reinforcement learning and autonomous execution, datacenter architecture is entering a new phase. Training loops require massive parallel CPU environments, agents need persistent execution layers, and verification workloads are scaling unpredictably. Dylan Patel joins Compute to examine how RL and agent usage are reshaping CPU demand, cluster design, memory requirements, and interconnect evolution. The takeaway: the AI stack is diversifying, and the next bottleneck may not be where most people are looking.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100056"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T16:00:00-07:00",
+    "end_datetime": "2026-03-09T16:30:00-07:00",
+    "title": "Layers, Not Revolutions: Compute in the Agent Era",
+    "speaker_names": [
+      "David Cramer",
+      "Tina He"
+    ],
+    "company_names": [
+      "Sentry",
+      "Pace Capital"
+    ],
+    "description": "Every technology wave claims to replace the last one. In reality, it adds a layer. In this conversation, we explore what actually changes in the agent era and what does not. Data centers do not disappear. SaaS does not die. Structured data does not become irrelevant. Instead, new capabilities stack on top of existing systems.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100071"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T16:30:00-07:00",
+    "end_datetime": "2026-03-09T17:00:00-07:00",
+    "title": "Rebuilding the Sandbox for Enterprise Coding Agents",
+    "speaker_names": [
+      "Eno Reyes",
+      "Peter Zakin"
+    ],
+    "company_names": [
+      "Factory",
+      "Upfront"
+    ],
+    "description": "As software development agents mature, the infrastructure underneath them is being stress-tested in unexpected ways. What does it mean for an agent to have a persistent \u201chome\u201d instead of a fresh sandbox every time? When does forking actually matter versus being a nice idea? And how do enterprise customers balance SaaS convenience with self-hosted control? In this session, we examine the evolving sandbox landscape through the lens of real coding agent workloads, exploring persistence, checkpointing, parallelization, abstraction layers, and the operational challenges of running agents reliably in enterprise environments.",
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100086"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T17:00:00-07:00",
+    "end_datetime": "2026-03-09T17:30:00-07:00",
+    "title": "Closing Remarks",
+    "speaker_names": [
+      "Ivan Burazin"
+    ],
+    "company_names": [
+      "Daytona"
+    ],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100102"
+  },
+  {
+    "conference_slug": "daytona-compute",
+    "conference_name": "Compute Conference by Daytona",
+    "source": "daytona",
+    "source_url": "https://compute.daytona.io/",
+    "agenda_date": "2026-03-09",
+    "start_datetime": "2026-03-09T17:30:00-07:00",
+    "end_datetime": "2026-03-09T19:00:00-07:00",
+    "title": "Closing Reception",
+    "speaker_names": [],
+    "company_names": [],
+    "description": null,
+    "venue_name": "Chase Center",
+    "city": "San Francisco",
+    "state": "CA",
+    "crawled_at": "2026-03-09T20:29:56.100117"
+  }
+]

@@ -18,6 +18,8 @@ class EventSource(str, Enum):
     TIMEOUT = "timeout"
     DONYC = "donyc"
     GARYSGUIDE = "garysguide"
+    WINTERFEST = "winterfest"
+    TOWNOFMAMMOTH = "townofmammoth"
     FUNCHEAP = "funcheap"
     SFTRAVEL = "sftravel"
 

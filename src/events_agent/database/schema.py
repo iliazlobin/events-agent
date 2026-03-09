@@ -20,7 +20,7 @@ class SchemaManager:
         >>> schema.initialize_schema()
     """
 
-    CURRENT_VERSION = 4
+    CURRENT_VERSION = 5
 
     def __init__(self, db: DatabaseConnection):
         """Initialize schema manager.
@@ -114,6 +114,12 @@ class SchemaManager:
             logger.info("Applying migration 4: Add price range and registration status fields")
             self._add_price_range_and_status_fields()
             self._set_schema_version(4)
+
+        # Migration 5: Add conference agenda storage and watch-source registry
+        if from_version < 5:
+            logger.info("Applying migration 5: Add conference agenda and watch-source tables")
+            self._add_conference_tables()
+            self._set_schema_version(5)
 
     def _create_initial_schema(self) -> None:
         """Create initial database schema with events and crawl_sessions tables."""
@@ -209,9 +215,69 @@ class SchemaManager:
     def drop_all_tables(self) -> None:
         """Drop all tables. USE WITH CAUTION - only for testing."""
         logger.warning("Dropping all tables")
+        self.db.execute("DROP TABLE IF EXISTS conference_agenda_items")
+        self.db.execute("DROP TABLE IF EXISTS conference_watch_sources")
         self.db.execute("DROP TABLE IF EXISTS events")
         self.db.execute("DROP TABLE IF EXISTS crawl_sessions")
         self.db.execute("DROP TABLE IF EXISTS schema_version")
+        self.db.commit()
+
+    def _add_conference_tables(self) -> None:
+        """Add tables for tracked conference websites and agenda items."""
+        self.db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS conference_watch_sources (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                slug TEXT NOT NULL UNIQUE,
+                name TEXT NOT NULL,
+                base_url TEXT NOT NULL,
+                discovery_url TEXT,
+                city TEXT,
+                state TEXT,
+                venue_name TEXT,
+                source_type TEXT,
+                discovery_notes TEXT,
+                is_active INTEGER DEFAULT 1,
+                last_checked_at TIMESTAMP,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            """
+        )
+        self.db.execute(
+            """
+            CREATE TABLE IF NOT EXISTS conference_agenda_items (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                conference_slug TEXT NOT NULL,
+                conference_name TEXT NOT NULL,
+                source TEXT NOT NULL,
+                source_url TEXT NOT NULL,
+                agenda_date DATE NOT NULL,
+                start_datetime TIMESTAMP NOT NULL,
+                end_datetime TIMESTAMP NOT NULL,
+                title TEXT NOT NULL,
+                speaker_names TEXT,
+                company_names TEXT,
+                description TEXT,
+                venue_name TEXT,
+                city TEXT,
+                state TEXT,
+                crawled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(conference_slug, start_datetime, title)
+            )
+            """
+        )
+        self.db.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_conference_agenda_slug_datetime
+            ON conference_agenda_items(conference_slug, start_datetime)
+            """
+        )
+        self.db.execute(
+            """
+            CREATE INDEX IF NOT EXISTS idx_conference_watch_sources_active
+            ON conference_watch_sources(is_active, city, state)
+            """
+        )
         self.db.commit()
 
     def _add_enhanced_event_fields(self) -> None:

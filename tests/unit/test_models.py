@@ -124,6 +124,8 @@ def test_event_source_enum():
     assert EventSource.FEVER.value == "fever"
     assert EventSource.COZYMEAL.value == "cozymeal"
     assert EventSource.EVENTBRITE.value == "eventbrite"
+    assert EventSource.WINTERFEST.value == "winterfest"
+    assert EventSource.TOWNOFMAMMOTH.value == "townofmammoth"
 
 
 def test_event_model_dump():
