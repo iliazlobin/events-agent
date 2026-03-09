@@ -475,18 +475,9 @@ router.addHandler('event', async ({ page, log }) => {
   const urlParts = pageUrl.split('/').filter(Boolean)
   const eventId = urlParts[urlParts.length - 1] || 'unknown'
 
-  // Parse address into city/state
-  const addressParts = address ? address.split(',').map(s => s.trim()) : []
-  let city: string | null = null
-  let state: string | null = null
-
-  if (addressParts.length >= 2) {
-    // Last part is state, second to last is city
-    state = addressParts[addressParts.length - 1] || null
-    city = addressParts[addressParts.length - 2] || null
-  } else if (addressParts.length === 1) {
-    city = addressParts[0] || null
-  }
+  // Extract city/state from Apollo state (already available from venue data)
+  const cityFromVenue = eventData.venue?.city || null
+  const stateFromVenue = eventData.venue?.state || null
 
   // Convert attendees to int
   const attendeeCount = parseInt(attendees) || 0
@@ -510,8 +501,8 @@ router.addHandler('event', async ({ page, log }) => {
     // Location fields
     locationName: venue,
     locationAddress: address,
-    city: city,
-    state: state,
+    city: cityFromVenue,
+    state: stateFromVenue,
     isOnline: isOnline,
 
     // Attendance
