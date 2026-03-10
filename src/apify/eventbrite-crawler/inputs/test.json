@@ -1,0 +1,6 @@
+{
+  "location": "nyc",
+  "maxItems": 25,
+  "maxPages": 2,
+  "rateLimitSeconds": 0
+}

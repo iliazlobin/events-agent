@@ -1,87 +1,95 @@
 # Events Agent
 
-Web crawler for collecting event data from Luma.com and Meetup.com, with filtering for NYC events in the current and next week.
+SF/NYC event collection system centered on scheduled actors plus SQLite ingestion.
 
-## Features
+## Direction
 
-- Crawls events from Luma.com and Meetup.com using Playwright
-- Filters events by location (NYC area)
-- Filters events by date range (current + next week)
-- Structured data output with Pydantic validation
-- Comprehensive test suite with unit and integration tests
+The project is converging to a single `src/`-rooted crawler architecture:
 
-## Installation
+- `src/apify/` contains crawler actors, local test inputs, and schedule/config YAML.
+- `src/events_agent/` contains shared Python infrastructure:
+  - SQLite storage
+  - event models
+  - import/enrichment logic
+  - schedule/config sync helpers
+  - quality validation
+- New source crawlers should be added in `src/apify/<source>-crawler/`, not in the Python package.
 
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+The detailed target structure and quality loop are documented in [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md).
 
-# Install package
-pip install -e .
+## Project Layout
 
-# Install Playwright browsers
-playwright install chromium
-```
-
-## Usage
-
-```bash
-# Run the crawler
-events-crawler
-
-# Or with Python module
-python -m events_agent.main
-```
-
-Output is saved to `events_output.json`.
-
-## Testing
-
-```bash
-# Run unit tests only
-pytest tests/unit/
-
-# Run all tests including integration tests
-pytest
-
-# Run with coverage
-pytest --cov=events_agent
-```
-
-## Architecture
-
-- **Models**: Pydantic models for data validation (`models/event.py`)
-- **Crawlers**: Abstract base class + Luma/Meetup implementations (`crawlers/`)
-- **Filters**: Date and location filtering logic (`filters/`)
-- **Utils**: Helper functions for dates, rate limiting (`utils/`)
-
-## Project Structure
-
-```
+```text
 events-agent/
-├── src/events_agent/
-│   ├── models/          # Data models
-│   ├── crawlers/        # Web crawlers
-│   ├── filters/         # Filtering logic
-│   ├── utils/           # Utilities
-│   └── main.py          # CLI entry point
-├── tests/
-│   ├── fixtures/        # HTML samples
-│   ├── unit/            # Unit tests
-│   └── integration/     # Integration tests
-└── pyproject.toml       # Dependencies
+├── src/
+│   ├── apify/                  # Actor code, local inputs, config YAML
+│   │   ├── garysguide-crawler/
+│   │   ├── luma-crawler/
+│   │   ├── meetup-crawler/
+│   │   ├── crawler_config.yaml
+│   │   └── crawler_schedules.yaml
+│   └── events_agent/           # Shared Python infrastructure
+│       ├── database/
+│       ├── models/
+│       ├── repositories/
+│       ├── utils/
+│       ├── legacy_crawlers/    # Python bridge scrapers for active Python actors
+│       └── conference_tracking/
+├── scripts/                    # Config sync, migration, validation
+├── docs/                       # Current operating docs
+├── design/                     # Architecture and migration design notes
+└── tests/
 ```
+
+## Current Operating Model
+
+1. Actors under `src/apify/` collect source data into datasets.
+2. Python utilities normalize/import results into `data/events.db`.
+3. SQLite queries and enrichment logic deduplicate, promote aggregator metadata, and power downstream analysis.
+4. Schedules are managed from versioned YAML in `src/apify/crawler_schedules.yaml`.
+
+## Source Policy
+
+- Production pipeline sources live only in `src/apify/`.
+- `src/events_agent/legacy_crawlers/` is reserved for Python actor bridge implementations that still power `src/apify/*/main.py`.
+- Conference-specific or one-off scrapers belong in `src/events_agent/conference_tracking/` or should be retired entirely.
+- One-off conference or special-purpose scrapers are not part of the production source architecture and should be retired instead of migrated into the scheduled actor lane.
+
+## Key Docs
+
+- [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md)
+- [src/apify/README.md](/Users/iliazlobin/Code/events-agent/src/apify/README.md)
+- [design/AGGREGATOR_PATTERN.md](/Users/iliazlobin/Code/events-agent/design/AGGREGATOR_PATTERN.md)
+- [docs/CRAWLER_CONFIG_OPTIMIZATION.md](/Users/iliazlobin/Code/events-agent/docs/CRAWLER_CONFIG_OPTIMIZATION.md)
 
 ## Development
 
+### Actor development
+
 ```bash
-# Install dev dependencies
-pip install -e ".[dev]"
-
-# Run tests
-pytest
-
-# Run with verbose output
-pytest -v
+cd src/apify/garysguide-crawler
+npm install
+npm run build
+npx apify run --input-file=inputs/test-sf-10.json --purge
 ```
+
+### Python infrastructure
+
+```bash
+source .venv/bin/activate
+pytest tests/unit -q
+pytest tests/integration/test_sqlite_flow.py -q
+python3 scripts/sync_apify_schedules.py validate
+```
+
+## Quality Loop
+
+Every crawler change should close the loop in this order:
+
+1. Actor-level local test run with a small input file.
+2. Output schema inspection against the normalized event contract.
+3. SQLite import/upsert validation.
+4. Aggregator promotion / missing-direct-source query check.
+5. Scheduled dry-run config validation.
+
+That loop is spelled out in [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md).

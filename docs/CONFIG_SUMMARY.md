@@ -8,9 +8,11 @@ Optimized Apify crawler configurations using the same pattern as `memory_mbytes`
 - **Centralized management** via Python scripts
 - **Validation** to prevent errors
 
+The intended repo structure is single-tree under `src/`: source crawlers in `src/apify/`, shared ingestion and quality logic in `src/events_agent/`.
+
 ## Files Created
 
-### 1. `apify/crawler_schedules.yaml`
+### 1. `src/apify/crawler_schedules.yaml`
 Apify platform-specific settings and schedules
 
 ```yaml
@@ -21,7 +23,7 @@ defaults:
 
 schedules:
   garysguide:
-    actor_id: "iliazlobin/events-garysguide-crawler"
+    actor_id: "iliazlobin/events-garysguide"
     cron: "0 2 * * *"
     memory_mbytes: 1024  # ✅ Overrideable per crawler
     input:
@@ -150,13 +152,13 @@ Expected output:
 === Apify Crawler Schedules ===
 
 📅 garysguide
-   Actor: iliazlobin/events-garysguide-crawler
+   Actor: iliazlobin/events-garysguide
    Cron: 0 2 * * *
    Memory: 1024 MB
    Timeout: 3600s
 
 📅 luma
-   Actor: iliazlobin/events-luma-crawler
+   Actor: iliazlobin/events-luma
    Cron: 0 3 * * *
    Memory: 1024 MB
    ...
@@ -191,14 +193,14 @@ python3 scripts/sync_apify_schedules.py sync
 
 ## Configuration Files Overview
 
-### `apify/crawler_config.yaml`
+### `src/apify/crawler_config.yaml`
 **Purpose**: Crawler runtime settings
 - Rate limits
 - Session pools
 - Autoscaling
 - Managed by: `manage_crawler_config.py`
 
-### `apify/crawler_schedules.yaml` ✨ NEW
+### `src/apify/crawler_schedules.yaml` ✨ NEW
 **Purpose**: Apify platform settings
 - Memory allocation
 - Schedules

@@ -1,0 +1,148 @@
+# Apify Crawler Schedule Configuration
+# Defines Apify-specific run settings and schedules
+
+defaults:
+  # Apify platform settings
+  memory_mbytes: 1024  # 1 GB - sufficient for most crawlers
+  timeout_secs: 3600   # 1 hour max runtime
+  build: latest        # Use latest build
+
+  # Cost optimization
+  max_dataset_retention_days: 7  # Free tier limit
+  max_runs_to_keep: 10
+
+  # Notifications
+  notify_on_failure: true
+  notify_on_success: false
+
+# Crawler-specific schedules
+schedules:
+
+  garysguide:
+    actor_id: "iliazlobin/events-garysguide"
+
+    # Schedule configuration
+    cron: "0 2 * * *"  # 2 AM daily
+    timezone: "America/New_York"
+    enabled: true
+
+    # Override defaults
+    memory_mbytes: 1024
+    timeout_secs: 3600  # 1 hour
+
+    # Input for scheduled runs
+    input:
+      region: "sf"
+      maxItems: 100
+      lookForwardWindow: 90
+
+    # Notifications
+    notify_on_failure: true
+    notify_on_success: false
+
+  luma:
+    actor_id: "iliazlobin/events-luma"
+
+    # Schedule configuration
+    cron: "0 3 * * *"  # 3 AM daily
+    timezone: "America/New_York"
+    enabled: true
+
+    # Override defaults
+    memory_mbytes: 1024
+    timeout_secs: 3600
+
+    # Input for scheduled runs
+    input:
+      urls: ["https://lu.ma/nyc", "https://lu.ma/sf"]
+      maxItems: 150
+      lookForwardWindow: 30
+      maxScrolls: 20
+
+    # Notifications
+    notify_on_failure: true
+    notify_on_success: false
+
+  meetup:
+    actor_id: "iliazlobin/events-meetup"
+
+    # Schedule configuration
+    cron: "0 4 * * *"  # 4 AM daily
+    timezone: "America/New_York"
+    enabled: true
+
+    # Override defaults
+    memory_mbytes: 1024
+    timeout_secs: 3600
+
+    # Input for scheduled runs
+    input:
+      urls: ["https://www.meetup.com/find/?location=us--ny--new_york"]
+      maxItems: 150
+      lookForwardWindow: 30
+
+    # Notifications
+    notify_on_failure: true
+    notify_on_success: false
+
+  eventbrite:
+    actor_id: "iliazlobin/events-eventbrite"
+    cron: "0 5 * * *"
+    timezone: "America/New_York"
+    enabled: true
+    memory_mbytes: 1024
+    timeout_secs: 3600
+    input:
+      location: "nyc"
+      maxItems: 150
+      maxPages: 6
+      rateLimitSeconds: 1.0
+    notify_on_failure: true
+    notify_on_success: false
+
+  fever:
+    actor_id: "iliazlobin/events-fever"
+    cron: "0 6 * * *"
+    timezone: "America/New_York"
+    enabled: true
+    memory_mbytes: 1024
+    timeout_secs: 3600
+    input:
+      location: "nyc"
+      maxItems: 100
+      rateLimitSeconds: 2.0
+    notify_on_failure: true
+    notify_on_success: false
+
+  timeout:
+    actor_id: "iliazlobin/events-timeout"
+    cron: "0 7 * * *"
+    timezone: "America/New_York"
+    enabled: true
+    memory_mbytes: 1024
+    timeout_secs: 3600
+    input:
+      location: "newyork"
+      category: "events-calendar"
+      rateLimitSeconds: 2.0
+    notify_on_failure: true
+    notify_on_success: false
+
+  donyc:
+    actor_id: "iliazlobin/events-donyc"
+    cron: "0 8 * * *"
+    timezone: "America/New_York"
+    enabled: true
+    memory_mbytes: 1024
+    timeout_secs: 3600
+    input:
+      location: "events"
+      rateLimitSeconds: 2.0
+    notify_on_failure: true
+    notify_on_success: false
+
+# Schedule metadata
+metadata:
+  version: "1.0"
+  last_updated: "2026-02-19"
+  managed_by: "sync_apify_schedules.py"

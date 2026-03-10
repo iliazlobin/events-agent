@@ -1,4 +1,4 @@
-"""SQLite implementation of EventRepository."""
+"""SQLite repository for normalized events."""
 
 import logging
 from datetime import datetime
@@ -6,13 +6,11 @@ from typing import Dict, List, Optional
 
 from events_agent.database.connection import DatabaseConnection
 from events_agent.models.event import Event, EventSource
-from events_agent.repositories.event_repository import EventRepository
-
 logger = logging.getLogger(__name__)
 
 
-class SQLiteEventRepository(EventRepository):
-    """SQLite implementation of EventRepository.
+class SQLiteEventRepository:
+    """SQLite repository for normalized events.
 
     Provides efficient event storage and querying using SQLite with indexes.
     Handles automatic deduplication via UNIQUE(event_id, source) constraint.
@@ -36,6 +34,25 @@ class SQLiteEventRepository(EventRepository):
             db: Database connection instance.
         """
         self.db = db
+        self._event_columns = (
+            "event_id", "source", "url", "title", "start_datetime",
+            "description", "end_datetime", "location_name", "location_address",
+            "city", "state", "is_online", "attendee_count", "capacity",
+            "spots_remaining", "waitlist", "registration_closed",
+            "price_cents", "min_price_cents", "max_price_cents", "currency", "is_free",
+            "organizer_name", "organizer_url",
+            "ai_summary", "image_url", "topics", "experience_type", "category", "tags",
+            "chef_name", "chef_rating", "chef_bio", "skill_level", "cuisine_type",
+            "performer_names", "genre", "duration_minutes", "host_name", "host_bio",
+            "group_name", "group_rating", "group_review_count", "rating", "review_count",
+            "latitude", "longitude", "directions", "fee_amount", "fee_required",
+            "payment_methods", "registration_url", "source_extensions",
+            "original_provider", "aggregated_from", "short_url", "aggregator_detail_url",
+            "crawled_at", "detail_crawled",
+        )
+        self._updatable_columns = tuple(
+            column for column in self._event_columns if column not in {"event_id", "source"}
+        )
 
     # --- CRUD Methods ---
 
@@ -49,15 +66,7 @@ class SQLiteEventRepository(EventRepository):
             Saved event with ID populated.
         """
         cursor = self.db.execute(
-            """
-            INSERT INTO events (
-                event_id, source, url, title, start_datetime,
-                description, end_datetime, location_name, location_address,
-                city, state, is_online, attendee_count, capacity,
-                spots_remaining, price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
+            self._insert_sql(),
             self._event_to_tuple(event),
         )
         self.db.commit()
@@ -84,24 +93,7 @@ class SQLiteEventRepository(EventRepository):
         tuples = [self._event_to_tuple(event) for event in events]
 
         self.db.execute_many(
-            """
-            INSERT INTO events (
-                event_id, source, url, title, start_datetime,
-                description, end_datetime, location_name, location_address,
-                city, state, is_online, attendee_count, capacity,
-                spots_remaining, waitlist, registration_closed,
-                price_cents, min_price_cents, max_price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at,
-                ai_summary, image_url, topics, experience_type, category, tags,
-                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
-                performer_names, genre, duration_minutes, host_name, host_bio,
-                group_name, group_rating, group_review_count, rating, review_count,
-                latitude, longitude, directions, fee_amount, fee_required,
-                payment_methods, registration_url, detail_crawled
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
+            self._insert_sql(),
             tuples,
         )
         self.db.commit()
@@ -328,6 +320,57 @@ class SQLiteEventRepository(EventRepository):
 
         return [self._row_to_event(row) for row in rows]
 
+    def find_aggregated_events_missing_direct_source(
+        self,
+        provider: Optional[str] = None,
+        start: Optional[datetime] = None,
+        end: Optional[datetime] = None,
+        limit: Optional[int] = None,
+    ) -> List[Event]:
+        """Find aggregator-discovered events that do not yet have a direct-source row."""
+        where_clauses = [
+            "source = ?",
+            "url IS NOT NULL",
+            "original_provider IS NOT NULL",
+            """
+            NOT EXISTS (
+                SELECT 1
+                FROM events direct
+                WHERE {normalized_direct_url} = {normalized_event_url}
+                  AND direct.source != events.source
+            )
+            """.strip().format(
+                normalized_direct_url=self._normalized_url_sql("direct.url"),
+                normalized_event_url=self._normalized_url_sql("events.url"),
+            ),
+        ]
+        params: List[object] = [EventSource.GARYSGUIDE.value]
+
+        if provider:
+            where_clauses.append("original_provider = ?")
+            params.append(provider)
+
+        if start:
+            where_clauses.append("start_datetime >= ?")
+            params.append(start.isoformat())
+
+        if end:
+            where_clauses.append("start_datetime <= ?")
+            params.append(end.isoformat())
+
+        sql = f"""
+            SELECT * FROM events
+            WHERE {" AND ".join(where_clauses)}
+            ORDER BY start_datetime, crawled_at DESC
+        """
+
+        if limit is not None:
+            sql += f" LIMIT {limit}"
+
+        cursor = self.db.execute(sql, tuple(params))
+        rows = cursor.fetchall()
+        return [self._row_to_event(row) for row in rows]
+
     # --- Deduplication methods ---
 
     def exists(self, event_id: str, source: EventSource) -> bool:
@@ -358,76 +401,7 @@ class SQLiteEventRepository(EventRepository):
             Upserted event with ID populated.
         """
         cursor = self.db.execute(
-            """
-            INSERT INTO events (
-                event_id, source, url, title, start_datetime,
-                description, end_datetime, location_name, location_address,
-                city, state, is_online, attendee_count, capacity,
-                spots_remaining, price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at,
-                ai_summary, image_url, topics, experience_type, category, tags,
-                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
-                performer_names, genre, duration_minutes, host_name, host_bio,
-                group_name, group_rating, group_review_count, rating, review_count,
-                latitude, longitude, directions, fee_amount, fee_required,
-                payment_methods, registration_url, detail_crawled
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(event_id, source) DO UPDATE SET
-                url = excluded.url,
-                title = excluded.title,
-                start_datetime = excluded.start_datetime,
-                description = excluded.description,
-                end_datetime = excluded.end_datetime,
-                location_name = excluded.location_name,
-                location_address = excluded.location_address,
-                city = excluded.city,
-                state = excluded.state,
-                is_online = excluded.is_online,
-                attendee_count = excluded.attendee_count,
-                capacity = excluded.capacity,
-                spots_remaining = excluded.spots_remaining,
-                waitlist = excluded.waitlist,
-                registration_closed = excluded.registration_closed,
-                price_cents = excluded.price_cents,
-                min_price_cents = excluded.min_price_cents,
-                max_price_cents = excluded.max_price_cents,
-                currency = excluded.currency,
-                is_free = excluded.is_free,
-                organizer_name = excluded.organizer_name,
-                organizer_url = excluded.organizer_url,
-                crawled_at = excluded.crawled_at,
-                ai_summary = excluded.ai_summary,
-                image_url = excluded.image_url,
-                topics = excluded.topics,
-                experience_type = excluded.experience_type,
-                category = excluded.category,
-                tags = excluded.tags,
-                chef_name = excluded.chef_name,
-                chef_rating = excluded.chef_rating,
-                chef_bio = excluded.chef_bio,
-                skill_level = excluded.skill_level,
-                cuisine_type = excluded.cuisine_type,
-                performer_names = excluded.performer_names,
-                genre = excluded.genre,
-                duration_minutes = excluded.duration_minutes,
-                host_name = excluded.host_name,
-                host_bio = excluded.host_bio,
-                group_name = excluded.group_name,
-                group_rating = excluded.group_rating,
-                group_review_count = excluded.group_review_count,
-                rating = excluded.rating,
-                review_count = excluded.review_count,
-                latitude = excluded.latitude,
-                longitude = excluded.longitude,
-                directions = excluded.directions,
-                fee_amount = excluded.fee_amount,
-                fee_required = excluded.fee_required,
-                payment_methods = excluded.payment_methods,
-                registration_url = excluded.registration_url,
-                detail_crawled = excluded.detail_crawled
-            """,
+            self._upsert_sql(),
             self._event_to_tuple(event),
         )
         self.db.commit()
@@ -454,82 +428,87 @@ class SQLiteEventRepository(EventRepository):
         tuples = [self._event_to_tuple(event) for event in events]
 
         self.db.execute_many(
-            """
-            INSERT INTO events (
-                event_id, source, url, title, start_datetime,
-                description, end_datetime, location_name, location_address,
-                city, state, is_online, attendee_count, capacity,
-                spots_remaining, waitlist, registration_closed,
-                price_cents, min_price_cents, max_price_cents, currency, is_free,
-                organizer_name, organizer_url, crawled_at,
-                ai_summary, image_url, topics, experience_type, category, tags,
-                chef_name, chef_rating, chef_bio, skill_level, cuisine_type,
-                performer_names, genre, duration_minutes, host_name, host_bio,
-                group_name, group_rating, group_review_count, rating, review_count,
-                latitude, longitude, directions, fee_amount, fee_required,
-                payment_methods, registration_url, detail_crawled
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                      ?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT(event_id, source) DO UPDATE SET
-                url = excluded.url,
-                title = excluded.title,
-                start_datetime = excluded.start_datetime,
-                description = excluded.description,
-                end_datetime = excluded.end_datetime,
-                location_name = excluded.location_name,
-                location_address = excluded.location_address,
-                city = excluded.city,
-                state = excluded.state,
-                is_online = excluded.is_online,
-                attendee_count = excluded.attendee_count,
-                capacity = excluded.capacity,
-                spots_remaining = excluded.spots_remaining,
-                waitlist = excluded.waitlist,
-                registration_closed = excluded.registration_closed,
-                price_cents = excluded.price_cents,
-                min_price_cents = excluded.min_price_cents,
-                max_price_cents = excluded.max_price_cents,
-                currency = excluded.currency,
-                is_free = excluded.is_free,
-                organizer_name = excluded.organizer_name,
-                organizer_url = excluded.organizer_url,
-                crawled_at = excluded.crawled_at,
-                ai_summary = excluded.ai_summary,
-                image_url = excluded.image_url,
-                topics = excluded.topics,
-                experience_type = excluded.experience_type,
-                category = excluded.category,
-                tags = excluded.tags,
-                chef_name = excluded.chef_name,
-                chef_rating = excluded.chef_rating,
-                chef_bio = excluded.chef_bio,
-                skill_level = excluded.skill_level,
-                cuisine_type = excluded.cuisine_type,
-                performer_names = excluded.performer_names,
-                genre = excluded.genre,
-                duration_minutes = excluded.duration_minutes,
-                host_name = excluded.host_name,
-                host_bio = excluded.host_bio,
-                group_name = excluded.group_name,
-                group_rating = excluded.group_rating,
-                group_review_count = excluded.group_review_count,
-                rating = excluded.rating,
-                review_count = excluded.review_count,
-                latitude = excluded.latitude,
-                longitude = excluded.longitude,
-                directions = excluded.directions,
-                fee_amount = excluded.fee_amount,
-                fee_required = excluded.fee_required,
-                payment_methods = excluded.payment_methods,
-                registration_url = excluded.registration_url,
-                detail_crawled = excluded.detail_crawled
-            """,
+            self._upsert_sql(),
             tuples,
         )
         self.db.commit()
 
         return len(events)
+
+    def promote_aggregator_metadata(
+        self, aggregator_source: EventSource = EventSource.GARYSGUIDE
+    ) -> int:
+        """Copy aggregator metadata onto matching direct-source events by URL."""
+        cursor = self.db.execute(
+            """
+            UPDATE events AS direct
+            SET
+                original_provider = COALESCE(
+                    direct.original_provider,
+                    (
+                        SELECT agg.original_provider
+                        FROM events AS agg
+                        WHERE agg.source = ?
+                          AND {normalized_agg_url} = {normalized_direct_url}
+                        ORDER BY agg.crawled_at DESC
+                        LIMIT 1
+                    )
+                ),
+                aggregated_from = COALESCE(
+                    direct.aggregated_from,
+                    (
+                        SELECT agg.aggregated_from
+                        FROM events AS agg
+                        WHERE agg.source = ?
+                          AND {normalized_agg_url} = {normalized_direct_url}
+                        ORDER BY agg.crawled_at DESC
+                        LIMIT 1
+                    )
+                ),
+                short_url = COALESCE(
+                    direct.short_url,
+                    (
+                        SELECT agg.short_url
+                        FROM events AS agg
+                        WHERE agg.source = ?
+                          AND {normalized_agg_url} = {normalized_direct_url}
+                        ORDER BY agg.crawled_at DESC
+                        LIMIT 1
+                    )
+                ),
+                aggregator_detail_url = COALESCE(
+                    direct.aggregator_detail_url,
+                    (
+                        SELECT agg.aggregator_detail_url
+                        FROM events AS agg
+                        WHERE agg.source = ?
+                          AND {normalized_agg_url} = {normalized_direct_url}
+                        ORDER BY agg.crawled_at DESC
+                        LIMIT 1
+                    )
+                )
+            WHERE direct.source != ?
+              AND EXISTS (
+                  SELECT 1
+                  FROM events AS agg
+                  WHERE agg.source = ?
+                    AND {normalized_agg_url} = {normalized_direct_url}
+              )
+            """.format(
+                normalized_agg_url=self._normalized_url_sql("agg.url"),
+                normalized_direct_url=self._normalized_url_sql("direct.url"),
+            ),
+            (
+                aggregator_source.value,
+                aggregator_source.value,
+                aggregator_source.value,
+                aggregator_source.value,
+                aggregator_source.value,
+                aggregator_source.value,
+            ),
+        )
+        self.db.commit()
+        return cursor.rowcount
 
     # --- Analytics methods ---
 
@@ -669,7 +648,6 @@ class SQLiteEventRepository(EventRepository):
             1 if event.is_free else 0,
             event.organizer_name,
             str(event.organizer_url) if event.organizer_url else None,
-            event.crawled_at.isoformat(),
             # Additional fields
             event.ai_summary,
             str(event.image_url) if event.image_url else None,
@@ -699,6 +677,12 @@ class SQLiteEventRepository(EventRepository):
             1 if event.fee_required else 0 if event.fee_required is not None else None,
             json.dumps(event.payment_methods) if event.payment_methods else None,
             str(event.registration_url) if event.registration_url else None,
+            json.dumps(event.source_extensions) if event.source_extensions else None,
+            event.original_provider,
+            event.aggregated_from,
+            event.short_url,
+            event.aggregator_detail_url,
+            event.crawled_at.isoformat(),
             1 if event.detail_crawled else 0,
         )
 
@@ -779,5 +763,38 @@ class SQLiteEventRepository(EventRepository):
             if r.get("payment_methods")
             else None,
             registration_url=r.get("registration_url"),
+            source_extensions=json.loads(r["source_extensions"])
+            if r.get("source_extensions")
+            else None,
+            original_provider=r.get("original_provider"),
+            aggregated_from=r.get("aggregated_from"),
+            short_url=r.get("short_url"),
+            aggregator_detail_url=r.get("aggregator_detail_url"),
             detail_crawled=bool(r.get("detail_crawled")),
+        )
+
+    def _insert_sql(self) -> str:
+        columns_sql = ", ".join(self._event_columns)
+        placeholders_sql = ", ".join(["?"] * len(self._event_columns))
+        return f"INSERT INTO events ({columns_sql}) VALUES ({placeholders_sql})"
+
+    def _normalized_url_sql(self, column_ref: str) -> str:
+        return (
+            "RTRIM("
+            "REPLACE("
+            "REPLACE("
+            "REPLACE(LOWER({column}), 'https://lu.ma/', 'https://luma.com/'), "
+            "'http://lu.ma/', 'https://luma.com/'), "
+            "'http://', 'https://'"
+            "), '/'"
+            ")"
+        ).format(column=column_ref)
+
+    def _upsert_sql(self) -> str:
+        update_sql = ", ".join(
+            f"{column} = excluded.{column}" for column in self._updatable_columns
+        )
+        return (
+            f"{self._insert_sql()} "
+            f"ON CONFLICT(event_id, source) DO UPDATE SET {update_sql}"
         )

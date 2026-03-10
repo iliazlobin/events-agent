@@ -3,7 +3,7 @@
 
 from pathlib import Path
 
-from events_agent.crawlers.daytona_compute_crawler import DaytonaComputeCrawler
+from events_agent.conference_tracking.daytona_compute import DaytonaComputeCrawler
 from events_agent.database.connection import DatabaseConnection
 from events_agent.database.schema import SchemaManager
 from events_agent.repositories.conference_repository import SQLiteConferenceRepository

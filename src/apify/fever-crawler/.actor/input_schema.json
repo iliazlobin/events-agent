@@ -1,0 +1,25 @@
+{
+  "title": "Fever Events Crawler",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "location": {
+      "title": "Location",
+      "type": "string",
+      "default": "nyc"
+    },
+    "maxItems": {
+      "title": "Maximum Items",
+      "type": "integer",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 500
+    },
+    "rateLimitSeconds": {
+      "title": "Rate Limit Seconds",
+      "type": "number",
+      "default": 2.0,
+      "minimum": 0
+    }
+  }
+}

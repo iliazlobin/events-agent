@@ -39,7 +39,7 @@ def _add_aggregator_fields(self):
 
 **Tested locally**: ✅ Migration successful, all columns added
 
-### 3. Gary's Guide Crawler (`apify/garysguide-crawler/src/routes.ts`)
+### 3. Gary's Guide Crawler (`src/apify/garysguide-crawler/src/routes.ts`)
 
 **Complete rewrite** to aggregator mode:
 
@@ -155,7 +155,7 @@ Checking for aggregator columns:
 ### Local Crawler Test
 
 ```bash
-cd apify/garysguide-crawler
+cd src/apify/garysguide-crawler
 
 # Build TypeScript
 npm run build  # ✅ Compiles successfully
@@ -200,7 +200,7 @@ Expected:
 ### 1. Local Testing (RECOMMENDED FIRST)
 
 ```bash
-cd apify/garysguide-crawler
+cd src/apify/garysguide-crawler
 
 # Clean previous runs
 rm -rf storage/
@@ -219,7 +219,7 @@ cat storage/datasets/default/*.json | \
 ### 2. Deploy to Apify
 
 ```bash
-cd apify/garysguide-crawler
+cd src/apify/garysguide-crawler
 
 # Build
 npm run build
@@ -235,7 +235,7 @@ apify info
 
 ```bash
 # Run with test input (10 events)
-apify actor call iliazlobin/events-garysguide-crawler \
+apify actor call iliazlobin/events-garysguide \
   --input '{"region":"sf","maxItems":10,"lookForwardWindow":30}'
 
 # Get results
@@ -348,7 +348,7 @@ Before deploying to production:
 
 1. **Complete local testing**:
    ```bash
-   cd apify/garysguide-crawler
+   cd src/apify/garysguide-crawler
    apify run --input-file=inputs/test-aggregator.json
    cat storage/datasets/default/*.json | jq -s '.[0:3]'
    ```
@@ -366,7 +366,7 @@ Before deploying to production:
 
 4. **Run test on Apify**:
    ```bash
-   apify actor call iliazlobin/events-garysguide-crawler \
+   apify actor call iliazlobin/events-garysguide \
      --input '{"region":"sf","maxItems":20,"lookForwardWindow":30}'
    ```
 
@@ -408,7 +408,7 @@ Before deploying to production:
 Modified:
   src/events_agent/models/event.py          (+4 fields)
   src/events_agent/database/schema.py       (+1 migration, +1 method)
-  apify/garysguide-crawler/src/routes.ts    (complete rewrite)
+  src/apify/garysguide-crawler/src/routes.ts    (complete rewrite)
   AGENTS.md                                  (+aggregator section)
   CLAUDE.md                                  (+aggregator section)
 
@@ -416,7 +416,7 @@ Created:
   design/AGGREGATOR_PATTERN.md                      (250 lines)
   design/AGGREGATOR_IMPLEMENTATION_SUMMARY.md       (this file)
   scripts/test_aggregator_migration.py              (test script)
-  apify/garysguide-crawler/inputs/test-aggregator.json
+  src/apify/garysguide-crawler/inputs/test-aggregator.json
 ```
 
 ## Summary

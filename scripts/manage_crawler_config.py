@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Manage Apify crawler configurations
+Manage crawler configurations for actors under src/apify
 - Read crawler_config.yaml
 - Validate settings
 - Display configurations
@@ -81,7 +81,7 @@ class CrawlerConfigManager:
     
     def list_crawlers(self):
         """List all configured crawlers with their settings"""
-        print("\n=== Apify Crawler Configurations ===\n")
+        print("\n=== Crawler Configurations ===\n")
         
         crawlers = self.config.get('crawlers', {})
         
@@ -130,11 +130,11 @@ class CrawlerConfigManager:
         default_input = crawler_config.get('default_input', {})
         memory = config.get('memory_mbytes', 1024)
         
-        print(f"\n=== Apify Deployment Commands for {crawler_name} ===\n")
+        print(f"\n=== Deployment Commands for {crawler_name} ===\n")
         
         # Push command
         print(f"# Deploy to Apify")
-        print(f"cd apify/{crawler_name}-crawler")
+        print(f"cd src/apify/{crawler_name}-crawler")
         print(f"apify push\n")
         
         # Run command
@@ -155,11 +155,11 @@ class CrawlerConfigManager:
 def main():
     import argparse
     
-    parser = argparse.ArgumentParser(description='Manage Apify crawler configurations')
+    parser = argparse.ArgumentParser(description='Manage crawler configurations')
     parser.add_argument('command', choices=['list', 'show', 'validate', 'deploy'],
                        help='Command to run')
     parser.add_argument('--crawler', '-c', help='Crawler name')
-    parser.add_argument('--config', default='apify/crawler_config.yaml',
+    parser.add_argument('--config', default='src/apify/crawler_config.yaml',
                        help='Path to crawler_config.yaml')
     
     args = parser.parse_args()

@@ -1,0 +1,32 @@
+{
+  "title": "Eventbrite Events Crawler",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "location": {
+      "title": "Location",
+      "type": "string",
+      "default": "nyc"
+    },
+    "maxItems": {
+      "title": "Maximum Items",
+      "type": "integer",
+      "default": 150,
+      "minimum": 1,
+      "maximum": 500
+    },
+    "maxPages": {
+      "title": "Maximum Pages",
+      "type": "integer",
+      "default": 6,
+      "minimum": 1,
+      "maximum": 25
+    },
+    "rateLimitSeconds": {
+      "title": "Rate Limit Seconds",
+      "type": "number",
+      "default": 1.0,
+      "minimum": 0
+    }
+  }
+}

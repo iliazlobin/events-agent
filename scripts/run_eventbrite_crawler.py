@@ -8,7 +8,7 @@ Usage: python scripts/run_eventbrite_crawler.py
 import time
 from playwright.sync_api import sync_playwright
 
-from events_agent.crawlers.eventbrite_crawler import EventbriteCrawler
+from events_agent.legacy_crawlers.eventbrite_crawler import EventbriteCrawler
 
 
 def main() -> None:

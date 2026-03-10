@@ -20,7 +20,7 @@ class SchemaManager:
         >>> schema.initialize_schema()
     """
 
-    CURRENT_VERSION = 5
+    CURRENT_VERSION = 6
 
     def __init__(self, db: DatabaseConnection):
         """Initialize schema manager.
@@ -120,6 +120,11 @@ class SchemaManager:
             logger.info("Applying migration 5: Add conference agenda and watch-source tables")
             self._add_conference_tables()
             self._set_schema_version(5)
+
+        if from_version < 6:
+            logger.info("Applying migration 6: Add source extensions field")
+            self._add_source_extensions_field()
+            self._set_schema_version(6)
 
     def _create_initial_schema(self) -> None:
         """Create initial database schema with events and crawl_sessions tables."""
@@ -413,6 +418,15 @@ class SchemaManager:
 
         self.db.commit()
         logger.info("Price range and registration status fields added successfully")
+
+    def _add_source_extensions_field(self) -> None:
+        """Add a JSON payload column for source-specific extension data."""
+        try:
+            self.db.execute("ALTER TABLE events ADD COLUMN source_extensions TEXT")
+        except Exception as e:
+            logger.debug(f"Could not add column (may already exist): {e}")
+        self.db.commit()
+        logger.info("Source extensions field added successfully")
 
     def get_table_info(self, table_name: str) -> list:
         """Get table schema information.

@@ -24,7 +24,7 @@ Implemented all recommendations from the crawler data validation report to align
 ## Changes by Component
 
 ### 1. Gary's Guide Crawler
-**File**: `apify/garysguide-crawler/src/routes.ts`
+**File**: `src/apify/garysguide-crawler/src/routes.ts`
 
 **Changes**:
 - ✅ Parse `dateStr` to ISO `startDatetime`
@@ -35,7 +35,7 @@ Implemented all recommendations from the crawler data validation report to align
 - ✅ Maintain aggregator fields: `originalProvider`, `aggregatedFrom`, `shortUrl`
 
 ### 2. Luma Crawler
-**File**: `apify/luma-crawler/src/routes.ts`
+**File**: `src/apify/luma-crawler/src/routes.ts`
 
 **Changes**:
 - ✅ Extract `eventId` from URL
@@ -46,7 +46,7 @@ Implemented all recommendations from the crawler data validation report to align
 - ✅ Keep extras: `minPriceCents`, `maxPriceCents`, `waitlist`, `registrationClosed`
 
 ### 3. Meetup Crawler
-**File**: `apify/meetup-crawler/src/routes.ts`
+**File**: `src/apify/meetup-crawler/src/routes.ts`
 
 **Changes**:
 - ✅ Extract `eventId` from URL
@@ -130,7 +130,7 @@ print(f'Schema version: {schema._get_schema_version()}')
 
 ### Crawler Test
 ```bash
-cd apify/luma-crawler
+cd src/apify/luma-crawler
 apify run --input-file=inputs/test.json
 cat storage/datasets/default/000000001.json | jq '{eventId, source, priceCents}'
 # Expected: {"eventId": "...", "source": "luma", "priceCents": 1000}
@@ -140,7 +140,7 @@ cat storage/datasets/default/000000001.json | jq '{eventId, source, priceCents}'
 
 ## Next Steps
 
-1. **Deploy crawlers**: `cd apify/<crawler> && npm run build && apify push`
+1. **Deploy crawlers**: `cd src/apify/<crawler> && npm run build && apify push`
 2. **Run migrations**: Automatic on next app start
 3. **Test imports**: Import Apify datasets to SQLite
 4. **Validate**: Check data integrity with queries

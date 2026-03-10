@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Sync Apify crawler schedules from crawler_schedules.yaml to Apify platform
+Sync crawler schedules from src/apify/crawler_schedules.yaml to Apify platform
 
 Features:
 - Read schedule config with defaults
@@ -272,7 +272,7 @@ def main():
     )
     parser.add_argument(
         '--config',
-        default='apify/crawler_schedules.yaml',
+        default='src/apify/crawler_schedules.yaml',
         help='Path to crawler_schedules.yaml'
     )
     parser.add_argument(

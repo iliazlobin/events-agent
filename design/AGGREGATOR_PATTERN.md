@@ -19,6 +19,37 @@ Gary's Guide acts as an **event aggregator** that collects events from multiple 
 
 ## Architecture
 
+### Daily Discovery Pipeline
+
+The right operating model is not "run Gary's Guide plus run every provider independently and hope overlap works out." It should be a two-stage daily pipeline:
+
+1. Gary's Guide runs first as the discovery feed for SF.
+2. Aggregator discoveries are stored with provider URL + provider name.
+3. The system queries for Gary's Guide events whose provider URL does not yet exist as a direct-source event.
+4. Provider crawlers run against that pending set first, then optionally do a broader catch-up crawl.
+5. After provider ingestion, direct-source rows are enriched with Gary's Guide metadata by matching on `url`.
+
+```mermaid
+flowchart TD
+    A[Daily Gary's Guide SF Scan] --> B[Store discovery rows in events<br/>source=garysguide]
+    B --> C[Query missing direct-source matches<br/>group by original_provider]
+    C --> D[Luma targeted crawl]
+    C --> E[Meetup targeted crawl]
+    C --> F[Eventbrite targeted crawl]
+    D --> G[Upsert provider events]
+    E --> G
+    F --> G
+    G --> H[Promote Gary's Guide metadata onto direct rows by URL]
+    H --> I[Relevant events dataset for downstream queries]
+```
+
+### Why This Architecture
+
+- Gary's Guide is strongest as curated discovery, not authoritative event detail.
+- Provider sites are strongest as authoritative detail, but expensive to crawl broadly every day.
+- Matching on final provider `url` lets us avoid duplicate interpretation work and still retain Gary's Guide provenance.
+- The database becomes the scheduling boundary: "what Gary's Guide found that we still need to enrich" is a query, not custom state.
+
 ### Data Model
 
 New fields added to `Event` model:
@@ -141,6 +172,21 @@ Add smart deduplication to detect when aggregator event matches provider event:
    - If Gary's Guide finds event we haven't crawled yet → flag for priority
    - If Gary's Guide has better title/description → merge data
 
+### Recommended Daily Operation
+
+For the SF daily run:
+
+```text
+02:00  Gary's Guide SF discovery run
+02:10  Import discovery rows into SQLite
+02:15  Query missing direct-source matches for luma / meetup / eventbrite
+02:20  Run targeted provider crawls for missing URLs
+03:00  Run metadata promotion by URL
+03:05  Run downstream filters / exports
+```
+
+The key difference from the prior model is that provider runs are informed by discovery output. A full provider crawl is now fallback coverage, not the primary way to keep Gary's Guide events current.
+
 ## Provider Detection
 
 Implemented in `extractProvider(url)` function:
@@ -214,6 +260,21 @@ WHERE source = 'garysguide'
   );
 ```
 
+### Find pending provider work for daily enrichment
+```sql
+SELECT *
+FROM events
+WHERE source = 'garysguide'
+  AND original_provider = 'luma'
+  AND NOT EXISTS (
+    SELECT 1
+    FROM events direct
+    WHERE direct.url = events.url
+      AND direct.source != events.source
+  )
+ORDER BY start_datetime;
+```
+
 ## Benefits
 
 ### 1. **Avoids Duplicate Scraping**
@@ -241,7 +302,7 @@ WHERE source = 'garysguide'
 ### Local Testing
 
 ```bash
-cd apify/garysguide-crawler
+cd src/apify/garysguide-crawler
 
 # Test with small limit
 apify run --input-file=inputs/test-10.json
@@ -356,7 +417,7 @@ These continue to work as before.
 
 Deploy updated crawler to Apify:
 ```bash
-cd apify/garysguide-crawler
+cd src/apify/garysguide-crawler
 apify push
 ```
 

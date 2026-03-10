@@ -1,0 +1,8 @@
+{
+  "actorSpecification": 1,
+  "name": "events-fever",
+  "title": "Events Fever",
+  "description": "Fever source actor for normalized event discovery.",
+  "version": "1.0",
+  "input": "./input_schema.json"
+}

@@ -152,3 +152,11 @@ scripts/crawl_*.py
 data/events.db
 data/events.db-shm
 data/events.db-wal
+
+# Apify actor local artifacts
+src/apify/**/storage/
+src/apify/**/apify_storage/
+src/apify/**/dist/
+src/apify/**/node_modules/
+src/apify/**/.turbo/
+src/apify/**/.cache/

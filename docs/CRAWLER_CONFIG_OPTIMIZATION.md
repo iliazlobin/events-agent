@@ -4,9 +4,11 @@
 
 Optimized Apify crawler configurations by introducing a centralized, explicit, and overrideable configuration system with proper defaults and per-crawler customization.
 
+This config layer assumes a single-tree repo structure: crawler implementations live in `src/apify/`, while `src/events_agent/` remains shared ingestion and quality infrastructure.
+
 ## Changes Made
 
-### 1. Created `apify/crawler_schedules.yaml`
+### 1. Created `src/apify/crawler_schedules.yaml`
 
 **Purpose**: Apify-specific run settings and schedule configurations
 
@@ -21,7 +23,7 @@ defaults:
 
 schedules:
   garysguide:
-    actor_id: "iliazlobin/events-garysguide-crawler"
+    actor_id: "iliazlobin/events-garysguide"
     cron: "0 2 * * *"          # 2 AM daily
     timezone: "America/New_York"
     memory_mbytes: 1024        # Override if needed
@@ -78,7 +80,7 @@ python3 scripts/sync_apify_schedules.py sync
 - ✅ `cron` expression is present
 - ✅ `timezone` is specified
 
-### 3. Existing `apify/crawler_config.yaml`
+### 3. Existing `src/apify/crawler_config.yaml`
 
 **Purpose**: Crawler runtime settings and performance tuning
 
@@ -95,7 +97,7 @@ defaults:
 
 crawlers:
   garysguide:
-    name: "events-crawler-garysguide"
+    name: "events-garysguide"
     memory_mbytes: 1024                  # Override defaults
     max_requests_per_minute: 15
     default_input:
@@ -250,7 +252,7 @@ $ python3 scripts/sync_apify_schedules.py list
 === Apify Crawler Schedules ===
 
 📅 garysguide
-   Actor: iliazlobin/events-garysguide-crawler
+   Actor: iliazlobin/events-garysguide
    Cron: 0 2 * * *
    Timezone: America/New_York
    Memory: 1024 MB
@@ -259,7 +261,7 @@ $ python3 scripts/sync_apify_schedules.py list
    Input: {"region": "sf", "maxItems": 100, ...
 
 📅 luma
-   Actor: iliazlobin/events-luma-crawler
+   Actor: iliazlobin/events-luma
    ...
 ```
 
@@ -269,7 +271,7 @@ $ python3 scripts/sync_apify_schedules.py show --crawler garysguide
 
 === garysguide Schedule Configuration ===
 
-actor_id: iliazlobin/events-garysguide-crawler
+actor_id: iliazlobin/events-garysguide
 cron: 0 2 * * *
 timezone: America/New_York
 enabled: true
@@ -301,7 +303,7 @@ $ python3 scripts/sync_apify_schedules.py sync --dry-run
   "isEnabled": true,
   "cronExpression": "0 2 * * *",
   "timezone": "America/New_York",
-  "actorId": "iliazlobin/events-garysguide-crawler",
+  "actorId": "iliazlobin/events-garysguide",
   "input": { "region": "sf", ... },
   "options": {
     "memoryMbytes": 1024,

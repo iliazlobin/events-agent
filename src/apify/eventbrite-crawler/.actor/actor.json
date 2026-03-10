@@ -1,0 +1,8 @@
+{
+  "actorSpecification": 1,
+  "name": "events-eventbrite",
+  "title": "Events Eventbrite",
+  "description": "Eventbrite source actor for normalized event discovery.",
+  "version": "1.0",
+  "input": "./input_schema.json"
+}

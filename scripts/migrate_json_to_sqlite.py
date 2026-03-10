@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from events_agent.database.connection import DatabaseConnection
 from events_agent.database.schema import SchemaManager
 from events_agent.repositories.sqlite_repository import SQLiteEventRepository
+from events_agent.actor_runtime import actor_item_to_event
 from events_agent.models.event import Event
 
 
@@ -39,19 +40,19 @@ def load_json_file(filepath: Path) -> list[Event]:
     with open(filepath, "r") as f:
         data = json.load(f)
 
-    # Handle both raw and processed JSON formats
-    if "events" in data:
-        events_data = data["events"]
+    if isinstance(data, dict):
+        items = data.get("events", data.get("items"))
+        if items is None:
+            raise ValueError("Expected top-level 'events' or 'items' key")
+    elif isinstance(data, list):
+        items = data
     else:
-        # Assume it's a list of events
-        events_data = data
+        raise ValueError("Expected JSON array or object containing event items")
 
-    # Parse events
     events = []
-    for event_data in events_data:
+    for item in items:
         try:
-            event = Event(**event_data)
-            events.append(event)
+            events.append(actor_item_to_event(item))
         except Exception as e:
             print(f"  ⚠️  Skipping invalid event: {e}")
 

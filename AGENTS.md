@@ -2,7 +2,7 @@
 
 SF/NYC event aggregator using web scraping from multiple sources with SQLite storage.
 
-**Active Sources**: Gary's Guide (Apify), Eventbrite, Fever, TimeOut, DoNYC (local)
+**Active Sources**: Gary's Guide, Luma, Meetup, Eventbrite, Fever, TimeOut, DoNYC under `src/apify/`
 **Planned**: Funcheap SF, SF Travel
 
 ## Core Principles
@@ -11,6 +11,42 @@ SF/NYC event aggregator using web scraping from multiple sources with SQLite sto
 - **Use Mermaid**: For architecture diagrams and documentation
 - **Follow patterns**: Repository pattern, modular crawlers, Pydantic models, aggregator pattern
 - **Test coverage**: Add tests for new features (pytest)
+- **Single source tree**: New production crawlers belong in `src/apify/<source>-crawler/`
+
+## Project Direction
+
+The repo is converging to a single `src/`-rooted structure:
+
+- `src/apify/` is the home for source-specific crawlers and scheduled actors.
+- `src/events_agent/` is shared infrastructure only:
+  - SQLite
+  - normalized models
+  - import/adaptation
+  - enrichment
+  - quality validation
+- Do **not** add new production source crawlers under `src/events_agent/`; they belong in `src/apify/`.
+
+**Target structure**:
+```text
+src/apify/<source>-crawler/  # Source crawler actor
+src/events_agent/database/   # SQLite + migrations
+src/events_agent/models/     # Normalized contracts
+src/events_agent/repositories/# Upsert/query/enrichment
+scripts/                     # Config sync, import, validation
+```
+
+**Migration rule**:
+- Recurring pipeline sources become actors under `src/apify/`.
+- One-off conference or special-purpose scrapers should be retired, not migrated.
+
+**Quality loop for every crawler change**:
+1. Local actor run with small input
+2. Dataset contract inspection
+3. SQLite import/upsert verification
+4. Aggregator/pending-coverage query verification
+5. Schedule validation / dry-run sync
+
+**See**: `docs/APIFY_FIRST_ARCHITECTURE.md`
 
 ## Aggregator Pattern
 
@@ -41,9 +77,9 @@ aggregator_detail_url: str  # Gary's Guide detail page
 
 ### Overview
 
-**Deployed Actors**: Gary's Guide crawler in TypeScript/Crawlee (cloud)
-**Local Source**: `apify/garysguide-crawler/`
-**Template**: `ts-crawlee-puppeteer-chrome` (TypeScript + Crawlee + Puppeteer)
+**Deployed Actors**: Apify actors sourced from `src/apify/`
+**Local Source**: `src/apify/<source>-crawler/`
+**Runtime**: TypeScript/Crawlee for existing core actors; Python bridge actors for migrated legacy sources
 **MCP Server**: Configured via `~/.claude.json` for API access
 
 ### Apify Actor Naming Convention
@@ -56,8 +92,8 @@ aggregator_detail_url: str  # Gary's Guide detail page
   - `events-eventbrite`
   - `events-meetup`
 
-**Directory structure**: `apify/<source>-crawler/` (local directory uses `-crawler` suffix)
-- Local: `apify/garysguide-crawler/`
+**Directory structure**: `src/apify/<source>-crawler/` (local directory uses `-crawler` suffix)
+- Local: `src/apify/garysguide-crawler/`
 - Deployed: `iliazlobin/events-garysguide`
 - Title format: "Events <Source>" (e.g., "Events Garysguide", "Events Luma")
 
@@ -65,7 +101,7 @@ aggregator_detail_url: str  # Gary's Guide detail page
 
 **File Structure**:
 ```
-apify/garysguide-crawler/
+src/apify/garysguide-crawler/
 ├── .actor/
 │   ├── actor.json           # Actor metadata (name, version, input schema)
 │   └── input_schema.json    # Input parameter definitions
@@ -160,7 +196,7 @@ router.addHandler('event', async ({ page, log, request }) => {
 ```bash
 # Initialize new actor
 apify create funcheap-crawler --template ts-crawlee-puppeteer-chrome
-cd apify/funcheap-crawler
+cd src/apify/funcheap-crawler
 ```
 
 **Define input schema** (`.actor/input_schema.json`):
@@ -271,10 +307,10 @@ apify info
 **Via CLI**:
 ```bash
 # Run specific actor
-apify actors call iliazlobin/events-garysguide-crawler
+apify actors call iliazlobin/events-garysguide
 
 # Run with input
-apify actors call iliazlobin/events-garysguide-crawler --input '{"region":"sf","maxItems":100,"lookForwardWindow":30}'
+apify actors call iliazlobin/events-garysguide --input '{"region":"sf","maxItems":100,"lookForwardWindow":30}'
 ```
 
 **Via Console**: https://console.apify.com/actors → Select actor → Run
@@ -338,7 +374,7 @@ claude mcp list
 
 **Single run test** (final validation):
 ```
-"Run iliazlobin/events-garysguide-crawler with input:
+"Run iliazlobin/events-garysguide with input:
 {
   'region': 'sf',
   'maxItems': 50,
@@ -362,7 +398,7 @@ Wait for completion and show me the first 5 events."
 2. Click **"Create new schedule"**
 3. Configure:
    - **Name**: "Gary's Guide SF Daily Crawl"
-   - **Actor**: `iliazlobin/events-garysguide-crawler`
+   - **Actor**: `iliazlobin/events-garysguide`
    - **Cron expression**: `0 2 * * *` (2 AM daily)
    - **Timezone**: America/Los_Angeles
    - **Input**:
@@ -394,7 +430,7 @@ curl -X POST https://api.apify.com/v2/schedules \
     "isExclusive": false,
     "cronExpression": "0 2 * * *",
     "timezone": "America/Los_Angeles",
-    "actorId": "iliazlobin/events-garysguide-crawler",
+    "actorId": "iliazlobin/events-garysguide",
     "input": {
       "region": "sf",
       "maxItems": 100,
@@ -424,7 +460,7 @@ curl -X POST https://api.apify.com/v2/schedules \
 **Monitor runs**:
 ```bash
 # List recent runs
-apify actor runs ls iliazlobin/events-garysguide-crawler
+apify actor runs ls iliazlobin/events-garysguide
 
 # Get run details
 apify actor run info <run-id>
@@ -484,13 +520,13 @@ print(f"Imported {len(events)} events from Apify")
 
 **Configuration Files**:
 
-1. **`apify/crawler_config.yaml`** - Crawler runtime settings
+1. **`src/apify/crawler_config.yaml`** - Crawler runtime settings
    - Rate limits, retries, timeouts
    - Session pool configuration
    - Autoscaling parameters
    - Managed via `scripts/manage_crawler_config.py`
 
-2. **`apify/crawler_schedules.yaml`** - Apify platform settings
+2. **`src/apify/crawler_schedules.yaml`** - Apify platform settings
    - Memory allocation (default: 1024 MB)
    - Schedule definitions (cron, timezone)
    - Input configurations
@@ -564,7 +600,7 @@ python3 scripts/sync_apify_schedules.py sync
 
 ## Architecture
 
-**Structure**: `src/events_agent/` → `models/`, `database/`, `repositories/`, `crawlers/`, `data/`, `filters/`, `utils/`
+**Structure**: `src/events_agent/` → `models/`, `database/`, `repositories/`, `processors/`, `utils/`, `legacy_crawlers/`
 **Data Flow**: Crawlers → SQLite (auto-dedupe) → SQL queries → Event objects
 **Storage**: `data/events.db` (SQLite with WAL mode)
 
@@ -587,14 +623,14 @@ python3 scripts/sync_apify_schedules.py sync
 
 ### Active Sources
 
-**Apify Cloud Crawlers** (TypeScript/Crawlee):
-- **Gary's Guide** - Tech/startup events (SF, NYC regions) - 82+ events per region
+**Apify Cloud Crawlers** (target production form):
+- **Gary's Guide** - Tech/startup events (SF, NYC regions)
+- **Luma** - Provider crawler
+- **Meetup** - Provider crawler
+- **Eventbrite / Fever / TimeOut / DoNYC** - migrate toward this same actor model
 
-**Local Python Crawlers** (Playwright):
-- **Eventbrite** - General events with pagination (~120 events in 30s)
-- **Fever** - Entertainment events (~225 events in 12 min)
-- **TimeOut NYC** - NYC events and activities
-- **DoNYC** - NYC-specific events
+**Legacy Local Python Crawlers**:
+- Existing implementations under `src/events_agent/legacy_crawlers/` are transitional infrastructure and should be treated as migration candidates, not the default place for new crawler work.
 
 **Planned**:
 - **Funcheap SF** - Free/cheap SF events
@@ -608,7 +644,7 @@ python3 scripts/sync_apify_schedules.py sync
 | Crawler | SLA | Run Command |
 |---------|-----|-------------|
 | **Eventbrite** | 100+ events within 5 minutes | `python scripts/run_eventbrite_crawler.py` |
-| **Fever** | All events (~225) in ~12 min | Via `python -m events_agent.main` (max_events=0) |
+| **Fever** | All events (~225) in ~12 min | Legacy local run only; migrate to Apify actor |
 
 Eventbrite uses pagination (`?page=N`); ~20 events per page. Default: 6 pages → ~120 events in ~30s.
 Fever uses `domcontentloaded` (not `networkidle`) to avoid timeout; DOM fallback when Schema.org fails.
@@ -635,7 +671,7 @@ Fever uses `domcontentloaded` (not `networkidle`) to avoid timeout; DOM fallback
 
 ## Quick Reference
 
-**Main command**: `python -m events_agent.main` or `events-crawler`
+**Main command**: Apify actor runs plus Python import/validation scripts
 **Database**: `data/events.db` (SQLite, open with `sqlite3` or DB Browser)
 **Tests**: 104 tests (93 unit, 11 integration)
 **Docs**: README.md, SQLITE_MIGRATION.md, queries/quick_analysis.sql

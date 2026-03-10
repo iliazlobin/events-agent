@@ -1,0 +1,23 @@
+{
+  "title": "TimeOut Events Crawler",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "location": {
+      "title": "Location",
+      "type": "string",
+      "default": "newyork"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string",
+      "default": "events-calendar"
+    },
+    "rateLimitSeconds": {
+      "title": "Rate Limit Seconds",
+      "type": "number",
+      "default": 2.0,
+      "minimum": 0
+    }
+  }
+}

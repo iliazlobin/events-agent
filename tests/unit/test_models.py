@@ -145,6 +145,36 @@ def test_event_model_dump():
     assert data['title'] == "Test Event"
 
 
+def test_event_canonical_source_prefers_original_provider():
+    event = Event(
+        event_id="gary-1",
+        source=EventSource.GARYSGUIDE,
+        url="https://lu.ma/test-event",
+        title="Gary Event",
+        start_datetime=datetime(2026, 2, 5, 18, 0),
+        original_provider="luma",
+        aggregated_from="garysguide",
+    )
+
+    assert event.canonical_source == "luma"
+
+
+def test_event_source_extensions_allowed():
+    event = Event(
+        event_id="meetup-1",
+        source=EventSource.MEETUP,
+        url="https://www.meetup.com/test/events/1",
+        title="Meetup Event",
+        start_datetime=datetime(2026, 2, 5, 18, 0),
+        source_extensions={"apolloNodeId": "Event:123", "visibility": "public"},
+    )
+
+    assert event.source_extensions == {
+        "apolloNodeId": "Event:123",
+        "visibility": "public",
+    }
+
+
 def test_event_with_experience_fields():
     """Test creating an event with experience-specific fields."""
     event = Event(

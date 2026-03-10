@@ -1,7 +1,7 @@
 """Event data model with Pydantic validation."""
 
 from datetime import datetime
-from typing import Optional
+from typing import Any, Optional
 from pydantic import BaseModel, Field, HttpUrl, field_validator
 from enum import Enum
 
@@ -116,6 +116,12 @@ class Event(BaseModel):
     # External links
     registration_url: Optional[str] = Field(None, description="External registration URL")
 
+    # Source-specific spillover that should not fork the core model
+    source_extensions: Optional[dict[str, Any]] = Field(
+        None,
+        description="Source-specific extension data stored outside the normalized core contract",
+    )
+
     # Aggregator metadata (for events found via aggregators like Gary's Guide)
     original_provider: Optional[str] = Field(None, description="Original provider domain (luma.com, meetup.com, etc.)")
     aggregated_from: Optional[str] = Field(None, description="Aggregator that listed this event (garysguide, etc.)")
@@ -125,6 +131,11 @@ class Event(BaseModel):
     # Metadata
     crawled_at: datetime = Field(default_factory=datetime.utcnow, description="When this was crawled")
     detail_crawled: bool = Field(False, description="Whether detail page was crawled")
+
+    @property
+    def canonical_source(self) -> str:
+        """Return the authoritative provider/source for the event."""
+        return self.original_provider or self.source.value
 
     @field_validator('end_datetime')
     @classmethod
