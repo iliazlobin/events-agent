@@ -139,10 +139,10 @@ Every actor change should close this loop:
 4. aggregator enrichment / pending coverage check
 5. schedule dry-run validation
 
-See [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md) for the full repo-level workflow.
+See [docs/APIFY_FIRST_ARCHITECTURE.md](../../docs/APIFY_FIRST_ARCHITECTURE.md) for the full repo-level workflow.
 
 ## Config Files
 
-- [crawler_config.yaml](/Users/iliazlobin/Code/events-agent/src/apify/crawler_config.yaml): runtime defaults and crawler overrides
-- [crawler_schedules.yaml](/Users/iliazlobin/Code/events-agent/src/apify/crawler_schedules.yaml): actor IDs, inputs, and schedules
-- [../docs/CRAWLER_CONFIG_OPTIMIZATION.md](/Users/iliazlobin/Code/events-agent/docs/CRAWLER_CONFIG_OPTIMIZATION.md): config operations
+- [crawler_config.yaml](crawler_config.yaml): runtime defaults and crawler overrides
+- [crawler_schedules.yaml](crawler_schedules.yaml): actor IDs, inputs, and schedules
+- [../../docs/CRAWLER_CONFIG_OPTIMIZATION.md](../../docs/CRAWLER_CONFIG_OPTIMIZATION.md): config operations

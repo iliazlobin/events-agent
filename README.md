@@ -15,7 +15,7 @@ The project is converging to a single `src/`-rooted crawler architecture:
   - quality validation
 - New source crawlers should be added in `src/apify/<source>-crawler/`, not in the Python package.
 
-The detailed target structure and quality loop are documented in [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md).
+The detailed target structure and quality loop are documented in [docs/APIFY_FIRST_ARCHITECTURE.md](docs/APIFY_FIRST_ARCHITECTURE.md).
 
 ## Project Layout
 
@@ -57,10 +57,10 @@ events-agent/
 
 ## Key Docs
 
-- [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md)
-- [src/apify/README.md](/Users/iliazlobin/Code/events-agent/src/apify/README.md)
-- [design/AGGREGATOR_PATTERN.md](/Users/iliazlobin/Code/events-agent/design/AGGREGATOR_PATTERN.md)
-- [docs/CRAWLER_CONFIG_OPTIMIZATION.md](/Users/iliazlobin/Code/events-agent/docs/CRAWLER_CONFIG_OPTIMIZATION.md)
+- [docs/APIFY_FIRST_ARCHITECTURE.md](docs/APIFY_FIRST_ARCHITECTURE.md)
+- [src/apify/README.md](src/apify/README.md)
+- [design/AGGREGATOR_PATTERN.md](design/AGGREGATOR_PATTERN.md)
+- [docs/CRAWLER_CONFIG_OPTIMIZATION.md](docs/CRAWLER_CONFIG_OPTIMIZATION.md)
 
 ## Development
 
@@ -92,4 +92,4 @@ Every crawler change should close the loop in this order:
 4. Aggregator promotion / missing-direct-source query check.
 5. Scheduled dry-run config validation.
 
-That loop is spelled out in [docs/APIFY_FIRST_ARCHITECTURE.md](/Users/iliazlobin/Code/events-agent/docs/APIFY_FIRST_ARCHITECTURE.md).
+That loop is spelled out in [docs/APIFY_FIRST_ARCHITECTURE.md](docs/APIFY_FIRST_ARCHITECTURE.md).
