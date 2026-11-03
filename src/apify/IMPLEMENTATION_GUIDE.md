@@ -294,5 +294,5 @@ npm run build
 
 - **Crawlee Docs**: https://crawlee.dev/
 - **Apify Docs**: https://docs.apify.com/
-- **Project Instructions**: [CLAUDE.md](../../CLAUDE.md)
+- **Project Instructions**: [AGENTS.md](../../AGENTS.md)
 - **TODO Status**: [src/apify/TODO.md](TODO.md)
