@@ -13,7 +13,7 @@ Quick reference for implementing new event crawlers using the Gary's Guide templ
 ### Step 1: Copy Gary's Guide Structure
 
 ```bash
-cd /Users/iliazlobin/Code/events-agent/apify
+cd /Users/iliazlobin/projects/events/planner/events-agent/src/apify
 cp -r garysguide-crawler/ your-crawler-name/
 cd your-crawler-name
 ```
@@ -292,5 +292,5 @@ npm run build
 
 - **Crawlee Docs**: https://crawlee.dev/
 - **Apify Docs**: https://docs.apify.com/
-- **Project Instructions**: `/Users/iliazlobin/Code/events-agent/CLAUDE.md`
-- **TODO Status**: `/Users/iliazlobin/Code/events-agent/src/apify/TODO.md`
+- **Project Instructions**: `/Users/iliazlobin/projects/events/planner/events-agent/CLAUDE.md`
+- **TODO Status**: `/Users/iliazlobin/projects/events/planner/events-agent/src/apify/TODO.md`
